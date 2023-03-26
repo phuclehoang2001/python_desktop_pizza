@@ -1,0 +1,23 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>log-out.svg</file>
+    <file>menu.svg</file>
+    <file>grid.svg</file>
+    <file>check-circle.svg</file>
+    <file>shield.svg</file>
+    <file>align-justify.svg</file>
+    <file>trash-2.svg</file>
+    <file>search.svg</file>
+    <file>plus.svg</file>
+    <file>info.svg</file>
+    <file>edit.svg</file>
+    <file>maximize-2.svg</file>
+    <file>bar-chart-2.svg</file>
+    <file>dollar-sign(1).svg</file>
+    <file>shopping-cart(1).svg</file>
+    <file>align-left(1).svg</file>
+    <file>user(1).svg</file>
+    <file>icons8-people-50.png</file>
+    <file>users(1).svg</file>
+  </qresource>
+</RCC>
