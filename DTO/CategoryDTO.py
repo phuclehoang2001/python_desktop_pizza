@@ -1,4 +1,4 @@
-class Category:
+class CategoryDTO:
     id = ""
     display = ""
     

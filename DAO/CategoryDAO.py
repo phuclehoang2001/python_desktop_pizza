@@ -1,8 +1,10 @@
-from mySQLConnect import sqlConnect
+from DAO.mySQLConnect import sqlConnect
 from mysql.connector import Error
+import sys
+sys.path.insert(0,".")
+from DTO import *
 
-
-class Category:
+class CategoryDAO:
     cursor = None
     result = None
     con = None
@@ -38,7 +40,3 @@ class Category:
                 print(error)
         return list
     
-
-
-test = Category().getAllCategory()
-print(test)
