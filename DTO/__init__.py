@@ -1,1 +1,1 @@
-from DTO.CategoryDTO import *
+from DTO.Category import *

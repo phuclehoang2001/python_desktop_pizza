@@ -32,11 +32,6 @@ class sqlConnect:
             print(error)
         return self.myCursor
 
-
-    # goi truc tiep cursor
-    # def executeSelect(self, query):
-    #     try:                
-    #         self.myResult = self.getCursor().execute(query)
-    #     except Error as error:
-    #         print(error)
-    #     return self.myResult
+    def close(self):
+        self.con.close()
+    
