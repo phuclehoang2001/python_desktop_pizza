@@ -1,4 +1,4 @@
-from mySQLConnect import sqlConnect
+from DAO.mySQLConnect import sqlConnect
 from mysql.connector import Error
 import sys
 sys.path.insert(0,".")
@@ -44,16 +44,24 @@ class CategoryDAO:
     
     #lấy tất cả loại
     def getAllCategory(self):
-        list = []
+        result = []
         try:
             query = "SELECT * FROM category"
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
-            list = self.result
+            
+            ## tạo đối tượng CategoryDTO để thêm vào result
+            for category in self.result:
+                ## category trả về là kiểu tuple
+                cateDTO = Category()
+                cateDTO.setId(category[0])
+                cateDTO.setDisplay(category[1])
+                result.append(cateDTO)
+    
         except Error as error:
                 print(error)
-        return list
+        return result
     
     
     def add(self, category):
