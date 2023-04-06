@@ -1,4 +1,4 @@
-from DAO.mySQLConnect import sqlConnect
+from .mySQLConnect import sqlConnect
 from mysql.connector import Error
 import sys
 sys.path.insert(0,".")
@@ -67,7 +67,7 @@ class CategoryDAO:
     def add(self, category):
         try:
             query = "INSERT INTO `category`(display) VALUES('{display}')"\
-            .format(display=category.display)        
+            .format(display=category.getDisplay())        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()

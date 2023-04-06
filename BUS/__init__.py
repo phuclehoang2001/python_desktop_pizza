@@ -1,1 +1,1 @@
-from BUS.CategoryBUS import CategoryBus
+from .CategoryBUS import CategoryBus
