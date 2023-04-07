@@ -4,13 +4,13 @@ class StatusDetail:
     timeCreated = ""
     
     def getStatusId(self):
-        return self.status_id
+        return self.statusId
     
     def getOrderId(self):
-        return self.order_id
+        return self.orderId
     
     def getTimeCreated(self):
-        return self.time_created
+        return self.timeCreated
     
     def setStatusId(self, statusId):
         self.statusId = statusId
@@ -21,7 +21,7 @@ class StatusDetail:
     def setTimeCreated(self, timeCreated):
         self.timeCreated = timeCreated
     
-    
+   
     
     
     

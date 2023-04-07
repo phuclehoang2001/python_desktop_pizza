@@ -18,29 +18,37 @@ class CategoryDAO:
 
     #trả về 1 object theo id loại
     def getByID(self, categoryID):
-        obj_cate = None
+        category = Category()
         try:
             query = "SELECT * FROM category WHERE id = "+ str(categoryID)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
-            obj_cate = self.result
+            category.setId(self.result[0]) 
+            category.setDisplay(self.result[1]) 
         except Error as error:
                 print(error)
-        return obj_cate
+        return category
     
     # trả về một list theo tên loại
     def getByDisplay(self, display):
-        obj_cate = None
+        result = []
         try:
             query = "SELECT * FROM category WHERE display = "+ str(display)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
-            obj_cate = self.result
+
+            ## tạo đối tượng CategoryDTO để thêm vào result
+            for category in self.result:
+                ## category trả về là kiểu tuple
+                cateDTO = Category()
+                cateDTO.setId(category[0])
+                cateDTO.setDisplay(category[1])
+                result.append(cateDTO)
         except Error as error:
                 print(error)
-        return obj_cate
+        return result
     
     #lấy tất cả loại
     def getAllCategory(self):

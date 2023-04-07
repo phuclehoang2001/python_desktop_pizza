@@ -17,18 +17,34 @@ class StatusDAO:
                 print(error)
 
     def getById(self, statusId):
-        obj_cate = None
+        status = Status()
         try:
             query = "SELECT * FROM status WHERE id = "+ str(statusId)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
-            obj_cate = self.result
+            status.setId(self.result[0]) 
+            status.setDisplay(self.result[1]) 
         except Error as error:
                 print(error)
-        return obj_cate
+        return status
     
-    
+    def getStatusDetailById(self, orderId, statusId):
+        detail = StatusDetail()
+        try:
+            query = "SELECT * FROM status_detail WHERE order_id = {orderId} and status_id = {statusId}"\
+            .format(orderId=orderId, statusId=statusId)     
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone()
+            detail.setOrderId(self.result[0]) 
+            detail.setStatusId(self.result[1]) 
+            detail.setTimeCreated(self.result[2]) 
+        except Error as error:
+                print(error)
+        return detail
+
+
     def getAllStatus(self):
         result = []
         try:
@@ -46,8 +62,7 @@ class StatusDAO:
         except Error as error:
                 print(error)
         return result
-    
-    
+
     def add(self, status):
         try:
             query = "INSERT INTO `status`(display) VALUES('{display}')"\
@@ -78,7 +93,7 @@ class StatusDAO:
     def delete(self, status):
         try:
             query = "DELETE FROM `status` WHERE id = {id}"\
-            .format(id=status.getDisplay())        
+            .format(id=status.getId())        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
@@ -89,14 +104,29 @@ class StatusDAO:
         return False
 
 
-    # Hàm xóa nhiều category theo mảng các id 
-    def deleteList(self, listIdCategory):
-        wheres = []
-        for id_category in listIdCategory:
-             wheres.append("id = {id_category}".format(id_category=id_category))
+    def getAllDetail(self):
+        result = []
         try:
-            sub_query = " or ".join(wheres)
-            query = "DELETE FROM `category` WHERE " + sub_query
+            query = "SELECT * FROM  status_detail"
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchall()
+            
+            ## tạo đối tượng DTO để thêm vào result
+            for detail in self.result: 
+                detailDTO = StatusDetail()
+                detailDTO.setOrderId(detail[0])
+                detailDTO.setStatusId(detail[1])
+                detailDTO.setTimeCreated(detail[2])
+                result.append(detailDTO)
+        except Error as error:
+                print(error)
+        return result
+    
+    def addStatusDetail(self, statusDetail):
+        try:
+            query = "INSERT INTO `status_detail`(order_id, status_id, time_created) VALUES({order_id},{status_id},'{time_created}')"\
+            .format(order_id=statusDetail.getOrderId(), status_id=statusDetail.getStatusId(), time_created= statusDetail.getTimeCreated())        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
@@ -106,4 +136,52 @@ class StatusDAO:
                 print(error)
         return False
     
+     ## trả về statusDetail có trạng thái status_detail lớn nhất, với input là orderId
+    def getLastStatusDetail(self, orderId):
+        detailDTO = StatusDetail()
+        try:
+            query = "SELECT * FROM `status_detail` WHERE order_id = {orderId} ORDER BY status_id DESC"\
+            .format(orderId=orderId)  
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone() ## lấy kết quả đầu tiên trong danh sách
+            print(self.result)
+            detailDTO.setOrderId(self.result[0]) 
+            detailDTO.setStatusId(self.result[1]) 
+            detailDTO.setTimeCreated(self.result[2]) 
+        except Error as error:
+                print(error)
+        return detailDTO
+    
+    ## trả về statusDetail có trạng thái status_detail nhỏ nhất, với input là orderId
+    def getFirstStatusDetail(self, orderId):
+        detailDTO = StatusDetail()
+        try:
+            query = "SELECT * FROM `status_detail` WHERE order_id = {orderId} ORDER BY status_id ASC"\
+            .format(orderId=orderId)  
 
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone() ## lấy kết quả đầu tiên trong danh sách
+
+            detailDTO.setOrderId(self.result[0]) 
+            detailDTO.setStatusId(self.result[1]) 
+            detailDTO.setTimeCreated(self.result[2]) 
+        except Error as error:
+                print(error)
+        return detailDTO
+
+   
+    def getByOrderId(self, orderId):      
+        try:
+            statusId = self.getLastStatusDetail(orderId).setStatusId()
+            query = "SELECT * FROM status WHERE id = "+ str(statusId)
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone()
+            statusDTO = Status()
+            statusDTO.setId(self.result[0]) 
+            statusDTO.setDisplay(self.result[1]) 
+        except Error as error:
+                print(error)
+        return statusDTO

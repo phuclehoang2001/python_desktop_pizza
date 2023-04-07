@@ -8,6 +8,5 @@ from .PizzaDAO import *
 from .SizeDAO import *
 from .StatusDAO import *
 from .ToppingDAO import *
-from .ToppingDetailDAO import *
 from .UserDAO import *
 from .UserPermissionDAO import *
