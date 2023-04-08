@@ -56,7 +56,7 @@ for category in test.listCategory:
 # # thêm
 # cate_new = Category()
 # cate_new.setDisplay("LoạI mới 5")
-# if test.addCategory(cate_new):
-#     print("thêm thành công")
-# else:
-#     print("thêm thất bại")
+    # if test.addCategory(cate_new):
+    #     print("thêm thành công")
+    # else:
+    #     print("thêm thất bại")
