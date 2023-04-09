@@ -8,7 +8,9 @@ import sys
 sys.path.insert(0,".")
 from BUS import*
 from DTO import *
+from DAO import CategoryDAO
 from add_category import add_category_dialog,QtWidgets
+from find_category_dialog import find_category
 #Globals
 COUNTER=0
 #MAIN WINDOW
@@ -26,16 +28,26 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
         ##Can nhac nut nay
-        self.ui.pushButton_23.clicked.connect(self.add_category_btn)
+        self.ui.pushButton_23.clicked.connect(self.open_add_category_btn)
+        #find function//please reload before searching again
+        self.ui.pushButton_21.clicked.connect(self.find_category_btn)
         ##Add_Value CategoryDialog
         self.auto_get_value()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
+        ##reload category
+        self.ui.pushButton_22.clicked.connect(self.infobut)
+    ##RELOAD BUTTON_OLD BUTTON=info_Category
+    def infobut(self):
+        self.ui.tableWidget_3.clearContents()
+        self.auto_get_value()
+
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
         col=self.ui.tableWidget_3.currentColumn()
         id=self.ui.tableWidget_3.item(row,col).text()
-        print(id)
+        Catebus=CategoryBUS()
+        #Catebus.Delete
     def auto_get_value(self):
         catebus= CategoryBUS()
         catebus.readListCategory()
@@ -70,12 +82,28 @@ class mainwindow(QtWidgets.QMainWindow):
     def click_Stastical_btn(self):
         self.ui.stackedWidget.setCurrentIndex(7)
         ###Create add_cattegory_dialog
-    def add_category_btn(self):
+    def open_add_category_btn(self):
         Dialog = QtWidgets.QDialog()
         ui = add_category_dialog()
         ui.setupUi(Dialog)
         Dialog.show()
         Dialog.exec_()
+    def find_category_btn(self):
+        find_str=self.ui.LineEdit_find_category.text()
+        catebus=CategoryBUS()
+        catebus.readListCategory()
+        list=catebus.findCategoriesByName(find_str)
+        self.ui.tableWidget_3.clearContents()
+        count=0
+        for category in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(category.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(category.getDisplay())
+            self.ui.tableWidget_3.setItem(count,0,idITEM)
+            self.ui.tableWidget_3.setItem(count,1,displayITEM)
+            count+=1
+
+
+        
         
 
 

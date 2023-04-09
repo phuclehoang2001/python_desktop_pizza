@@ -11,7 +11,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from BUS import CategoryBUS
 from DTO import Category
-from main_window import Ui_MainWindow
+from main_window import Ui_MainWindow,QtWidgets
+from DAO import CategoryDAO
 
 
 class add_category_dialog(object):
@@ -49,7 +50,10 @@ class add_category_dialog(object):
         catebus=CategoryBUS()
         cate.setDisplay(self.lineEdit.text())
         catebus.addCategory(cate)
+        DAO = CategoryDAO()
+        DAO.con.reconnect()
         self.pushButton_2.click()
+        
         
 
 

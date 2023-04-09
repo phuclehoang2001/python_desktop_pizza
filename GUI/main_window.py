@@ -861,6 +861,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.frame_3)
         self.horizontalLayout.addWidget(self.Menu_Contain)
         MainWindow.setCentralWidget(self.centralwidget)
+        ##Line edit of find_category
+        self.LineEdit_find_category=QtWidgets.QLineEdit(self.Category)
+        self.LineEdit_find_category.setGeometry(500,60,100,20)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
