@@ -17,15 +17,17 @@ class CategoryDAO:
                 print(error)
 
     #trả về 1 object theo id loại
-    def getByID(self, categoryID):
+    def getByID(self, categoryId):
         category = Category()
         try:
-            query = "SELECT * FROM category WHERE id = "+ str(categoryID)
+            query = "SELECT * FROM `category` WHERE id = {categoryId}"\
+            .format(categoryId=categoryId)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
-            category.setId(self.result[0]) 
-            category.setDisplay(self.result[1]) 
+            if self.result is not None:
+                category.setId(self.result[0]) 
+                category.setDisplay(self.result[1]) 
         except Error as error:
                 print(error)
         return category
@@ -34,7 +36,8 @@ class CategoryDAO:
     def getByDisplay(self, display):
         result = []
         try:
-            query = "SELECT * FROM category WHERE display = "+ str(display)
+            query = "SELECT * FROM `category` WHERE display LIKE '%{display}%'"\
+            .format(display=display)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
@@ -54,7 +57,7 @@ class CategoryDAO:
     def getAllCategory(self):
         result = []
         try:
-            query = "SELECT * FROM category"
+            query = "SELECT * FROM `category`"
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
@@ -89,7 +92,7 @@ class CategoryDAO:
         try:
             ## dấu\ để xuống dòng chuỗi, format để chèn giá trị vào chuỗi
             query = "UPDATE `category` SET display = '{display}' WHERE id = {id}"\
-            .format(display=category.display, id=category.id)        
+            .format(display=category.getDisplay(), id=category.getId())        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
