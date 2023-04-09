@@ -4,6 +4,11 @@ from load_screen import Ui_LoadScreen
 import sys
 import time
 from main_window import Ui_MainWindow
+import sys
+sys.path.insert(0,".")
+from BUS import*
+from DTO import *
+from add_category import add_category_dialog,QtWidgets
 #Globals
 COUNTER=0
 #MAIN WINDOW
@@ -20,6 +25,34 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pizza_btn.clicked.connect(self.click_Pizza_btn)
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
+        ##Can nhac nut nay
+        self.ui.pushButton_23.clicked.connect(self.add_category_btn)
+        ##Add_Value CategoryDialog
+        self.auto_get_value()
+        ##Deletecategory
+        self.ui.pushButton_26.clicked.connect(self.deleteCategory)
+    def deleteCategory(self):
+        row=self.ui.tableWidget_3.currentRow()
+        col=self.ui.tableWidget_3.currentColumn()
+        id=self.ui.tableWidget_3.item(row,col).text()
+        print(id)
+    def auto_get_value(self):
+        catebus= CategoryBUS()
+        catebus.readListCategory()
+        self.ui.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
+        self.ui.tableWidget_3.setRowCount(len(catebus.listCategory))
+        count=0
+        self.ui.tableWidget_3.setColumnWidth(0,100)
+        self.ui.tableWidget_3.setColumnWidth(1,740)
+        self.ui.tableWidget_3.verticalHeader().setVisible(False)
+        self.ui.tableWidget_3.setMaximumHeight(200)
+        for category in catebus.listCategory:
+            idITEM=QtWidgets.QTableWidgetItem(str(category.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(category.getDisplay())
+            self.ui.tableWidget_3.setItem(count,0,idITEM)
+            self.ui.tableWidget_3.setItem(count,1,displayITEM)
+            count+=1
+    ##############################################
     def click_groupAccount_btn(self):
         self.ui.stackedWidget.setCurrentIndex(0)
     def click_Account_btn(self):
@@ -36,6 +69,15 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(6)
     def click_Stastical_btn(self):
         self.ui.stackedWidget.setCurrentIndex(7)
+        ###Create add_cattegory_dialog
+    def add_category_btn(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_category_dialog()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+        
+
 
 class handler(QtWidgets.QMainWindow):
     def __init__(self):
@@ -113,7 +155,7 @@ class handler(QtWidgets.QMainWindow):
             #CLose loading screen
             self.close()
         ##Increase COUNTER
-        COUNTER+=0.5
+        COUNTER+=2
 
 
 
