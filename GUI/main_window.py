@@ -513,7 +513,10 @@ class Ui_MainWindow(object):
         self.tableWidget_3 = QtWidgets.QTableWidget(self.Category)
         self.tableWidget_3.setGeometry(QtCore.QRect(30, 140, 841, 361))
         self.tableWidget_3.setObjectName("tableWidget_3")
-        self.tableWidget_3.setColumnCount(0)
+        self.tableWidget_3.setRowCount(2)
+        self.tableWidget_3.setColumnCount(2)
+        self.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget_3.setHorizontalHeaderLabels(["ID","DISPLAY"])
         self.tableWidget_3.setRowCount(0)
         self.stackedWidget.addWidget(self.Category)
         self.Size = QtWidgets.QWidget()
@@ -858,6 +861,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.frame_3)
         self.horizontalLayout.addWidget(self.Menu_Contain)
         MainWindow.setCentralWidget(self.centralwidget)
+        ##Line edit of find_category
+        self.LineEdit_find_category=QtWidgets.QLineEdit(self.Category)
+        self.LineEdit_find_category.setGeometry(500,60,100,20)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
