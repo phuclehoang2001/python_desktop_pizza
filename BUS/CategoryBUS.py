@@ -47,16 +47,23 @@ for category in test.listCategory:
     print(category.getDisplay())
     print(category.getId())
 
+# # thêm
+cate_new = Category()
+cate_new.setDisplay("LoạI mới 5")
+if test.addCategory(cate_new):
+    print("thêm thành công")
+else:
+    print("thêm thất bại")
+
+print("------------------------")
+test2 = CategoryBUS()
+test2.readListCategory()
+
+for category in test2.listCategory:
+    print(category.getDisplay())
+    print(category.getId())
 ## tìm kiếm 
 # listSearch  = test.findCategoriesByName("Cao")
 # for cate in listSearch:
 #     print(cate.getDisplay())
 #     print(cate.getId())
-
-# # thêm
-# cate_new = Category()
-# cate_new.setDisplay("LoạI mới 5")
-    # if test.addCategory(cate_new):
-    #     print("thêm thành công")
-    # else:
-    #     print("thêm thất bại")

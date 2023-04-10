@@ -33,5 +33,14 @@ class sqlConnect:
         return self.myCursor
 
     def close(self):
-        self.con.close()
+        if self.myResult is not None and not self.myResult.closed:
+            self.myResult.close()
+            self.myResult =  None
+        
+        if self.myCursor is not None and self.myCursor.rowcount !=-1:
+            self.myCursor.close()
+            self.myCursor =  None
     
+        if self.con is not None and not self.con.is_connected():
+            self.con.close()
+            self.con =  None
