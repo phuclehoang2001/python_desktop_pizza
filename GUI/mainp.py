@@ -10,7 +10,6 @@ from BUS import*
 from DTO import *
 from DAO import CategoryDAO
 from add_category import add_category_dialog,QtWidgets
-from find_category_dialog import find_category
 #Globals
 COUNTER=0
 #MAIN WINDOW
@@ -41,7 +40,6 @@ class mainwindow(QtWidgets.QMainWindow):
     def infobut(self):
         self.ui.tableWidget_3.clearContents()
         self.auto_get_value()
-
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
         col=self.ui.tableWidget_3.currentColumn()
@@ -179,7 +177,6 @@ class handler(QtWidgets.QMainWindow):
             #Show main window
             self.main=mainwindow()
             self.main.show()
-
             #CLose loading screen
             self.close()
         ##Increase COUNTER
