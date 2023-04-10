@@ -16,15 +16,33 @@ class OrderBUS:
 
     def addGroup(self, group):
         data = GroupDAO()
-
         #Kiểm tra tên có trùng không
         if self.isExist(group.getDisplay()):
             return False     
         # thêm vào CSDL
         data.add(group)
         #Thêm vào list
-        self.listCategory.append(group)
+        self.listGroup.append(group)
         return True
+    
+    def deleteGroup(self, group):
+        data = GroupDAO()
+        if not data.delete(group):
+            return False
+        for i in range(len(self.listGroup)):
+            if self.listGroup[i].getId() == group.getId():      
+                self.listGroup.pop(i)
+                break
+        return True
+    
+    def updateGroup(self, group):
+        data = GroupDAO()
+        for i in range(len(self.listGroup)):
+            if self.listGroup[i].getId() == group.getId():      
+                data.update(group)
+                self.listGroup[i] = group
+                return True
+        return False
     
     def isExist(self, display):
         for group in self.listGroup:
@@ -32,7 +50,7 @@ class OrderBUS:
                 return True
         return False
     
-    def findCategoriesByName(self, name):
+    def findGroupByName(self, name):
         listGroup = []
         for group in self.listGroup:
             if name in group.getDisplay():

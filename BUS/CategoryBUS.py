@@ -58,12 +58,12 @@ class CategoryBUS:
 
  ############################################################ 
 #  test #   
-test = CategoryBUS()
-test.readListCategory()
-for category in test.listCategory:
-    print(category.getDisplay())
-    print(category.getId())
-print("-----------------------------------")
+# test = CategoryBUS()
+# test.readListCategory()
+# for category in test.listCategory:
+#     print(category.getDisplay())
+#     print(category.getId())
+# print("-----------------------------------")
 # sửa
 # editCate = Category()
 # editCate.setId(9)
