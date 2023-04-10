@@ -105,7 +105,7 @@ class CategoryDAO:
     def delete(self, category):
         try:
             query = "DELETE FROM `category` WHERE id = {id}"\
-            .format(id=category.id)        
+            .format(id=category.getId())        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
