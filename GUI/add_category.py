@@ -50,8 +50,6 @@ class add_category_dialog(object):
         catebus=CategoryBUS()
         cate.setDisplay(self.lineEdit.text())
         catebus.addCategory(cate)
-        DAO = CategoryDAO()
-        DAO.con.reconnect()
         self.pushButton_2.click()
         
         
