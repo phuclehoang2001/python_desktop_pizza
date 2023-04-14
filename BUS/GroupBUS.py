@@ -20,7 +20,8 @@ class OrderBUS:
         if self.isExist(group.getDisplay()):
             return False     
         # thêm vào CSDL
-        data.add(group)
+        if not data.add(group):
+            return False
         #Thêm vào list
         self.listGroup.append(group)
         return True
@@ -37,9 +38,10 @@ class OrderBUS:
     
     def updateGroup(self, group):
         data = GroupDAO()
+        if not data.update(group):
+            return False
         for i in range(len(self.listGroup)):
-            if self.listGroup[i].getId() == group.getId():      
-                data.update(group)
+            if self.listGroup[i].getId() == group.getId():                 
                 self.listGroup[i] = group
                 return True
         return False
@@ -53,6 +55,6 @@ class OrderBUS:
     def findGroupByName(self, name):
         listGroup = []
         for group in self.listGroup:
-            if name in group.getDisplay():
+            if name.upper() in group.getDisplay().upper():
                 listGroup.append(group)    
         return listGroup

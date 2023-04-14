@@ -27,7 +27,7 @@ class Order:
     def getHandler(self):
         return self.handler
     
-    def setPermission(self, handler):
+    def setHandler(self, handler):
         self.handler = handler
 
     def getTotalPrice(self):
