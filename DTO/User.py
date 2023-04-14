@@ -1,6 +1,6 @@
 class User:
     username = ""
-    group_id = ""
+    groupId = ""
     password = ""
     fullname = ""
     birth = ""
@@ -9,7 +9,7 @@ class User:
     email = ""
 
     def getGroupId(self):
-        return self.group_id
+        return self.groupId
     def getFullname(self):
         return self.fullname
     def getAddress(self):
@@ -26,8 +26,8 @@ class User:
         return self.email
 
     
-    def setGroupId(self,group_id):
-        self.group_id = group_id
+    def setGroupId(self,groupId):
+        self.groupId = groupId
     def setFullname(self,fullname):
         self.fullname = fullname
     def setAddress(self,address):

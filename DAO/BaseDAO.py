@@ -51,7 +51,7 @@ class BaseDAO:
         return result
     
     #lấy tất cả 
-    def getAllbase(sBlf):
+    def getAllbase(self):
         result = []
         try:
             query = "SELECT * FROM `base`"

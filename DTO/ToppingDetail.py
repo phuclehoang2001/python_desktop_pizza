@@ -1,13 +1,13 @@
 class ToppingDetail:
-    pizza_id = ""
-    topping_id = ""
+    pizzaId = ""
+    toppingId = ""
     
     def getPizzaId(self):
-        return self.pizza_id
+        return self.pizzaId
     def getToppingId(self):
-        return self.topping_id
+        return self.toppingId
     
-    def setPizzaId(self,pizza_id):
-        self.pizza_id = pizza_id
-    def setToppingId(self,topping_id):
-        self.topping_id = topping_id  
+    def setPizzaId(self,pizzaId):
+        self.pizzaId = pizzaId
+    def setToppingId(self,toppingId):
+        self.toppingId = toppingId  

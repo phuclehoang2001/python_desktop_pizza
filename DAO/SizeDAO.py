@@ -56,7 +56,7 @@ class SizeDAO:
         size = Size()
         try:
             query = "SELECT * FROM `size` WHERE priority = {sizePriority}"\
-            .format(sizePriority=sizeId)
+            .format(sizePriority=sizePriority)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()

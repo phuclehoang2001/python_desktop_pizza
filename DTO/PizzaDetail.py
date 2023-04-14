@@ -1,8 +1,8 @@
 class PizzaDetail:
     id =""
-    pizza_id =""
-    size_id = ""
-    base_id = ""
+    pizzaId =""
+    sizeId = ""
+    baseId = ""
     price = ""
     quantity= ""
     def getId(self):
@@ -12,11 +12,11 @@ class PizzaDetail:
     def getPrice(self):
         return self.price
     def getPizzaId(self):
-        return self.pizza_id
+        return self.pizzaId
     def getSizeId(self):
-        return self.size_id
+        return self.sizeId
     def getBaseId(self):
-        return self.base_id
+        return self.baseId
     
     def setId(self,id):
         self.id = id
@@ -24,9 +24,9 @@ class PizzaDetail:
         self.price = price
     def setQuantity(self,quantity):
         self.quantity = quantity
-    def setPizzaId(self,pizza_id):
-        self.pizza_id=pizza_id
-    def setSizeId(self,size_id):
-        self.size_id = size_id
-    def setBaseId(self,base_id):
-        self.base_id = base_id
+    def setPizzaId(self,pizzaId):
+        self.pizzaId=pizzaId
+    def setSizeId(self,sizeId):
+        self.sizeId = sizeId
+    def setBaseId(self,baseId):
+        self.baseId = baseId

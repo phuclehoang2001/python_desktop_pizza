@@ -1,7 +1,7 @@
 class Pizza:
     id = ""
     display = ""
-    category_id = ""
+    categoryId = ""
     description = ""
     image = ""
     
@@ -10,7 +10,7 @@ class Pizza:
     def getDisplay(self):
         return self.display
     def getCategoryId(self):
-        return self.category_id
+        return self.categoryId
     def getDescription(self):
         return self.description
     def getImage(self):
@@ -18,8 +18,8 @@ class Pizza:
 
     def setDisplay(self, display):
         self.display = display
-    def setCategoryId(self, category_id):
-        self.category_id = category_id
+    def setCategoryId(self, categoryId):
+        self.categoryId = categoryId
     def setId(self,id):
         self.id = id
     def setDescription(self,description):
