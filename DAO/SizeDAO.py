@@ -26,8 +26,8 @@ class SizeDAO:
             self.result = self.cursor.fetchone()
             if self.result is not None:
                 size.setId(self.result[0]) 
-                size.setPriority(self.result[0])
                 size.setDisplay(self.result[1]) 
+                size.setPriority(self.result[2])
         except Error as error:
                 print(error)
         return size
@@ -45,8 +45,8 @@ class SizeDAO:
             for size in self.result:
                 sizeDTO = Size()
                 sizeDTO.setId(size[0])
-                sizeDTO.setPriority(size[0])
                 sizeDTO.setDisplay(size[1])
+                sizeDTO.setPriority(size[2])
                 result.append(sizeDTO)
         except Error as error:
                 print(error)
@@ -62,8 +62,8 @@ class SizeDAO:
             self.result = self.cursor.fetchone()
             if self.result is not None:
                 size.setId(self.result[0]) 
-                size.setPriority(self.result[0])
                 size.setDisplay(self.result[1]) 
+                size.setPriority(self.result[2])
         except Error as error:
                 print(error)
         return size
@@ -79,8 +79,8 @@ class SizeDAO:
             for size in self.result:         
                 sizeDTO = Size()
                 sizeDTO.setId(size[0])
-                sizeDTO.setPriority(size[0])
                 sizeDTO.setDisplay(size[1])
+                sizeDTO.setPriority(size[2])
                 result.append(sizeDTO)   
         except Error as error:
                 print(error)
@@ -90,7 +90,7 @@ class SizeDAO:
     def add(self, size):
         try:
             query = "INSERT INTO `size`(display) VALUES('{display}')"\
-            .format(display=size.getDisplay())        
+            .format(display=size.getDisplay())     
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
@@ -105,7 +105,7 @@ class SizeDAO:
             ## dấu\ để xuống dòng chuỗi, format để chèn giá trị vào chuỗi
             query = "UPDATE `size` SET display = '{display}' WHERE id = {id}"\
             .format(display=size.getDisplay(), id=size.getId())       
-            print(query) 
+            print(query)
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()

@@ -17,7 +17,8 @@ class CategoryBUS:
         if self.isExist(category.getDisplay()):
             return False     
         # thêm vào CSDL
-        data.add(category)
+        if not data.add(category):
+            return False
         #Thêm vào list
         self.listCategory.append(category)
         return True
@@ -34,9 +35,10 @@ class CategoryBUS:
     
     def updateCategory(self, category):
         data = CategoryDAO()
+        if not data.update(category):
+            return False
         for i in range(len(self.listCategory)):
-            if self.listCategory[i].getId() == category.getId():      
-                data.update(category)
+            if self.listCategory[i].getId() == category.getId():       
                 self.listCategory[i] = category
                 return True
         return False
@@ -50,7 +52,7 @@ class CategoryBUS:
     def findCategoriesByName(self, name):
         listCategory = []
         for category in self.listCategory:
-            if name in category.getDisplay():
+            if name.upper() in category.getDisplay().upper():
                 listCategory.append(category)    
         return listCategory
     

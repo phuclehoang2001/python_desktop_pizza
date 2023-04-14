@@ -1,4 +1,4 @@
-class Base:
+class GroupPermission:
     id = ""
     groupId = ""
     permission = ""

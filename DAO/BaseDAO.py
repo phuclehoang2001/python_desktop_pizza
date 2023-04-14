@@ -86,7 +86,6 @@ class BaseDAO:
             ## dấu\ để xuống dòng chuỗi, format để chèn giá trị vào chuỗi
             query = "UPDATE `base` SET display = '{display}' WHERE id = {id}"\
             .format(display=base.getDisplay(), id=base.getId())       
-            print(query) 
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
@@ -100,7 +99,6 @@ class BaseDAO:
         try:
             query = "DELETE FROM `base` WHERE id = {id}"\
             .format(id=base.getId())        
-            print(query)
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()

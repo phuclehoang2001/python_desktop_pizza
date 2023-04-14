@@ -3,6 +3,7 @@ import datetime
 
 sys.path.insert(0,".")
 from DAO import StatusDAO
+from DAO import OrderDAO
 from DTO import *
 
 class OrderBUS:
@@ -22,6 +23,12 @@ class OrderBUS:
         if(self.listStatusDetail is None):
             self.listStatusDetail = []
         self.listStatusDetail = data.getAllDetail()
+    
+    # def readListOrder(self):
+    #     data = OrderDAO()  
+    #     if(self.listStatusDetail is None):
+    #         self.listStatusDetail = []
+    #     self.listStatusDetail = data.getAllOrder()
     
     ## kiểm tra trạng thái hợp lệ của đơn hàng
     def check(self, orderId):
