@@ -6,6 +6,8 @@ from DAO import StatusDAO
 from DAO import OrderDAO
 from DTO import *
 
+## CLASS NÀY XỬ LÝ CHUNG CÁC LOGIC VỀ ĐƠN HÀNG (ORDER) VÀ TRẠNG THÁI ĐƠN HÀNG (STATUS)
+
 class OrderBUS:
     listOrder = []
     listStatus = []
@@ -24,46 +26,45 @@ class OrderBUS:
             self.listStatusDetail = []
         self.listStatusDetail = data.getAllDetail()
     
-    # def readListOrder(self):
-    #     data = OrderDAO()  
-    #     if(self.listStatusDetail is None):
-    #         self.listStatusDetail = []
-    #     self.listStatusDetail = data.getAllOrder()
+    def readListOrder(self):
+        data = OrderDAO()  
+        if(self.listOrder is None):
+            self.listOrder = []
+        self.listOrder = data.getAllOrder()
     
-    ## kiểm tra trạng thái hợp lệ của đơn hàng
+    ## kiểm tra trạng thái hợp lệ của đơn hàng, OUTPUT là 1 thông báo (message)
     def check(self, orderId):
-        result = None
+        message = None
         data = StatusDAO()
         detail = data.getLastStatusDetail(orderId)
         if detail.getStatusId() == 6:
-            result = "Đơn hàng đã hoàn thành"
-            return result
+            message = "Đơn hàng đã hoàn thành"
+            return message
         
         if detail.getStatusId() == 7:
-            result = "Đơn hàng đã bị hủy"
-            return result
+            message = "Đơn hàng đã bị hủy"
+            return message
         
         ## CHECK NGUYÊN LIỆU---------
-
-        result = "Đơn hàng đủ điều kiện xử lý"
+        message = "Đơn hàng đủ điều kiện xử lý"
     
 
-    ## xử lý đơn hàng
+    ## xử lý tiến độ đơn hàng
     def handleOrder(self, orderId):
         pass
         
 
-    ## hủy đơn
+    ## xử lý hủy đơn, OUTPUT là một kết quả thông báo (message)
     def cancelOrder(self, orderId):
-        result = None
+        message = None
         data = StatusDAO()
         detail = data.getLastStatusDetail(orderId)
         if detail.getStatusId() == 7:
-            result = "Đơn hàng đã bị hủy trước đó!"
-            return result
+            message = "Đơn hàng đã bị hủy trước đó!"
+            return message
         if detail.getStatusId() >= 2:
-            result = "Không thể hủy đơn hàng đã xử lý"
-            return result
+            message = "Không thể hủy đơn hàng đã xử lý"
+            return message
         
         cancelDetail = StatusDetail()
         # trang thai 7 = hủy đơn
@@ -72,10 +73,11 @@ class OrderBUS:
         cancelDetail.setTimeCreated(datetime.datetime.now())
         
         data.addStatusDetail(cancelDetail)
-        result = "Hủy đơn hàng thành công!"
-        return result
+        message = "Hủy đơn hàng thành công!"
+        return message
         
 
+    #Tìm đơn hàng theo orderId
     def findOrderById(self, orderId):
         listOrder = []
         for order in self.listOrder:
@@ -83,25 +85,35 @@ class OrderBUS:
                 listOrder.append(order)
         return listOrder
     
-    ## tìm theo ngày
-    def findOrderByDate(self, startDate, endDate):
+    ## tìm theo ngày bắt đầu và kết thúc
+    def findOrderByDate(self, startDay, endDay):
+        self.readListOrder()
+        statusService = StatusDAO()
+        result = []
+        for order in self.listOrder:
+            statusDetail = statusService.getFirstStatusDetail(order.getId())
+            orderTimeCreated = statusDetail.getTimeCreated()
+            if orderTimeCreated >= startDay and orderTimeCreated <= endDay:
+                result.append(order)
+        return result        
 
-        pass
-
+    #Lấy chi tiết trạng thái đầu tiên (statusId = 1: Chờ xác nhận)
     def getFirstStatusDetail(orderId):
         data = StatusDAO()
         detailFirst = data.getStatusDetailById(orderId,1)
         return detailFirst
      
+    #Lấy chi tiết trạng thái cuối cùng tùy theo orderId
     def getLastStatusDetail(orderId):
         data = StatusDAO()
         detailLast = data.getLastStatusDetail(orderId)
         return detailLast
-
+    #Lấy trạng thái cuối cùng tùy theo orderId
     def getLastStatus(orderId):
         data = StatusDAO()
         statusLast = data.getByOrderId(orderId)
         return statusLast
+    
     
 ################
 #test

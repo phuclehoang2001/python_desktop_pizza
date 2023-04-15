@@ -209,5 +209,4 @@ class OrderDAO:
                 print(error)
         return False
     
-    def getBySearch(startdate, enddate, sortBy, sortType):
-        pass
+    
