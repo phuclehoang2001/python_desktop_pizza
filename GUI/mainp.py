@@ -53,6 +53,11 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_38.clicked.connect(self.deleteBase)
         self.ui.pushButton_32.clicked.connect(self.deleteSize)
         self.ui.Groupacc_delete.clicked.connect(self.deleteGroupacc)
+        ##Fix
+        self.ui.pushButton_24.clicked.connect(self.update_category)
+        self.ui.GroupAcc_fix.clicked.connect(self.update_group)
+        self.ui.pushButton_30.clicked.connect(self.update_size)
+        self.ui.pushButton_36.clicked.connect(self.update_Base)
         ##reload Function
         self.ui.pushButton_22.clicked.connect(self.auto_get_value_category)
         self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
@@ -106,7 +111,48 @@ class mainwindow(QtWidgets.QMainWindow):
             print("ok")
             self.auto_get_value_group()
 
-    #############################################    
+    #############################################  
+    #Update
+    def update_group(self):
+        row=self.ui.tableWidget.currentRow()
+        id=self.ui.tableWidget.item(row,0).text()
+        display=self.ui.tableWidget.item(row,1).text()
+        grp=Group()
+        grp.setId(id)
+        grp.setDisplay(display)
+        grpBus=GroupBUS()
+        grpBus.updateGroup(grp)
+    def update_category(self):
+        row=self.ui.tableWidget_3.currentRow()
+        id=self.ui.tableWidget_3.item(row,0).text()
+        display=self.ui.tableWidget_3.item(row,1).text()
+        cate=Category()
+        cate.setId(id)
+        cate.setDisplay(display)
+        print(cate.getDisplay())
+        catebus=CategoryBUS()
+        catebus.updateCategory(cate)
+    def update_size(self):
+        row=self.ui.tableWidget_4.currentRow()
+        id=self.ui.tableWidget_4.item(row,0).text()
+        display=self.ui.tableWidget_4.item(row,1).text()
+        priority=self.ui.tableWidget_4.item(row,2).text()
+        sz=Size()
+        sz.setId(id)
+        sz.setDisplay(display)
+        sz.setPriority(priority)
+        szBus=SizeBUS()
+        szBus.updateSize(sz)
+    def update_Base(self):
+        row=self.ui.tableWidget_5.currentRow()
+        id=self.ui.tableWidget_5.item(row,0).text()
+        display=self.ui.tableWidget_5.item(row,1).text()
+        bse=Base()
+        bse.setId(id)
+        bse.setDisplay(display)
+        bsebl=BaseBUS()
+        bsebl.updateBase(bse)
+      
         #AutoGetValue#############################################
    
 

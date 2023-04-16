@@ -1,0 +1,3 @@
+Để sửa click dúp vào ô muốn sửa,Sửa xog ,bấm nút chỉnh sửa để hoàn tất sửa.Ko bấm nút = ko sửa 
+Để xóa chọn 1 ô hoặc hàng sau đó bấm xóa
+Để tìm bấm dữ liệu vào ô xog bấm tìm
