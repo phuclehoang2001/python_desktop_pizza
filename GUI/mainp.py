@@ -130,7 +130,7 @@ class mainwindow(QtWidgets.QMainWindow):
         find_str=self.ui.LineEdit_find_group.text()
         groupbus=GroupBUS()
         groupbus.readListGroup()
-        list=groupbus.findgroupByName(find_str)
+        list=groupbus.findGroupByName(find_str)
         self.ui.tableWidget.clearContents()
         count=0
         for group in list:

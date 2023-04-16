@@ -5,7 +5,7 @@ sys.path.insert(0,".")
 from DAO import GroupDAO
 from DTO import *
 
-class OrderBUS:
+class GroupBUS:
     listGroup = []
 
     def readListGroup(self):
