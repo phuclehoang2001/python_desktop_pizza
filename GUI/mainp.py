@@ -10,6 +10,7 @@ from BUS import*
 from DTO import *
 from DAO import CategoryDAO
 from add_category import add_category_dialog,QtWidgets
+from add_group import add_group_dia
 #Globals
 COUNTER=0
 #MAIN WINDOW
@@ -26,12 +27,16 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pizza_btn.clicked.connect(self.click_Pizza_btn)
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
+        self.auto_get_value_group()
+        self.ui.GroupAcc_info.clicked.connect(self.reload_group)
+        self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
+        self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
         ##Can nhac nut nay
         self.ui.pushButton_23.clicked.connect(self.open_add_category_btn)
         #find function//please reload before searching again
         self.ui.pushButton_21.clicked.connect(self.find_category_btn)
         ##Add_Value CategoryDialog
-        self.auto_get_value()
+        self.auto_get_value_category()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
         ##reload category
@@ -39,14 +44,18 @@ class mainwindow(QtWidgets.QMainWindow):
     ##RELOAD BUTTON_OLD BUTTON=info_Category
     def infobut(self):
         self.ui.tableWidget_3.clearContents()
-        self.auto_get_value()
+        self.auto_get_value_category()
+    def reload_group(self):
+        self.ui.tableWidget.clearContents()
+        self.auto_get_value_group()
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
         col=self.ui.tableWidget_3.currentColumn()
         id=self.ui.tableWidget_3.item(row,col).text()
         Catebus=CategoryBUS()
         #Catebus.Delete
-    def auto_get_value(self):
+        ##############################################
+    def auto_get_value_category(self):
         catebus= CategoryBUS()
         catebus.readListCategory()
         self.ui.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
@@ -63,6 +72,18 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget_3.setItem(count,1,displayITEM)
             count+=1
     ##############################################
+    def auto_get_value_group(self):
+        group_Bus= GroupBUS()
+        group_Bus.readListGroup()
+        self.ui.tableWidget.setRowCount(len(group_Bus.listGroup))
+        count=0
+        for group in group_Bus.listGroup:
+            idITEM=QtWidgets.QTableWidgetItem(str(group.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(group.getDisplay())
+            self.ui.tableWidget.setItem(count,0,idITEM)
+            self.ui.tableWidget.setItem(count,1,displayITEM)
+            count+=1
+             ##############################################
     def click_groupAccount_btn(self):
         self.ui.stackedWidget.setCurrentIndex(0)
     def click_Account_btn(self):
@@ -86,6 +107,12 @@ class mainwindow(QtWidgets.QMainWindow):
         ui.setupUi(Dialog)
         Dialog.show()
         Dialog.exec_()
+    def open_add_group_btn(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_group_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
     def find_category_btn(self):
         find_str=self.ui.LineEdit_find_category.text()
         catebus=CategoryBUS()
@@ -98,6 +125,19 @@ class mainwindow(QtWidgets.QMainWindow):
             displayITEM=QtWidgets.QTableWidgetItem(category.getDisplay())
             self.ui.tableWidget_3.setItem(count,0,idITEM)
             self.ui.tableWidget_3.setItem(count,1,displayITEM)
+            count+=1
+    def find_group_btn(self):
+        find_str=self.ui.LineEdit_find_group.text()
+        groupbus=GroupBUS()
+        groupbus.readListGroup()
+        list=groupbus.findgroupByName(find_str)
+        self.ui.tableWidget.clearContents()
+        count=0
+        for group in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(group.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(group.getDisplay())
+            self.ui.tableWidget.setItem(count,0,idITEM)
+            self.ui.tableWidget.setItem(count,1,displayITEM)
             count+=1
 
 

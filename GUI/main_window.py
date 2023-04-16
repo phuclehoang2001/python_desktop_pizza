@@ -342,8 +342,15 @@ class Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.GroupAccount)
         self.tableWidget.setGeometry(QtCore.QRect(20, 140, 841, 361))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setRowCount(2)
+        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget.setHorizontalHeaderLabels(["ID","DISPLAY"])
+        self.tableWidget.setColumnWidth(0,100)
+        self.tableWidget.setColumnWidth(1,740)
+        self.tableWidget.verticalHeader().setVisible(False)
+        self.tableWidget.setMaximumHeight(200)
+
         self.stackedWidget.addWidget(self.GroupAccount)
         self.Account = QtWidgets.QWidget()
         self.Account.setObjectName("Account")
@@ -864,6 +871,9 @@ class Ui_MainWindow(object):
         ##Line edit of find_category
         self.LineEdit_find_category=QtWidgets.QLineEdit(self.Category)
         self.LineEdit_find_category.setGeometry(500,60,100,20)
+        ##Line edit of find group
+        self.LineEdit_find_group=QtWidgets.QLineEdit(self.GroupAccount)
+        self.LineEdit_find_group.setGeometry(500,60,100,20)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
