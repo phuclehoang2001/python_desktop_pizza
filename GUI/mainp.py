@@ -11,6 +11,8 @@ from DTO import *
 from DAO import CategoryDAO
 from add_category import add_category_dialog,QtWidgets
 from add_group import add_group_dia
+from add_size import add_size_dia
+from add_base import add_base_dia
 #Globals
 COUNTER=0
 #MAIN WINDOW
@@ -27,51 +29,55 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pizza_btn.clicked.connect(self.click_Pizza_btn)
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
-        self.auto_get_value_group()
-        self.ui.GroupAcc_info.clicked.connect(self.reload_group)
-        self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
-        self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
-        ##Can nhac nut nay
+        
+        
+        
+        
+        ##Can nhac nut nay##Mở dialog add
         self.ui.pushButton_23.clicked.connect(self.open_add_category_btn)
-        #find function//please reload before searching again
+        self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
+        self.ui.pushButton_29.clicked.connect(self.open_add_size_dialog)
+        self.ui.pushButton_35.clicked.connect(self.open_add_base_dialog)
+        #find function//
         self.ui.pushButton_21.clicked.connect(self.find_category_btn)
-        ##Add_Value CategoryDialog
+        self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
+        self.ui.pushButton_27.clicked.connect(self.find_size_btn)
+        self.ui.pushButton_33.clicked.connect(self.find_base_btn)
+        ##Load_Value 
+        self.auto_get_value_group()
         self.auto_get_value_category()
+        self.auto_get_value_Size()
+        self.auto_get_value_Base()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
-        ##reload category
-        self.ui.pushButton_22.clicked.connect(self.infobut)
-    ##RELOAD BUTTON_OLD BUTTON=info_Category
-    def infobut(self):
-        self.ui.tableWidget_3.clearContents()
-        self.auto_get_value_category()
-    def reload_group(self):
-        self.ui.tableWidget.clearContents()
-        self.auto_get_value_group()
+        ##reload Function
+        self.ui.pushButton_22.clicked.connect(self.auto_get_value_category)
+        self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
+        self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
+        self.ui.pushButton_34.clicked.connect(self.auto_get_value_Base)
+    #Delete##########################
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
         col=self.ui.tableWidget_3.currentColumn()
         id=self.ui.tableWidget_3.item(row,col).text()
         Catebus=CategoryBUS()
         #Catebus.Delete
-        ##############################################
+    #############################################    
+        #AutoGetValue#############################################
     def auto_get_value_category(self):
+        self.ui.tableWidget_3.clearContents()
         catebus= CategoryBUS()
         catebus.readListCategory()
-        self.ui.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
         self.ui.tableWidget_3.setRowCount(len(catebus.listCategory))
         count=0
-        self.ui.tableWidget_3.setColumnWidth(0,100)
-        self.ui.tableWidget_3.setColumnWidth(1,740)
-        self.ui.tableWidget_3.verticalHeader().setVisible(False)
-        self.ui.tableWidget_3.setMaximumHeight(200)
+        
         for category in catebus.listCategory:
             idITEM=QtWidgets.QTableWidgetItem(str(category.getId()))
             displayITEM=QtWidgets.QTableWidgetItem(category.getDisplay())
             self.ui.tableWidget_3.setItem(count,0,idITEM)
             self.ui.tableWidget_3.setItem(count,1,displayITEM)
             count+=1
-    ##############################################
+   
     def auto_get_value_group(self):
         group_Bus= GroupBUS()
         group_Bus.readListGroup()
@@ -83,7 +89,35 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(count,0,idITEM)
             self.ui.tableWidget.setItem(count,1,displayITEM)
             count+=1
-             ##############################################
+   
+    def auto_get_value_Size(self):
+        self.ui.tableWidget_4.clearContents()
+        SizeBus=SizeBUS()
+        SizeBus.readListSize()
+        self.ui.tableWidget_4.setRowCount(len(SizeBus.listSize))
+        count=0
+        for sizeItem in SizeBus.listSize:
+            idITEM=QtWidgets.QTableWidgetItem(str(sizeItem.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(sizeItem.getDisplay())
+            sizeItem=QtWidgets.QTableWidgetItem(str(sizeItem.getPriority()))
+            self.ui.tableWidget_4.setItem(count,0,idITEM)
+            self.ui.tableWidget_4.setItem(count,1,displayITEM)
+            self.ui.tableWidget_4.setItem(count,2,sizeItem)
+            count+=1
+    def auto_get_value_Base(self):
+        self.ui.tableWidget_5.clearContents()
+        baseBl=BaseBUS()
+        baseBl.readListBase()
+        self.ui.tableWidget_5.setRowCount(len(baseBl.listBase))
+        count=0
+        for Items in baseBl.listBase:
+            idITEM=QtWidgets.QTableWidgetItem(str(Items.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(Items.getDisplay())
+            self.ui.tableWidget_5.setItem(count,0,idITEM)
+            self.ui.tableWidget_5.setItem(count,1,displayITEM)
+            count+=1
+
+    #####################################################
     def click_groupAccount_btn(self):
         self.ui.stackedWidget.setCurrentIndex(0)
     def click_Account_btn(self):
@@ -101,6 +135,7 @@ class mainwindow(QtWidgets.QMainWindow):
     def click_Stastical_btn(self):
         self.ui.stackedWidget.setCurrentIndex(7)
         ###Create add_cattegory_dialog
+        ########
     def open_add_category_btn(self):
         Dialog = QtWidgets.QDialog()
         ui = add_category_dialog()
@@ -113,6 +148,20 @@ class mainwindow(QtWidgets.QMainWindow):
         ui.setupUi(Dialog)
         Dialog.show()
         Dialog.exec_()
+    def open_add_size_dialog(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_size_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+    def open_add_base_dialog(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_base_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+
+        ###############################
     def find_category_btn(self):
         find_str=self.ui.LineEdit_find_category.text()
         catebus=CategoryBUS()
@@ -139,6 +188,35 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(count,0,idITEM)
             self.ui.tableWidget.setItem(count,1,displayITEM)
             count+=1
+    def find_size_btn(self):
+        find_str=self.ui.Line_edit_findSize.text()
+        sizebus=SizeBUS()
+        sizebus.readListSize()
+        list=sizebus.findSizesByName(find_str)
+        count=0
+        self.ui.tableWidget_4.clearContents()
+        for sizeItem in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(sizeItem.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(sizeItem.getDisplay())
+            sizeItem=QtWidgets.QTableWidgetItem(str(sizeItem.getPriority()))
+            self.ui.tableWidget_4.setItem(count,0,idITEM)
+            self.ui.tableWidget_4.setItem(count,1,displayITEM)
+            self.ui.tableWidget_4.setItem(count,2,sizeItem)
+            count+=1
+    def find_base_btn(self):
+        find_str=self.ui.Line_edit_findBase.text()
+        basebl=BaseBUS()
+        basebl.readListBase()
+        list=basebl.findBasesByName(find_str)
+        count=0
+        self.ui.tableWidget_5.clearContents()
+        for Items in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(Items.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(Items.getDisplay())
+            self.ui.tableWidget_5.setItem(count,0,idITEM)
+            self.ui.tableWidget_5.setItem(count,1,displayITEM)
+            count+=1
+    ####################
 
 
         
