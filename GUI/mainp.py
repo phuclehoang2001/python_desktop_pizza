@@ -50,6 +50,9 @@ class mainwindow(QtWidgets.QMainWindow):
         self.auto_get_value_Base()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
+        self.ui.pushButton_38.clicked.connect(self.deleteBase)
+        self.ui.pushButton_32.clicked.connect(self.deleteSize)
+        self.ui.Groupacc_delete.clicked.connect(self.deleteGroupacc)
         ##reload Function
         self.ui.pushButton_22.clicked.connect(self.auto_get_value_category)
         self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
@@ -60,10 +63,53 @@ class mainwindow(QtWidgets.QMainWindow):
         row=self.ui.tableWidget_3.currentRow()
         col=self.ui.tableWidget_3.currentColumn()
         id=self.ui.tableWidget_3.item(row,col).text()
+        cate=Category()
+        cate.setId(id)
         Catebus=CategoryBUS()
-        #Catebus.Delete
+        Catebus.readListCategory()
+        if Catebus.deleteCategory(cate):
+            print("ok")
+            self.auto_get_value_category()
+    def deleteBase(self):
+        row=self.ui.tableWidget_5.currentRow()
+        col=self.ui.tableWidget_5.currentColumn()
+        id=self.ui.tableWidget_5.item(row,col).text()
+        base=Base()
+        base.setId(id)
+        basebl=BaseBUS()
+        basebl.readListBase()
+        if basebl.deleteBase(base):
+            print("ok")
+            self.auto_get_value_Base()
+    def deleteSize(self):
+        row=self.ui.tableWidget_4.currentRow()
+        col=self.ui.tableWidget_4.currentColumn()
+        id=self.ui.tableWidget_4.item(row,col).text()
+        print(id)
+        size=Size()
+        size.setId(id)
+        sizebl=SizeBUS()
+        sizebl.readListSize()
+        if sizebl.deleteSize(size):
+            print("ok")
+            self.auto_get_value_Size()
+    def deleteGroupacc(self):
+        row=self.ui.tableWidget.currentRow()
+        col=self.ui.tableWidget.currentColumn()
+        id=self.ui.tableWidget.item(row,col).text()
+        print(id)
+        group=Group()
+        group.setId(id)
+        groupbl=GroupBUS()
+        groupbl.readListGroup()
+        if groupbl.deleteGroup(group):
+            print("ok")
+            self.auto_get_value_group()
+
     #############################################    
         #AutoGetValue#############################################
+   
+
     def auto_get_value_category(self):
         self.ui.tableWidget_3.clearContents()
         catebus= CategoryBUS()

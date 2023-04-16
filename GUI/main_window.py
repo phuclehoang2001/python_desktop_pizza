@@ -347,7 +347,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget.setHorizontalHeaderLabels(["ID","DISPLAY"])
-        self.tableWidget.verticalHeader().setVisible(False)
+        self.tableWidget.verticalHeader().setVisible(True)
         self.tableWidget.setMaximumHeight(200)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         ##
@@ -526,7 +526,7 @@ class Ui_MainWindow(object):
         self.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_3.setHorizontalHeaderLabels(["ID","DISPLAY"])
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_3.verticalHeader().setVisible(False)
+        self.tableWidget_3.verticalHeader().setVisible(True)
         self.tableWidget_3.setMaximumHeight(200)
         ##
         self.stackedWidget.addWidget(self.Category)
@@ -612,7 +612,7 @@ class Ui_MainWindow(object):
         self.tableWidget_4.setColumnCount(3)
         self.tableWidget_4.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_4.setHorizontalHeaderLabels(["ID","DISPLAY","Priority"])
-        self.tableWidget_4.verticalHeader().setVisible(False)
+        self.tableWidget_4.verticalHeader().setVisible(True)
         self.tableWidget_4.setMaximumHeight(130)
         self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
         ##
@@ -699,7 +699,7 @@ class Ui_MainWindow(object):
         self.tableWidget_5.setColumnCount(2)
         self.tableWidget_5.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_5.setHorizontalHeaderLabels(["ID","DISPLAY"])
-        self.tableWidget_5.verticalHeader().setVisible(False)
+        self.tableWidget_5.verticalHeader().setVisible(True)
         self.tableWidget_5.setMaximumHeight(200)
         self.tableWidget_5.horizontalHeader().setStretchLastSection(True)
         ##
