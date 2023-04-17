@@ -131,7 +131,7 @@ class OrderBUS:
     def findOrderById(self, orderId):
         listOrder = []
         for order in self.listOrder:
-            if orderId == order.getOrderId():
+            if orderId == order.getId():
                 listOrder.append(order)
         return listOrder
     

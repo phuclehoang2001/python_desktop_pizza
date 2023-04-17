@@ -909,6 +909,10 @@ class Ui_MainWindow(object):
         self.Line_edit_findBase=QtWidgets.QLineEdit(self.PizzaBase)
         self.Line_edit_findBase.setGeometry(500,60,100,20)
         self.Line_edit_findBase.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
+        ##Line edit of find Order
+        self.Line_edit_findOrder=QtWidgets.QLineEdit(self.Order)
+        self.Line_edit_findOrder.setGeometry(500,60,100,20)
+        self.Line_edit_findOrder.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(6)

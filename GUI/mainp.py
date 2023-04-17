@@ -44,6 +44,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
         self.ui.pushButton_27.clicked.connect(self.find_size_btn)
         self.ui.pushButton_33.clicked.connect(self.find_base_btn)
+        self.ui.pushButton_45.clicked.connect(self.find_order_btn)
         ##Load_Value 
         self.auto_get_value_group()
         self.auto_get_value_category()
@@ -65,6 +66,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
         self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
         self.ui.pushButton_34.clicked.connect(self.auto_get_value_Base)
+        self.ui.pushButton_46.clicked.connect(self.auto_get_order_value)
     #Delete##########################
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
@@ -345,6 +347,41 @@ class mainwindow(QtWidgets.QMainWindow):
             displayITEM=QtWidgets.QTableWidgetItem(Items.getDisplay())
             self.ui.tableWidget_5.setItem(count,0,idITEM)
             self.ui.tableWidget_5.setItem(count,1,displayITEM)
+            count+=1
+    def find_order_btn(self):
+        find_str=self.ui.Line_edit_findOrder.text()
+        Orderbl=OrderBUS()
+        Orderbl.readListOrder()
+        list=Orderbl.findOrderById(int(find_str))
+        print(len(list))
+        count=0
+        self.ui.tableWidget_7.clearContents()
+        for items in list:
+            orderId=QtWidgets.QTableWidgetItem(str(items.getId()))
+            status_display=QtWidgets.QTableWidgetItem()
+            if Orderbl.getLastStatusDetail(items.getId()).getStatusId()>6:
+                status_display.setBackground(QColor(255, 0, 0))
+            elif Orderbl.getLastStatusDetail(items.getId()).getStatusId()<6:
+                status_display.setBackground(QColor(255, 255, 127))
+            else:
+                status_display.setBackground(QColor(5, 255, 109))
+            status_display.setText(Orderbl.getLastStatus(items.getId()).getDisplay())
+            time_order=QtWidgets.QTableWidgetItem(str(Orderbl.getFirstStatusDetail(items.getId()).getTimeCreated()))
+            last_process=QtWidgets.QTableWidgetItem(str(Orderbl.getLastStatusDetail(items.getId()).getTimeCreated()))
+            customer=QtWidgets.QTableWidgetItem(items.getCustomer())
+            employee=QtWidgets.QTableWidgetItem(items.getHandler())
+            totalprice=QtWidgets.QTableWidgetItem(str(items.getTotalPrice()))
+            amount=QtWidgets.QTableWidgetItem(str(items.getQuantity()))
+
+
+            self.ui.tableWidget_7.setItem(count,0,orderId)
+            self.ui.tableWidget_7.setItem(count,1,status_display)
+            self.ui.tableWidget_7.setItem(count,2,time_order)
+            self.ui.tableWidget_7.setItem(count,3,last_process)
+            self.ui.tableWidget_7.setItem(count,4,customer)
+            self.ui.tableWidget_7.setItem(count,5,employee)
+            self.ui.tableWidget_7.setItem(count,6,totalprice)
+            self.ui.tableWidget_7.setItem(count,7,amount)
             count+=1
     ####################
 
