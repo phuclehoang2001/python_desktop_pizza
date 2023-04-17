@@ -19,7 +19,7 @@ class OrderDAO:
     def getById(self, orderId):
         order = Order()
         try:
-            query = "SELECT * FROM order WHERE id = "+ str(orderId)
+            query = "SELECT * FROM `order` WHERE id = "+ str(orderId)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
@@ -98,7 +98,7 @@ class OrderDAO:
     def getAllOrder(self):
         result = []
         try:
-            query = "SELECT * FROM order"
+            query = "SELECT * FROM `order`"
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()

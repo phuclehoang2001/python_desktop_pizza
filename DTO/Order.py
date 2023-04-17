@@ -73,7 +73,7 @@ class Order:
         self.orderType = orderType
 
     def getOrderTime(self):
-        return self.OrderTime
+        return self.orderTime
     
     def setOrderTime(self, orderTime):
         self.orderTime = orderTime

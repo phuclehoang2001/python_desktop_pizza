@@ -38,8 +38,7 @@ class SizeBUS:
             return False
         for i in range(len(self.listSize)):
             if self.listSize[i].getId() == size.getId():      
-                self.listSize[i] = size
-                
+                self.listSize[i] = size            
                 return True
         return False
     

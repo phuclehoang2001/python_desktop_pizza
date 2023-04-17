@@ -103,8 +103,8 @@ class SizeDAO:
     def update(self, size):
         try:
             ## dấu\ để xuống dòng chuỗi, format để chèn giá trị vào chuỗi
-            query = "UPDATE `size` SET display = '{display}' WHERE id = {id}"\
-            .format(display=size.getDisplay(), id=size.getId())       
+            query = "UPDATE `size` SET display = '{display}' , priority = '{priority}' WHERE id = {id}"\
+            .format(display=size.getDisplay(), priority=size.getPriority(), id=size.getId())       
             print(query)
             self.cursor = self.con.cursor()
             self.cursor.execute(query)

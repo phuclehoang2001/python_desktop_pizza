@@ -4,7 +4,6 @@ from DTO import *
 from DAO import *
 
   
-data = GroupDAO()
 # group = data.getById(5)
 # print(group.getId())
 # print(group.getDisplay())

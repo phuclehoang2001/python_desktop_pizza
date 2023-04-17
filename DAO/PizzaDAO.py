@@ -159,7 +159,7 @@ class PizzaDAO:
                 print(error)
         return detail
     
-    def UpdatePizzaDetail(self, pizzaDetail):
+    def updatePizzaDetail(self, pizzaDetail):
         try:
             query = "UPDATE `pizza_detail` SET pizza_id = '{pizzaId}', size_id = '{sizeId}', base_id = '{baseId}',\
             price = '{price}', quantity = '{quantity} WHERE' id = {id}"\
@@ -219,11 +219,24 @@ class PizzaDAO:
         except Error as error:
                 print(error)
         return False    
+    
+    def delete(self, pizza):
+        try:
+            self.deletePizzaDetail(pizza.getId())
+            query = "DELETE FROM `pizza` WHERE id = {id}"\
+            .format(id=pizza.getId())        
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True
+        except Error as error:
+                print(error)
+        return False  
         
 
-    def Search(self, pizza):
+    def search(self, display):
         listPizza = self.getAllPizza()
-        display = pizza.getDisplay()
         if display is not None:
            newlist = []
            for pizza in listPizza:

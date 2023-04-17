@@ -43,6 +43,7 @@ class StatusDAO:
                 detail.setTimeCreated(self.result[2]) 
             else:
                  detail = None
+            self.sqlConnect.close()
         except Error as error:
                 print(error)
         return detail
@@ -51,7 +52,7 @@ class StatusDAO:
     def getAllStatus(self):
         result = []
         try:
-            query = "SELECT * FROM status"
+            query = "SELECT * FROM status ORDER BY id ASC"
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
@@ -71,8 +72,7 @@ class StatusDAO:
         try:
             for i in range(1,length+1):
                 detail = self.getStatusDetailById(orderId,i)
-                if detail is not None:
-                    result.append(detail)
+                result.append(detail)
         except Error as error:
                 print(error)
         return result
@@ -154,15 +154,18 @@ class StatusDAO:
     def getLastStatusDetail(self, orderId):
         detailDTO = StatusDetail()
         try:
-            query = "SELECT * FROM `status_detail` WHERE order_id = {orderId} ORDER BY status_id DESC"\
+            query = "SELECT * FROM `status_detail` WHERE order_id = {orderId} ORDER BY status_id DESC LIMIT 1"\
             .format(orderId=orderId)  
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
-            self.result = self.cursor.fetchone() ## lấy kết quả đầu tiên trong danh sách
-            self.cursor.next()
-            detailDTO.setOrderId(self.result[0]) 
-            detailDTO.setStatusId(self.result[1]) 
-            detailDTO.setTimeCreated(self.result[2]) 
+            self.result = self.cursor.fetchone() 
+            if self.result is not None:
+                detailDTO.setOrderId(self.result[0]) 
+                detailDTO.setStatusId(self.result[1]) 
+                detailDTO.setTimeCreated(self.result[2]) 
+            else:
+                detailDTO = None
+            self.sqlConnect.close()
         except Error as error:
                 print(error)
         return detailDTO
@@ -171,17 +174,18 @@ class StatusDAO:
     def getFirstStatusDetail(self, orderId):
         detailDTO = StatusDetail()
         try:
-            query = "SELECT * FROM `status_detail` WHERE order_id = {orderId} ORDER BY status_id ASC"\
+            query = "SELECT * FROM `status_detail` WHERE order_id = {orderId} ORDER BY status_id ASC LIMIT 1"\
             .format(orderId=orderId)  
-
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
-            self.cursor.next()
-            self.result = self.cursor.fetchone() ## lấy kết quả đầu tiên trong danh sách
-            
-            detailDTO.setOrderId(self.result[0]) 
-            detailDTO.setStatusId(self.result[1]) 
-            detailDTO.setTimeCreated(self.result[2]) 
+            self.result = self.cursor.fetchone()  
+            if self.result is not None:
+                detailDTO.setOrderId(self.result[0]) 
+                detailDTO.setStatusId(self.result[1]) 
+                detailDTO.setTimeCreated(self.result[2]) 
+            else:
+                detailDTO = None
+            self.sqlConnect.close()
         except Error as error:
                 print(error)
         return detailDTO
@@ -199,6 +203,7 @@ class StatusDAO:
             if self.result is not None:     
                 statusDTO.setId(self.result[0]) 
                 statusDTO.setDisplay(self.result[1]) 
+            self.sqlConnect.close()
         except Error as error:
                 print(error)
         return statusDTO

@@ -4,6 +4,9 @@ import datetime
 sys.path.insert(0,".")
 from DAO import StatusDAO
 from DAO import OrderDAO
+from DAO import PizzaDAO
+from DAO import SizeDAO
+from DAO import BaseDAO
 from DTO import *
 
 ## CLASS NÀY XỬ LÝ CHUNG CÁC LOGIC VỀ ĐƠN HÀNG (ORDER) VÀ TRẠNG THÁI ĐƠN HÀNG (STATUS)
@@ -13,7 +16,7 @@ class OrderBUS:
     listStatus = []
     listStatusDetail = []   
 
-
+    
     def readListStatus(self):
         data = StatusDAO()
         if(self.listStatus is None):
@@ -35,23 +38,70 @@ class OrderBUS:
     ## kiểm tra trạng thái hợp lệ của đơn hàng, OUTPUT là 1 thông báo (message)
     def check(self, orderId):
         message = None
-        data = StatusDAO()
-        detail = data.getLastStatusDetail(orderId)
-        if detail.getStatusId() == 6:
+        dataStatus = StatusDAO()
+        dataOrder = OrderDAO()
+        dataPizza = PizzaDAO()
+        endStatusDetail = dataStatus.getLastStatusDetail(orderId)
+        if endStatusDetail.getStatusId() == 6:
             message = "Đơn hàng đã hoàn thành"
             return message
         
-        if detail.getStatusId() == 7:
+        if endStatusDetail.getStatusId() == 7:
             message = "Đơn hàng đã bị hủy"
             return message
         
         ## CHECK NGUYÊN LIỆU---------
+        listOrderDetail = dataOrder.getListOrderDetail(orderId)
+        for orderDetail in listOrderDetail:
+            pizzaDetail = dataPizza.getByPizzaDetailId(orderDetail.getPizzaDetailId())
+            if pizzaDetail.getQuantity() - OrderDetail.getQuantity() < 0: 
+                    message = "Đơn hàng không đủ nguyên liệu làm bánh!"
+                    return message
+        
         message = "Đơn hàng đủ điều kiện xử lý"
-    
+        return message
 
     ## xử lý tiến độ đơn hàng
     def handleOrder(self, orderId):
-        pass
+        message = None
+        dataStatus = StatusDAO()
+        dataOrder = OrderDAO()
+        dataPizza = PizzaDAO()
+        endStatusDetail = dataStatus.getLastStatusDetail(orderId)
+        if endStatusDetail.getStatusId() == 6:
+            message = "Đơn hàng đã hoàn thành"
+            return message
+        
+        if endStatusDetail.getStatusId() == 7:
+            message = "Đơn hàng đã bị hủy"
+            return message
+        
+        listOrderDetail = dataOrder.getListOrderDetail(orderId)
+        for orderDetail in listOrderDetail:
+            pizzaDetail = dataPizza.getByPizzaDetailId(orderDetail.getPizzaDetailId())
+            if pizzaDetail.getQuantity() - OrderDetail.getQuantity() < 0: 
+                    message = "Đơn hàng không đủ nguyên liệu làm bánh!"
+                    return message
+            
+        nextStatusId = endStatusDetail.getStatusId() + 1
+        for orderDetail in listOrderDetail:
+            pizzaDetail = dataPizza.getByPizzaDetailId(orderDetail.getPizzaDetailId())
+            quantity = orderDetail.getQuantity()
+            currentQuantity = pizzaDetail.getQuantity()
+            pizzaDetail.setQuantity(currentQuantity - quantity)
+            dataPizza.updatePizzaDetail(pizzaDetail)
+
+        order = dataOrder.getById(orderId)
+        order.setHandler("admin")
+        dataOrder.update(order)
+
+        newStatusDetail = StatusDetail()
+        newStatusDetail.setStatusId(nextStatusId)
+        newStatusDetail.setStatusId(orderId)
+        newStatusDetail.setTimeCreated(datetime.datetime.now())
+        dataStatus.addStatusDetail(newStatusDetail)
+        message = "Xử lý đơn hàng thành công!"
+        return message
         
 
     ## xử lý hủy đơn, OUTPUT là một kết quả thông báo (message)
@@ -98,85 +148,104 @@ class OrderBUS:
         return result        
 
     #Lấy chi tiết trạng thái đầu tiên (statusId = 1: Chờ xác nhận)
-    def getFirstStatusDetail(orderId):
+    def getFirstStatusDetail(self,orderId):
         data = StatusDAO()
         detailFirst = data.getStatusDetailById(orderId,1)
         return detailFirst
      
     #Lấy chi tiết trạng thái cuối cùng tùy theo orderId
-    def getLastStatusDetail(orderId):
+    def getLastStatusDetail(self,orderId):
         data = StatusDAO()
         detailLast = data.getLastStatusDetail(orderId)
         return detailLast
+    
     #Lấy trạng thái cuối cùng tùy theo orderId
-    def getLastStatus(orderId):
+    def getLastStatus(self,orderId):
         data = StatusDAO()
         statusLast = data.getByOrderId(orderId)
         return statusLast
     
-    
-################
-#test
+    # hàm lấy tất cả đơn hàng và các thông tin của từng đơn hàng
+    def showAllOrder(self):
+        data = StatusDAO()
+        self.readListOrder()
+        result = []
+        for order in self.listOrder:
+            order_dict = {}
+            order_dict["OrderId"] = order.getId()
+            
+            handler = order.getHandler() if order.getHandler() is not None else "Chưa xử lý"
+            endStatusDetail =  self.getLastStatusDetail(order.getId()).getTimeCreated()\
+                if self.getLastStatusDetail(order.getId()).getStatusId() != 1 else "Chưa xử lý"
+            order_dict["StartStatusDetail"] = self.getFirstStatusDetail(order.getId())
+            order_dict["EndStatusDetail"] = endStatusDetail
+            order_dict["EndStatus"] = self.getLastStatus(order.getId())
+            order_dict["CustomerUsername"] = order.getCustomer()
+            order_dict["HandlerUsername"] = handler
+            order_dict["TotalPrice"] = order.getTotalPrice()
+            order_dict["Quantity"] = order.getQuantity()
+            result.append(order_dict)
+        return result
+    # hàm lấy thông tin chi tiet đơn hàng
+    # input là mã đơn hàng, output là một dictionary
+    def getInfoOrder(self, orderId):
+        infoOrder = {}
+        dataStatus = StatusDAO()
+        dataOrder = OrderDAO()
+        dataPizza = PizzaDAO()
+        dataSize = SizeDAO()
+        dataBase = BaseDAO()
 
-# test = StatusDAO()
-# list_status = test.getAllStatus()
-# for status in list_status:
-#      print(status.getId())
-#      print(status.getDisplay())
+        order = dataOrder.getById(orderId)
+        listStatusDetail = dataStatus.getListStatusDetail(orderId,7)
+        listOrderDetail = dataOrder.getListOrderDetail(orderId)
+        listStatus = dataStatus.getAllStatus()
 
-# ##
-# list_detail = test.getAllDetail()
-# for detail in list_detail:
-#      print(detail.getOrderId())
-#      print(detail.getStatusId())
-#      print(detail.getTimeCreated())
-# ##
-# status = Status()
-# status.setId(6)
-# if test.delete(status):
-#     print("xóa thành công")
-# else:
-#     print("xóa thất bại")
+        infoOrder = {}
+        orderDetails = []
+        
+        total = 0
+        for orderDetail in listOrderDetail:  
+            pizzaDetail = dataPizza.getByPizzaDetailId(orderDetail.getPizzaDetailId())
+            amount = orderDetail.getPrice() * orderDetail.getQuantity()
+            total+=amount
+            orderDetail_dict = {}
+            orderDetail_dict["DisplayPizza"] = dataPizza.getById(pizzaDetail.getPizzaId()).getDisplay()
+            orderDetail_dict["DisplaySize"] = dataSize.getById(pizzaDetail.getSizeId()).getDisplay()
+            orderDetail_dict["DisplayBase"] = dataBase.getById(pizzaDetail.getBaseId()).getDisplay()
+            orderDetail_dict["Price"] = orderDetail.getPrice()
+            orderDetail_dict["Quantity"] = orderDetail.getQuantity()
+            orderDetail_dict["Amount"] = amount
+            orderDetails.append(orderDetail_dict)
 
-##
-# detail = test.getStatusDetailById(4,1)
-# print(detail.getTimeCreated())
-# ##
-# status_findByID = test.getById(1)
-# print(status_findByID.getDisplay())
-##
-# new_detail = StatusDetail()
-# new_detail.setOrderId(3)
-# new_detail.setStatusId(1)
-# new_detail.setTimeCreated(datetime.datetime.now())
+        displayPayment = ""
+        if order.getPaymentType() == 0:
+            displayPayment = "Tiền mặt"
+        elif order.getPaymentType() == 1:
+            displayPayment = "ATM"
+        elif order.getPaymentType() == 2:
+            displayPayment = "Momo"
+        elif order.getPaymentType() == 3:
+            displayPayment = "ShoppePay"
+        elif order.getPaymentType() == 4:
+            displayPayment = "ZaloPay"
+
+        displayTime = ""
+        if order.getOrderType() == 0:
+            displayTime = "Giao hàng ngay"
+        else:
+            displayTime = "Giao vào lúc " +str(order.getOrderTime())
+
+        infoOrder["FullName"] = order.getFullname()
+        infoOrder["Address"] = order.getAddress()
+        infoOrder["Phone"] = order.getPhone()
+        infoOrder["DisplayPayment"] = displayPayment
+        infoOrder["DisplayTime"] = displayTime
+        infoOrder["Note"] = order.getNote()
+        infoOrder["Total"] = total
+        infoOrder["ListStatusDetail"] = listStatusDetail
+        infoOrder["ListStatus"] = listStatus
+        infoOrder["OrderDetails"] = orderDetails
+        return infoOrder
 
 
-# if test.addStatusDetail(new_detail):
-#     print("thêm trạng thái mới thành công")
-# else:
-#     print("thêm trạng thái mới thất bại")
-
-## lay chi tiet trang thai nho nhat, input la ma don hang
-# firstDetail = test.getFirstStatusDetail(3)
-# print(firstDetail.getOrderId())
-# print(firstDetail.getStatusId())
-# print(firstDetail.getTimeCreated())
-
-
-##  lay chi tiet trang thai lon nhat, input la ma don hang
-# lastDetail = test.getLastStatusDetail(3)
-# print(lastDetail.getOrderId())
-# print(lastDetail.getStatusId())
-# print(lastDetail.getTimeCreated())
-
-## lay trang thai lon nhat, input la ma don hang
-# status = test.getByOrderId(6)
-# print(status.getId())
-# print(status.getDisplay())
-
-# get list by length
-# newlist = test.getListStatusDetail(2,7)
-# for detail in newlist:
-#     print(detail.getOrderId())
-#     print(detail.getStatusId())
-#     print(detail.getTimeCreated())

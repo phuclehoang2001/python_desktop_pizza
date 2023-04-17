@@ -1,4 +1,4 @@
-class OderDetail:
+class OrderDetail:
     id =""
     orderId= ""
     pizzaDetailId= ""
@@ -18,7 +18,7 @@ class OderDetail:
     
     def setId(self,id):
         self.id = id
-    def setOderId(self,orderId):
+    def setOrderId(self,orderId):
         self.oder_id = orderId
     def setPizzaDetailId(self,pizzaDetailId):
         self.pizzaDetailId = pizzaDetailId
