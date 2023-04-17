@@ -1,5 +1,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor
 from load_screen import Ui_LoadScreen
 import sys
 import time
@@ -48,6 +49,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.auto_get_value_category()
         self.auto_get_value_Size()
         self.auto_get_value_Base()
+        self.auto_get_order_value()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
         self.ui.pushButton_38.clicked.connect(self.deleteBase)
@@ -208,6 +210,42 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget_5.setItem(count,0,idITEM)
             self.ui.tableWidget_5.setItem(count,1,displayITEM)
             count+=1
+    def auto_get_order_value(self):
+        self.ui.tableWidget_7.clearContents()
+        Orderbl=OrderBUS()
+        Orderbl.readListOrder()
+        list=Orderbl.showAllOrder()
+        self.ui.tableWidget_7.setRowCount(len(Orderbl.listOrder))
+        count=0
+        for order in list:
+            orderId=QtWidgets.QTableWidgetItem(str(order["OrderId"]))
+            status_display=QtWidgets.QTableWidgetItem()
+            
+            if(order["EndStatus"].getId()>6):
+                status_display.setBackground(QColor(255, 52, 52))
+            elif(order["EndStatus"].getId()<6):
+                status_display.setBackground(QColor(255, 255, 127))
+            else:
+                status_display.setBackground(QColor(5, 255, 109))
+            status_display.setText(str(order["EndStatus"].getDisplay()))
+            time_order=QtWidgets.QTableWidgetItem(str(order["StartStatusDetail"].getTimeCreated()))
+            last_process=QtWidgets.QTableWidgetItem(str(order["EndStatusDetail"]))
+            customer=QtWidgets.QTableWidgetItem(order["CustomerUsername"])
+            employee=QtWidgets.QTableWidgetItem(order["HandlerUsername"])
+            totalprice=QtWidgets.QTableWidgetItem(str(order["TotalPrice"]))
+            amount=QtWidgets.QTableWidgetItem(str(order["Quantity"]))
+
+            self.ui.tableWidget_7.setItem(count,0,orderId)
+            self.ui.tableWidget_7.setItem(count,1,status_display)
+            self.ui.tableWidget_7.setItem(count,2,time_order)
+            self.ui.tableWidget_7.setItem(count,3,last_process)
+            self.ui.tableWidget_7.setItem(count,4,customer)
+            self.ui.tableWidget_7.setItem(count,5,employee)
+            self.ui.tableWidget_7.setItem(count,6,totalprice)
+            self.ui.tableWidget_7.setItem(count,7,amount)
+            count+=1
+       
+
 
     #####################################################
     def click_groupAccount_btn(self):

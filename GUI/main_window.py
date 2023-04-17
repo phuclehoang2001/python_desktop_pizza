@@ -613,7 +613,7 @@ class Ui_MainWindow(object):
         self.tableWidget_4.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_4.setHorizontalHeaderLabels(["ID","DISPLAY","Priority"])
         self.tableWidget_4.verticalHeader().setVisible(False)
-        self.tableWidget_4.setMaximumHeight(130)
+        self.tableWidget_4.setMaximumHeight(150)
         self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
         ##
         self.stackedWidget.addWidget(self.Size)
@@ -876,8 +876,15 @@ class Ui_MainWindow(object):
         self.tableWidget_7 = QtWidgets.QTableWidget(self.Order)
         self.tableWidget_7.setGeometry(QtCore.QRect(30, 140, 841, 361))
         self.tableWidget_7.setObjectName("tableWidget_7")
-        self.tableWidget_7.setColumnCount(0)
+
         self.tableWidget_7.setRowCount(0)
+        self.tableWidget_7.setColumnCount(8)
+        self.tableWidget_7.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget_7.setHorizontalHeaderLabels(["ID","Trạng thái","Thời gian đặt","Thời gian xử lý cuối","Người mua","Người xử lý","Tổng giá","Số lượng"])
+        self.tableWidget_7.verticalHeader().setVisible(False)
+        self.tableWidget_7.setMaximumHeight(200)
+        self.tableWidget_7.horizontalHeader().setStretchLastSection(True)
+
         self.stackedWidget.addWidget(self.Order)
         self.Statistical = QtWidgets.QWidget()
         self.Statistical.setObjectName("Statistical")
@@ -904,7 +911,7 @@ class Ui_MainWindow(object):
         self.Line_edit_findBase.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(6)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
