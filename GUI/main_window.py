@@ -342,8 +342,15 @@ class Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.GroupAccount)
         self.tableWidget.setGeometry(QtCore.QRect(20, 140, 841, 361))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
+        ##
         self.tableWidget.setRowCount(0)
+        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget.setHorizontalHeaderLabels(["ID","DISPLAY"])
+        self.tableWidget.verticalHeader().setVisible(True)
+        self.tableWidget.setMaximumHeight(200)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        ##
         self.stackedWidget.addWidget(self.GroupAccount)
         self.Account = QtWidgets.QWidget()
         self.Account.setObjectName("Account")
@@ -513,11 +520,15 @@ class Ui_MainWindow(object):
         self.tableWidget_3 = QtWidgets.QTableWidget(self.Category)
         self.tableWidget_3.setGeometry(QtCore.QRect(30, 140, 841, 361))
         self.tableWidget_3.setObjectName("tableWidget_3")
-        self.tableWidget_3.setRowCount(2)
+        ##
+        self.tableWidget_3.setRowCount(0)
         self.tableWidget_3.setColumnCount(2)
         self.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_3.setHorizontalHeaderLabels(["ID","DISPLAY"])
-        self.tableWidget_3.setRowCount(0)
+        self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_3.verticalHeader().setVisible(True)
+        self.tableWidget_3.setMaximumHeight(200)
+        ##
         self.stackedWidget.addWidget(self.Category)
         self.Size = QtWidgets.QWidget()
         self.Size.setObjectName("Size")
@@ -596,8 +607,15 @@ class Ui_MainWindow(object):
         self.tableWidget_4 = QtWidgets.QTableWidget(self.Size)
         self.tableWidget_4.setGeometry(QtCore.QRect(30, 140, 841, 361))
         self.tableWidget_4.setObjectName("tableWidget_4")
-        self.tableWidget_4.setColumnCount(0)
+        ##
         self.tableWidget_4.setRowCount(0)
+        self.tableWidget_4.setColumnCount(3)
+        self.tableWidget_4.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget_4.setHorizontalHeaderLabels(["ID","DISPLAY","Priority"])
+        self.tableWidget_4.verticalHeader().setVisible(True)
+        self.tableWidget_4.setMaximumHeight(130)
+        self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
+        ##
         self.stackedWidget.addWidget(self.Size)
         self.PizzaBase = QtWidgets.QWidget()
         self.PizzaBase.setObjectName("PizzaBase")
@@ -676,8 +694,15 @@ class Ui_MainWindow(object):
         self.tableWidget_5 = QtWidgets.QTableWidget(self.PizzaBase)
         self.tableWidget_5.setGeometry(QtCore.QRect(30, 140, 841, 361))
         self.tableWidget_5.setObjectName("tableWidget_5")
-        self.tableWidget_5.setColumnCount(0)
+        ##
         self.tableWidget_5.setRowCount(0)
+        self.tableWidget_5.setColumnCount(2)
+        self.tableWidget_5.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget_5.setHorizontalHeaderLabels(["ID","DISPLAY"])
+        self.tableWidget_5.verticalHeader().setVisible(True)
+        self.tableWidget_5.setMaximumHeight(200)
+        self.tableWidget_5.horizontalHeader().setStretchLastSection(True)
+        ##
         self.stackedWidget.addWidget(self.PizzaBase)
         self.Pizza = QtWidgets.QWidget()
         self.Pizza.setObjectName("Pizza")
@@ -864,6 +889,15 @@ class Ui_MainWindow(object):
         ##Line edit of find_category
         self.LineEdit_find_category=QtWidgets.QLineEdit(self.Category)
         self.LineEdit_find_category.setGeometry(500,60,100,20)
+        ##Line edit of find group
+        self.LineEdit_find_group=QtWidgets.QLineEdit(self.GroupAccount)
+        self.LineEdit_find_group.setGeometry(500,60,100,20)
+        ##Line edit of find Size
+        self.Line_edit_findSize=QtWidgets.QLineEdit(self.Size)
+        self.Line_edit_findSize.setGeometry(500,60,100,20)
+        ##Line edit of find BASE
+        self.Line_edit_findBase=QtWidgets.QLineEdit(self.PizzaBase)
+        self.Line_edit_findBase.setGeometry(500,60,100,20)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)

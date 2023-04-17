@@ -10,6 +10,9 @@ from BUS import*
 from DTO import *
 from DAO import CategoryDAO
 from add_category import add_category_dialog,QtWidgets
+from add_group import add_group_dia
+from add_size import add_size_dia
+from add_base import add_base_dia
 #Globals
 COUNTER=0
 #MAIN WINDOW
@@ -26,43 +29,187 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pizza_btn.clicked.connect(self.click_Pizza_btn)
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
-        ##Can nhac nut nay
+        
+        
+        
+        
+        ##Can nhac nut nay##Mở dialog add
         self.ui.pushButton_23.clicked.connect(self.open_add_category_btn)
-        #find function//please reload before searching again
+        self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
+        self.ui.pushButton_29.clicked.connect(self.open_add_size_dialog)
+        self.ui.pushButton_35.clicked.connect(self.open_add_base_dialog)
+        #find function//
         self.ui.pushButton_21.clicked.connect(self.find_category_btn)
-        ##Add_Value CategoryDialog
-        self.auto_get_value()
+        self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
+        self.ui.pushButton_27.clicked.connect(self.find_size_btn)
+        self.ui.pushButton_33.clicked.connect(self.find_base_btn)
+        ##Load_Value 
+        self.auto_get_value_group()
+        self.auto_get_value_category()
+        self.auto_get_value_Size()
+        self.auto_get_value_Base()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
-        ##reload category
-        self.ui.pushButton_22.clicked.connect(self.infobut)
-    ##RELOAD BUTTON_OLD BUTTON=info_Category
-    def infobut(self):
-        self.ui.tableWidget_3.clearContents()
-        self.auto_get_value()
+        self.ui.pushButton_38.clicked.connect(self.deleteBase)
+        self.ui.pushButton_32.clicked.connect(self.deleteSize)
+        self.ui.Groupacc_delete.clicked.connect(self.deleteGroupacc)
+        ##Fix
+        self.ui.pushButton_24.clicked.connect(self.update_category)
+        self.ui.GroupAcc_fix.clicked.connect(self.update_group)
+        self.ui.pushButton_30.clicked.connect(self.update_size)
+        self.ui.pushButton_36.clicked.connect(self.update_Base)
+        ##reload Function
+        self.ui.pushButton_22.clicked.connect(self.auto_get_value_category)
+        self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
+        self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
+        self.ui.pushButton_34.clicked.connect(self.auto_get_value_Base)
+    #Delete##########################
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
         col=self.ui.tableWidget_3.currentColumn()
         id=self.ui.tableWidget_3.item(row,col).text()
+        cate=Category()
+        cate.setId(id)
         Catebus=CategoryBUS()
-        #Catebus.Delete
-    def auto_get_value(self):
+        Catebus.readListCategory()
+        if Catebus.deleteCategory(cate):
+            print("ok")
+            self.auto_get_value_category()
+    def deleteBase(self):
+        row=self.ui.tableWidget_5.currentRow()
+        col=self.ui.tableWidget_5.currentColumn()
+        id=self.ui.tableWidget_5.item(row,col).text()
+        base=Base()
+        base.setId(id)
+        basebl=BaseBUS()
+        basebl.readListBase()
+        if basebl.deleteBase(base):
+            print("ok")
+            self.auto_get_value_Base()
+    def deleteSize(self):
+        row=self.ui.tableWidget_4.currentRow()
+        col=self.ui.tableWidget_4.currentColumn()
+        id=self.ui.tableWidget_4.item(row,col).text()
+        print(id)
+        size=Size()
+        size.setId(id)
+        sizebl=SizeBUS()
+        sizebl.readListSize()
+        if sizebl.deleteSize(size):
+            print("ok")
+            self.auto_get_value_Size()
+    def deleteGroupacc(self):
+        row=self.ui.tableWidget.currentRow()
+        col=self.ui.tableWidget.currentColumn()
+        id=self.ui.tableWidget.item(row,col).text()
+        print(id)
+        group=Group()
+        group.setId(id)
+        groupbl=GroupBUS()
+        groupbl.readListGroup()
+        if groupbl.deleteGroup(group):
+            print("ok")
+            self.auto_get_value_group()
+
+    #############################################  
+    #Update
+    def update_group(self):
+        row=self.ui.tableWidget.currentRow()
+        id=self.ui.tableWidget.item(row,0).text()
+        display=self.ui.tableWidget.item(row,1).text()
+        grp=Group()
+        grp.setId(id)
+        grp.setDisplay(display)
+        grpBus=GroupBUS()
+        grpBus.updateGroup(grp)
+    def update_category(self):
+        row=self.ui.tableWidget_3.currentRow()
+        id=self.ui.tableWidget_3.item(row,0).text()
+        display=self.ui.tableWidget_3.item(row,1).text()
+        cate=Category()
+        cate.setId(id)
+        cate.setDisplay(display)
+        print(cate.getDisplay())
+        catebus=CategoryBUS()
+        catebus.updateCategory(cate)
+    def update_size(self):
+        row=self.ui.tableWidget_4.currentRow()
+        id=self.ui.tableWidget_4.item(row,0).text()
+        display=self.ui.tableWidget_4.item(row,1).text()
+        priority=self.ui.tableWidget_4.item(row,2).text()
+        sz=Size()
+        sz.setId(id)
+        sz.setDisplay(display)
+        sz.setPriority(priority)
+        szBus=SizeBUS()
+        szBus.updateSize(sz)
+    def update_Base(self):
+        row=self.ui.tableWidget_5.currentRow()
+        id=self.ui.tableWidget_5.item(row,0).text()
+        display=self.ui.tableWidget_5.item(row,1).text()
+        bse=Base()
+        bse.setId(id)
+        bse.setDisplay(display)
+        bsebl=BaseBUS()
+        bsebl.updateBase(bse)
+      
+        #AutoGetValue#############################################
+   
+
+    def auto_get_value_category(self):
+        self.ui.tableWidget_3.clearContents()
         catebus= CategoryBUS()
         catebus.readListCategory()
-        self.ui.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
         self.ui.tableWidget_3.setRowCount(len(catebus.listCategory))
         count=0
-        self.ui.tableWidget_3.setColumnWidth(0,100)
-        self.ui.tableWidget_3.setColumnWidth(1,740)
-        self.ui.tableWidget_3.verticalHeader().setVisible(False)
-        self.ui.tableWidget_3.setMaximumHeight(200)
+        
         for category in catebus.listCategory:
             idITEM=QtWidgets.QTableWidgetItem(str(category.getId()))
             displayITEM=QtWidgets.QTableWidgetItem(category.getDisplay())
             self.ui.tableWidget_3.setItem(count,0,idITEM)
             self.ui.tableWidget_3.setItem(count,1,displayITEM)
             count+=1
-    ##############################################
+   
+    def auto_get_value_group(self):
+        group_Bus= GroupBUS()
+        group_Bus.readListGroup()
+        self.ui.tableWidget.setRowCount(len(group_Bus.listGroup))
+        count=0
+        for group in group_Bus.listGroup:
+            idITEM=QtWidgets.QTableWidgetItem(str(group.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(group.getDisplay())
+            self.ui.tableWidget.setItem(count,0,idITEM)
+            self.ui.tableWidget.setItem(count,1,displayITEM)
+            count+=1
+   
+    def auto_get_value_Size(self):
+        self.ui.tableWidget_4.clearContents()
+        SizeBus=SizeBUS()
+        SizeBus.readListSize()
+        self.ui.tableWidget_4.setRowCount(len(SizeBus.listSize))
+        count=0
+        for sizeItem in SizeBus.listSize:
+            idITEM=QtWidgets.QTableWidgetItem(str(sizeItem.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(sizeItem.getDisplay())
+            sizeItem=QtWidgets.QTableWidgetItem(str(sizeItem.getPriority()))
+            self.ui.tableWidget_4.setItem(count,0,idITEM)
+            self.ui.tableWidget_4.setItem(count,1,displayITEM)
+            self.ui.tableWidget_4.setItem(count,2,sizeItem)
+            count+=1
+    def auto_get_value_Base(self):
+        self.ui.tableWidget_5.clearContents()
+        baseBl=BaseBUS()
+        baseBl.readListBase()
+        self.ui.tableWidget_5.setRowCount(len(baseBl.listBase))
+        count=0
+        for Items in baseBl.listBase:
+            idITEM=QtWidgets.QTableWidgetItem(str(Items.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(Items.getDisplay())
+            self.ui.tableWidget_5.setItem(count,0,idITEM)
+            self.ui.tableWidget_5.setItem(count,1,displayITEM)
+            count+=1
+
+    #####################################################
     def click_groupAccount_btn(self):
         self.ui.stackedWidget.setCurrentIndex(0)
     def click_Account_btn(self):
@@ -80,12 +227,33 @@ class mainwindow(QtWidgets.QMainWindow):
     def click_Stastical_btn(self):
         self.ui.stackedWidget.setCurrentIndex(7)
         ###Create add_cattegory_dialog
+        ########
     def open_add_category_btn(self):
         Dialog = QtWidgets.QDialog()
         ui = add_category_dialog()
         ui.setupUi(Dialog)
         Dialog.show()
         Dialog.exec_()
+    def open_add_group_btn(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_group_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+    def open_add_size_dialog(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_size_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+    def open_add_base_dialog(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_base_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+
+        ###############################
     def find_category_btn(self):
         find_str=self.ui.LineEdit_find_category.text()
         catebus=CategoryBUS()
@@ -99,6 +267,48 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget_3.setItem(count,0,idITEM)
             self.ui.tableWidget_3.setItem(count,1,displayITEM)
             count+=1
+    def find_group_btn(self):
+        find_str=self.ui.LineEdit_find_group.text()
+        groupbus=GroupBUS()
+        groupbus.readListGroup()
+        list=groupbus.findGroupByName(find_str)
+        self.ui.tableWidget.clearContents()
+        count=0
+        for group in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(group.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(group.getDisplay())
+            self.ui.tableWidget.setItem(count,0,idITEM)
+            self.ui.tableWidget.setItem(count,1,displayITEM)
+            count+=1
+    def find_size_btn(self):
+        find_str=self.ui.Line_edit_findSize.text()
+        sizebus=SizeBUS()
+        sizebus.readListSize()
+        list=sizebus.findSizesByName(find_str)
+        count=0
+        self.ui.tableWidget_4.clearContents()
+        for sizeItem in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(sizeItem.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(sizeItem.getDisplay())
+            sizeItem=QtWidgets.QTableWidgetItem(str(sizeItem.getPriority()))
+            self.ui.tableWidget_4.setItem(count,0,idITEM)
+            self.ui.tableWidget_4.setItem(count,1,displayITEM)
+            self.ui.tableWidget_4.setItem(count,2,sizeItem)
+            count+=1
+    def find_base_btn(self):
+        find_str=self.ui.Line_edit_findBase.text()
+        basebl=BaseBUS()
+        basebl.readListBase()
+        list=basebl.findBasesByName(find_str)
+        count=0
+        self.ui.tableWidget_5.clearContents()
+        for Items in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(Items.getId()))
+            displayITEM=QtWidgets.QTableWidgetItem(Items.getDisplay())
+            self.ui.tableWidget_5.setItem(count,0,idITEM)
+            self.ui.tableWidget_5.setItem(count,1,displayITEM)
+            count+=1
+    ####################
 
 
         
