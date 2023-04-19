@@ -1,6 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QMessageBox
 from load_screen import Ui_LoadScreen
 import sys
 import time
@@ -44,7 +45,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
         self.ui.pushButton_27.clicked.connect(self.find_size_btn)
         self.ui.pushButton_33.clicked.connect(self.find_base_btn)
-        self.ui.pushButton_45.clicked.connect(self.find_order_btn)
+        self.ui.pushButton_45.clicked.connect(self.find_order_btn)##Id_only
         ##Load_Value 
         self.auto_get_value_group()
         self.auto_get_value_category()
@@ -67,6 +68,11 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
         self.ui.pushButton_34.clicked.connect(self.auto_get_value_Base)
         self.ui.pushButton_46.clicked.connect(self.auto_get_order_value)
+        ###Function for order
+        self.ui.pushButton_50.clicked.connect(self.cancel_order)
+        self.ui.pushButton_47.clicked.connect(self.check_order)
+        self.ui.pushButton_48.clicked.connect(self.handler_order)
+
     #Delete##########################
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
@@ -383,7 +389,42 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget_7.setItem(count,6,totalprice)
             self.ui.tableWidget_7.setItem(count,7,amount)
             count+=1
-    ####################
+    ####################Order function
+    def cancel_order(self):
+        odbl=OrderBUS()
+        row=self.ui.tableWidget_7.currentRow()
+        id=self.ui.tableWidget_7.item(row,0).text()
+        txt=odbl.cancelOrder(id)
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(txt)
+        msgBox.setWindowTitle("Message box pop up window")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        returnValue = msgBox.exec()
+    def check_order(self):
+        odbl=OrderBUS()
+        row=self.ui.tableWidget_7.currentRow()
+        id=self.ui.tableWidget_7.item(row,0).text()
+        txt=odbl.check(id)
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(txt)
+        msgBox.setWindowTitle("Message box pop up window")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        returnValue = msgBox.exec()
+    def handler_order(self):
+        odbl=OrderBUS()
+        row=self.ui.tableWidget_7.currentRow()
+        id=self.ui.tableWidget_7.item(row,0).text()
+        txt=odbl.handleOrder(id)
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(txt)
+        msgBox.setWindowTitle("Message box pop up window")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        returnValue = msgBox.exec()
+
+
 
 
         
