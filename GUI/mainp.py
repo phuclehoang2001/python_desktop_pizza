@@ -398,18 +398,52 @@ class mainwindow(QtWidgets.QMainWindow):
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText(txt)
-        msgBox.setWindowTitle("Message box pop up window")
+        msgBox.setWindowTitle("Hủy đơn hàng")
         msgBox.setStandardButtons(QMessageBox.Ok)
         returnValue = msgBox.exec()
     def check_order(self):
         odbl=OrderBUS()
         row=self.ui.tableWidget_7.currentRow()
         id=self.ui.tableWidget_7.item(row,0).text()
-        txt=odbl.check(id)
+        list=odbl.getInfoOrder(id)
+        fullname=list["FullName"]
+        address=list["Address"]
+        phone=list["Phone"]
+        payment=list["DisplayPayment"]
+        time=list["DisplayTime"]
+        Note=list["Note"]
+        total=list["Total"]
+        ####
+        str_7=""
+
+        for i in range(len(list["ListStatusDetail"])):
+            displayStatus = list["ListStatus"][i].getDisplay()
+            if list["ListStatusDetail"][i] is not None: 
+                new=(displayStatus + "\t" * 3 +str(list["ListStatusDetail"][i].getTimeCreated()))+'\n'
+                str_7+=new
+            else:
+                new=(displayStatus + "\t" * 3 + "Trống")+'\n'
+                str_7+=new
+        ###
+        str8="***CHI TIẾT ĐƠN HÀNG***"
+        ###
+        str_9="Pizza" + "\t" * 4 + "Giá"+'\n'
+        for orderDetail in list["OrderDetails"]:
+            str_9+=(orderDetail["DisplayPizza"] +" x " + str(orderDetail["Quantity"]) +"\t" * 4 + str(orderDetail["Amount"]))
+        str10="Tổng tiền:" + "\t" * 4 + str(list["Total"])
+        ###
+        str_1="Họ tên khách hàng: "+list["FullName"]
+        str2="Địa chỉ giao hàng: "+ list["Address"]
+        str3="Số điện thoại liên lạc: "+ list["Phone"]
+        str4="Phương thức thanh toán: "+ list["DisplayPayment"]
+        str5="Thời gian giao hàng: "+ list["DisplayTime"]
+        str6="***TRẠNG THÁI ĐƠN HÀNG***"
+        txt=str_1+'\n'+str2+'\n'+str3+'\n'+str4+'\n'+str5+'\n'+str6+'\n'+str_7+'\n'+str8+"\n"+str_9+'\n'+str10
+        #txt='FullName:\t{}\nAddress:\t{}\nPhone\t{}\nPayment:\t{}\nTime:\t{}\nNote:\t{}\nTotal:\t{}'.format(fullname,address,phone,payment,time,Note,total)
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText(txt)
-        msgBox.setWindowTitle("Message box pop up window")
+        msgBox.setWindowTitle("Chi tiết đơn hàng")
         msgBox.setStandardButtons(QMessageBox.Ok)
         returnValue = msgBox.exec()
     def handler_order(self):

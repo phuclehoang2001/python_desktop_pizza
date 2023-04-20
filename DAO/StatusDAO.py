@@ -140,7 +140,7 @@ class StatusDAO:
     def addStatusDetail(self, statusDetail):
         try:
             query = "INSERT INTO `status_detail`(order_id, status_id, time_created) VALUES({order_id},{status_id},'{time_created}')"\
-            .format(order_id=statusDetail.getOrderId(), status_id=statusDetail.getStatusId(), time_created= statusDetail.getTimeCreated())        
+            .format(order_id=statusDetail.getOrderId(), status_id=statusDetail.getStatusId(), time_created= statusDetail.getTimeCreated())    
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()

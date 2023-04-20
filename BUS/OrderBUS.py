@@ -119,9 +119,8 @@ class OrderBUS:
         cancelDetail = StatusDetail()
         # trang thai 7 = hủy đơn
         cancelDetail.setStatusId(7)
-        cancelDetail.setStatusId(orderId)
+        cancelDetail.setOrderId(orderId)
         cancelDetail.setTimeCreated(datetime.datetime.now())
-        
         data.addStatusDetail(cancelDetail)
         message = "Hủy đơn hàng thành công!"
         return message
