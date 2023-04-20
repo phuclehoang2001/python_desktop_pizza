@@ -347,7 +347,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget.setHorizontalHeaderLabels(["ID","DISPLAY"])
-        self.tableWidget.verticalHeader().setVisible(True)
+        self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setMaximumHeight(200)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         ##
@@ -526,7 +526,7 @@ class Ui_MainWindow(object):
         self.tableWidget_3.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_3.setHorizontalHeaderLabels(["ID","DISPLAY"])
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_3.verticalHeader().setVisible(True)
+        self.tableWidget_3.verticalHeader().setVisible(False)
         self.tableWidget_3.setMaximumHeight(200)
         ##
         self.stackedWidget.addWidget(self.Category)
@@ -612,8 +612,8 @@ class Ui_MainWindow(object):
         self.tableWidget_4.setColumnCount(3)
         self.tableWidget_4.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_4.setHorizontalHeaderLabels(["ID","DISPLAY","Priority"])
-        self.tableWidget_4.verticalHeader().setVisible(True)
-        self.tableWidget_4.setMaximumHeight(130)
+        self.tableWidget_4.verticalHeader().setVisible(False)
+        self.tableWidget_4.setMaximumHeight(150)
         self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
         ##
         self.stackedWidget.addWidget(self.Size)
@@ -699,7 +699,7 @@ class Ui_MainWindow(object):
         self.tableWidget_5.setColumnCount(2)
         self.tableWidget_5.setStyleSheet("color:rgb(0, 0, 0);")
         self.tableWidget_5.setHorizontalHeaderLabels(["ID","DISPLAY"])
-        self.tableWidget_5.verticalHeader().setVisible(True)
+        self.tableWidget_5.verticalHeader().setVisible(False)
         self.tableWidget_5.setMaximumHeight(200)
         self.tableWidget_5.horizontalHeader().setStretchLastSection(True)
         ##
@@ -876,8 +876,15 @@ class Ui_MainWindow(object):
         self.tableWidget_7 = QtWidgets.QTableWidget(self.Order)
         self.tableWidget_7.setGeometry(QtCore.QRect(30, 140, 841, 361))
         self.tableWidget_7.setObjectName("tableWidget_7")
-        self.tableWidget_7.setColumnCount(0)
+
         self.tableWidget_7.setRowCount(0)
+        self.tableWidget_7.setColumnCount(8)
+        self.tableWidget_7.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget_7.setHorizontalHeaderLabels(["ID","Trạng thái","Thời gian đặt","Thời gian xử lý cuối","Người mua","Người xử lý","Tổng giá","Số lượng"])
+        self.tableWidget_7.verticalHeader().setVisible(False)
+        self.tableWidget_7.setMaximumHeight(200)
+        self.tableWidget_7.horizontalHeader().setStretchLastSection(True)
+
         self.stackedWidget.addWidget(self.Order)
         self.Statistical = QtWidgets.QWidget()
         self.Statistical.setObjectName("Statistical")
@@ -889,18 +896,26 @@ class Ui_MainWindow(object):
         ##Line edit of find_category
         self.LineEdit_find_category=QtWidgets.QLineEdit(self.Category)
         self.LineEdit_find_category.setGeometry(500,60,100,20)
+        self.LineEdit_find_category.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
         ##Line edit of find group
         self.LineEdit_find_group=QtWidgets.QLineEdit(self.GroupAccount)
         self.LineEdit_find_group.setGeometry(500,60,100,20)
+        self.LineEdit_find_group.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
         ##Line edit of find Size
         self.Line_edit_findSize=QtWidgets.QLineEdit(self.Size)
         self.Line_edit_findSize.setGeometry(500,60,100,20)
+        self.Line_edit_findSize.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
         ##Line edit of find BASE
         self.Line_edit_findBase=QtWidgets.QLineEdit(self.PizzaBase)
         self.Line_edit_findBase.setGeometry(500,60,100,20)
+        self.Line_edit_findBase.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
+        ##Line edit of find Order
+        self.Line_edit_findOrder=QtWidgets.QLineEdit(self.Order)
+        self.Line_edit_findOrder.setGeometry(500,60,100,20)
+        self.Line_edit_findOrder.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(6)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

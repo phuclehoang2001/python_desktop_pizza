@@ -43,7 +43,7 @@ class add_size_dia(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.pushButton.setText(_translate("Dialog", "Save"))
         self.pushButton_2.setText(_translate("Dialog", "Cancel"))
-        self.label.setText(_translate("Dialog", "Tên danh mục"))
+        self.label.setText(_translate("Dialog", "Kích thước"))
     def click_me(self):
         SizeBus=SizeBUS()
         SizeDTo=Size()

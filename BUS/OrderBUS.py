@@ -121,7 +121,6 @@ class OrderBUS:
         cancelDetail.setStatusId(7)
         cancelDetail.setOrderId(orderId)
         cancelDetail.setTimeCreated(datetime.datetime.now())
-        
         data.addStatusDetail(cancelDetail)
         message = "Hủy đơn hàng thành công!"
         return message
@@ -131,7 +130,7 @@ class OrderBUS:
     def findOrderById(self, orderId):
         listOrder = []
         for order in self.listOrder:
-            if orderId == order.getOrderId():
+            if orderId == order.getId():
                 listOrder.append(order)
         return listOrder
     

@@ -1,5 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QMessageBox
 from load_screen import Ui_LoadScreen
 import sys
 import time
@@ -43,11 +45,13 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
         self.ui.pushButton_27.clicked.connect(self.find_size_btn)
         self.ui.pushButton_33.clicked.connect(self.find_base_btn)
+        self.ui.pushButton_45.clicked.connect(self.find_order_btn)##Id_only
         ##Load_Value 
         self.auto_get_value_group()
         self.auto_get_value_category()
         self.auto_get_value_Size()
         self.auto_get_value_Base()
+        self.auto_get_order_value()
         ##Deletecategory
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
         self.ui.pushButton_38.clicked.connect(self.deleteBase)
@@ -63,6 +67,12 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
         self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
         self.ui.pushButton_34.clicked.connect(self.auto_get_value_Base)
+        self.ui.pushButton_46.clicked.connect(self.auto_get_order_value)
+        ###Function for order
+        self.ui.pushButton_50.clicked.connect(self.cancel_order)
+        self.ui.pushButton_47.clicked.connect(self.check_order)
+        self.ui.pushButton_48.clicked.connect(self.handler_order)
+
     #Delete##########################
     def deleteCategory(self):
         row=self.ui.tableWidget_3.currentRow()
@@ -208,6 +218,42 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget_5.setItem(count,0,idITEM)
             self.ui.tableWidget_5.setItem(count,1,displayITEM)
             count+=1
+    def auto_get_order_value(self):
+        self.ui.tableWidget_7.clearContents()
+        Orderbl=OrderBUS()
+        Orderbl.readListOrder()
+        list=Orderbl.showAllOrder()
+        self.ui.tableWidget_7.setRowCount(len(Orderbl.listOrder))
+        count=0
+        for order in list:
+            orderId=QtWidgets.QTableWidgetItem(str(order["OrderId"]))
+            status_display=QtWidgets.QTableWidgetItem()
+            
+            if(order["EndStatus"].getId()>6):
+                status_display.setBackground(QColor(255, 52, 52))
+            elif(order["EndStatus"].getId()<6):
+                status_display.setBackground(QColor(255, 255, 127))
+            else:
+                status_display.setBackground(QColor(5, 255, 109))
+            status_display.setText(str(order["EndStatus"].getDisplay()))
+            time_order=QtWidgets.QTableWidgetItem(str(order["StartStatusDetail"].getTimeCreated()))
+            last_process=QtWidgets.QTableWidgetItem(str(order["EndStatusDetail"]))
+            customer=QtWidgets.QTableWidgetItem(order["CustomerUsername"])
+            employee=QtWidgets.QTableWidgetItem(order["HandlerUsername"])
+            totalprice=QtWidgets.QTableWidgetItem(str(order["TotalPrice"]))
+            amount=QtWidgets.QTableWidgetItem(str(order["Quantity"]))
+
+            self.ui.tableWidget_7.setItem(count,0,orderId)
+            self.ui.tableWidget_7.setItem(count,1,status_display)
+            self.ui.tableWidget_7.setItem(count,2,time_order)
+            self.ui.tableWidget_7.setItem(count,3,last_process)
+            self.ui.tableWidget_7.setItem(count,4,customer)
+            self.ui.tableWidget_7.setItem(count,5,employee)
+            self.ui.tableWidget_7.setItem(count,6,totalprice)
+            self.ui.tableWidget_7.setItem(count,7,amount)
+            count+=1
+       
+
 
     #####################################################
     def click_groupAccount_btn(self):
@@ -308,7 +354,111 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.tableWidget_5.setItem(count,0,idITEM)
             self.ui.tableWidget_5.setItem(count,1,displayITEM)
             count+=1
-    ####################
+    def find_order_btn(self):
+        find_str=self.ui.Line_edit_findOrder.text()
+        Orderbl=OrderBUS()
+        Orderbl.readListOrder()
+        list=Orderbl.findOrderById(int(find_str))
+        print(len(list))
+        count=0
+        self.ui.tableWidget_7.clearContents()
+        for items in list:
+            orderId=QtWidgets.QTableWidgetItem(str(items.getId()))
+            status_display=QtWidgets.QTableWidgetItem()
+            if Orderbl.getLastStatusDetail(items.getId()).getStatusId()>6:
+                status_display.setBackground(QColor(255, 0, 0))
+            elif Orderbl.getLastStatusDetail(items.getId()).getStatusId()<6:
+                status_display.setBackground(QColor(255, 255, 127))
+            else:
+                status_display.setBackground(QColor(5, 255, 109))
+            status_display.setText(Orderbl.getLastStatus(items.getId()).getDisplay())
+            time_order=QtWidgets.QTableWidgetItem(str(Orderbl.getFirstStatusDetail(items.getId()).getTimeCreated()))
+            last_process=QtWidgets.QTableWidgetItem(str(Orderbl.getLastStatusDetail(items.getId()).getTimeCreated()))
+            customer=QtWidgets.QTableWidgetItem(items.getCustomer())
+            employee=QtWidgets.QTableWidgetItem(items.getHandler())
+            totalprice=QtWidgets.QTableWidgetItem(str(items.getTotalPrice()))
+            amount=QtWidgets.QTableWidgetItem(str(items.getQuantity()))
+
+
+            self.ui.tableWidget_7.setItem(count,0,orderId)
+            self.ui.tableWidget_7.setItem(count,1,status_display)
+            self.ui.tableWidget_7.setItem(count,2,time_order)
+            self.ui.tableWidget_7.setItem(count,3,last_process)
+            self.ui.tableWidget_7.setItem(count,4,customer)
+            self.ui.tableWidget_7.setItem(count,5,employee)
+            self.ui.tableWidget_7.setItem(count,6,totalprice)
+            self.ui.tableWidget_7.setItem(count,7,amount)
+            count+=1
+    ####################Order function
+    def cancel_order(self):
+        odbl=OrderBUS()
+        row=self.ui.tableWidget_7.currentRow()
+        id=self.ui.tableWidget_7.item(row,0).text()
+        txt=odbl.cancelOrder(id)
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(txt)
+        msgBox.setWindowTitle("Hủy đơn hàng")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        returnValue = msgBox.exec()
+    def check_order(self):
+        odbl=OrderBUS()
+        row=self.ui.tableWidget_7.currentRow()
+        id=self.ui.tableWidget_7.item(row,0).text()
+        list=odbl.getInfoOrder(id)
+        fullname=list["FullName"]
+        address=list["Address"]
+        phone=list["Phone"]
+        payment=list["DisplayPayment"]
+        time=list["DisplayTime"]
+        Note=list["Note"]
+        total=list["Total"]
+        ####
+        str_7=""
+
+        for i in range(len(list["ListStatusDetail"])):
+            displayStatus = list["ListStatus"][i].getDisplay()
+            if list["ListStatusDetail"][i] is not None: 
+                new=(displayStatus + "\t" +str(list["ListStatusDetail"][i].getTimeCreated()))+'\n'
+                str_7+=new
+            else:
+                new=(displayStatus + "\t"+ "Trống")+'\n'
+                str_7+=new
+        ###
+        str8="***CHI TIẾT ĐƠN HÀNG***"
+        ###
+        str_9="Pizza" + "\t" + "Giá"+'\n'
+        for orderDetail in list["OrderDetails"]:
+            str_9+=(orderDetail["DisplayPizza"] +" x " + str(orderDetail["Quantity"]) +"\t" * 4 + str(orderDetail["Amount"]))+'\n'
+        str10="Tổng tiền:" + "\t" + str(list["Total"])
+        ###
+        str_1="Họ tên khách hàng: "+list["FullName"]
+        str2="Địa chỉ giao hàng: "+ list["Address"]
+        str3="Số điện thoại liên lạc: "+ list["Phone"]
+        str4="Phương thức thanh toán: "+ list["DisplayPayment"]
+        str5="Thời gian giao hàng: "+ list["DisplayTime"]
+        str6="***TRẠNG THÁI ĐƠN HÀNG***"
+        txt=str_1+'\n'+str2+'\n'+str3+'\n'+str4+'\n'+str5+'\n'+str6+'\n'+str_7+'\n'+str8+"\n"+str_9+'\n'+str10
+        #txt='FullName:\t{}\nAddress:\t{}\nPhone\t{}\nPayment:\t{}\nTime:\t{}\nNote:\t{}\nTotal:\t{}'.format(fullname,address,phone,payment,time,Note,total)
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(txt)
+        msgBox.setWindowTitle("Chi tiết đơn hàng")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        returnValue = msgBox.exec()
+    def handler_order(self):
+        odbl=OrderBUS()
+        row=self.ui.tableWidget_7.currentRow()
+        id=self.ui.tableWidget_7.item(row,0).text()
+        txt=odbl.handleOrder(id)
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(txt)
+        msgBox.setWindowTitle("Message box pop up window")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        returnValue = msgBox.exec()
+
+
 
 
         
