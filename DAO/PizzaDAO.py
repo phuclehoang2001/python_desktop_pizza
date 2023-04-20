@@ -162,9 +162,9 @@ class PizzaDAO:
     def updatePizzaDetail(self, pizzaDetail):
         try:
             query = "UPDATE `pizza_detail` SET pizza_id = '{pizzaId}', size_id = '{sizeId}', base_id = '{baseId}',\
-            price = '{price}', quantity = '{quantity} WHERE' id = {id}"\
+            price = '{price}', quantity = '{quantity}' WHERE id = {id}"\
             .format(pizzaId=pizzaDetail.getPizzaId(), sizeId=pizzaDetail.getSizeId(), baseId=pizzaDetail.getBaseId(),\
-                     price=pizzaDetail.getPrice(), quantity=pizzaDetail.getQuantity(),id=pizzaDetail.getId())        
+                     price=pizzaDetail.getPrice(), quantity=pizzaDetail.getQuantity(),id=pizzaDetail.getId())       
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()

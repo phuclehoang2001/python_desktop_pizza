@@ -79,7 +79,7 @@ class OrderBUS:
         listOrderDetail = dataOrder.getListOrderDetail(orderId)
         for orderDetail in listOrderDetail:
             pizzaDetail = dataPizza.getByPizzaDetailId(orderDetail.getPizzaDetailId())
-            if pizzaDetail.getQuantity() - OrderDetail.getQuantity() < 0: 
+            if pizzaDetail.getQuantity() - orderDetail.getQuantity() < 0: 
                     message = "Đơn hàng không đủ nguyên liệu làm bánh!"
                     return message
             
@@ -97,7 +97,7 @@ class OrderBUS:
 
         newStatusDetail = StatusDetail()
         newStatusDetail.setStatusId(nextStatusId)
-        newStatusDetail.setStatusId(orderId)
+        newStatusDetail.setOrderId(orderId)
         newStatusDetail.setTimeCreated(datetime.datetime.now())
         dataStatus.addStatusDetail(newStatusDetail)
         message = "Xử lý đơn hàng thành công!"
@@ -119,7 +119,7 @@ class OrderBUS:
         cancelDetail = StatusDetail()
         # trang thai 7 = hủy đơn
         cancelDetail.setStatusId(7)
-        cancelDetail.setStatusId(orderId)
+        cancelDetail.setOrderId(orderId)
         cancelDetail.setTimeCreated(datetime.datetime.now())
         
         data.addStatusDetail(cancelDetail)

@@ -209,4 +209,15 @@ class OrderDAO:
                 print(error)
         return False
     
-    
+    def update(self, order):
+        try:
+            query = "UPDATE `order` SET handler = '{handler}' WHERE id = {id}"\
+            .format(handler=order.getHandler(), id=order.getId())        
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True
+        except Error as error:
+                print(error)
+        return False
