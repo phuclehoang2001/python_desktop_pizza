@@ -79,7 +79,8 @@ class OrderBUS:
         listOrderDetail = dataOrder.getListOrderDetail(orderId)
         for orderDetail in listOrderDetail:
             pizzaDetail = dataPizza.getByPizzaDetailId(orderDetail.getPizzaDetailId())
-            if pizzaDetail.getQuantity() - OrderDetail.getQuantity() < 0: 
+            quantumpizza=pizzaDetail.getQuantity()
+            if pizzaDetail.getQuantity() - orderDetail.getQuantity() < 0: 
                     message = "Đơn hàng không đủ nguyên liệu làm bánh!"
                     return message
             
@@ -93,7 +94,6 @@ class OrderBUS:
 
         order = dataOrder.getById(orderId)
         order.setHandler("admin")
-        dataOrder.update(order)
 
         newStatusDetail = StatusDetail()
         newStatusDetail.setStatusId(nextStatusId)

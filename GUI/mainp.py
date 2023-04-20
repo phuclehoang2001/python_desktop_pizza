@@ -419,18 +419,18 @@ class mainwindow(QtWidgets.QMainWindow):
         for i in range(len(list["ListStatusDetail"])):
             displayStatus = list["ListStatus"][i].getDisplay()
             if list["ListStatusDetail"][i] is not None: 
-                new=(displayStatus + "\t" * 3 +str(list["ListStatusDetail"][i].getTimeCreated()))+'\n'
+                new=(displayStatus + "\t" +str(list["ListStatusDetail"][i].getTimeCreated()))+'\n'
                 str_7+=new
             else:
-                new=(displayStatus + "\t" * 3 + "Trống")+'\n'
+                new=(displayStatus + "\t"+ "Trống")+'\n'
                 str_7+=new
         ###
         str8="***CHI TIẾT ĐƠN HÀNG***"
         ###
-        str_9="Pizza" + "\t" * 4 + "Giá"+'\n'
+        str_9="Pizza" + "\t" + "Giá"+'\n'
         for orderDetail in list["OrderDetails"]:
-            str_9+=(orderDetail["DisplayPizza"] +" x " + str(orderDetail["Quantity"]) +"\t" * 4 + str(orderDetail["Amount"]))
-        str10="Tổng tiền:" + "\t" * 4 + str(list["Total"])
+            str_9+=(orderDetail["DisplayPizza"] +" x " + str(orderDetail["Quantity"]) +"\t" * 4 + str(orderDetail["Amount"]))+'\n'
+        str10="Tổng tiền:" + "\t" + str(list["Total"])
         ###
         str_1="Họ tên khách hàng: "+list["FullName"]
         str2="Địa chỉ giao hàng: "+ list["Address"]
