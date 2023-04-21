@@ -83,7 +83,6 @@ class GroupDAO:
 
     def update(self, group):
         try:
-            ## dấu\ để xuống dòng chuỗi, format để chèn giá trị vào chuỗi
             query = "UPDATE `group` SET display = '{display}' WHERE id = {id}"\
             .format(display=group.getDisplay(), id=group.getId())       
             print(query) 
@@ -128,3 +127,12 @@ class GroupDAO:
                 print(error)
         return False
   
+    def search(self, display):
+        listGroup = self.getAllGroup()
+        if display is not None:
+           newlist = []
+           for group in listGroup:
+               if display.upper() in group.getDisplay().upper():
+                    newlist.append(group)
+           return newlist
+        return listGroup

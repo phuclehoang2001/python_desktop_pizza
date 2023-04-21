@@ -5,6 +5,8 @@ sys.path.insert(0,".")
 from DAO import GroupDAO
 from DTO import *
 
+## xử lý group và group và group permission
+
 class GroupBUS:
     listGroup = []
 
