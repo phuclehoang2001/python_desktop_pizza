@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0,".")
 from DTO import *
 
-class GroupDAO:
+class GroupPermissionDAO:
     cursor = None
     result = None
     con = None
