@@ -29,33 +29,35 @@ class GroupPermissionDAO:
                 groupPermission.setGroupId(self.result[1]) 
                 groupPermission.setPermission(self.result[2]) 
                 groupPermission.setValue(self.result[3]) 
+            else:
+                groupPermission = None
         except Error as error:
                 print(error)
         return groupPermission
 
-    def isSet(self, id, permission):
+    def isSet(self, groupId, permission):
         try:
-            query = "SELECT * FROM group_permission WHERE group_id='{id}' AND permission='{permission}'"\
-            .format(id=id, permission=permission)
+            query = "SELECT * FROM group_permission WHERE group_id='{groupId}' AND permission='{permission}'"\
+            .format(groupId=groupId, permission=permission)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
-            return self.result.rowcount > 0
+            return self.cursor.rowcount > 0
         except Error as error:
                 print(error)
         return False
     
-    def has(self, id, permission):
-        return self.getByGroup(id,permission).getValue()
+    def has(self, groupId, permission):
+        return self.getByGroup(groupId,permission).getValue()
     
-    def set(self, groupId, permission, value):
+    def _set(self, groupId, permission, value):
         try:
             query = "SELECT * FROM group_permission WHERE group_id='{groupId}' AND permission='{permission}'"\
             .format(groupId=groupId, permission=permission)
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
-            if self.result.rowcount > 0:
+            if self.cursor.rowcount > 0:
                 query = "UPDATE group_permission SET value = '{value}' WHERE group_id = '{groupId}' AND permission = '{permission}'"\
                 .format( value=value, groupId=groupId, permission=permission)
                 self.cursor = self.con.cursor()
@@ -68,6 +70,7 @@ class GroupPermissionDAO:
                 self.cursor.execute(query)
                 self.con.commit()
             self.sqlConnect.close()
+            return True
         except Error as error:
                 print(error)
         return False

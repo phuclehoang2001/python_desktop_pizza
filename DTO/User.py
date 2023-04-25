@@ -1,7 +1,6 @@
 class User:
     username = ""
     groupId = ""
-    password = ""
     fullname = ""
     birth = ""
     address = ""
@@ -18,8 +17,6 @@ class User:
         return self.phone
     def getUsername(self):
         return self.username
-    def getPassword(self):
-        return self.password
     def getBirth(self):
         return self.birth
     def getEmail(self):
@@ -40,5 +37,3 @@ class User:
         self.birth = birth
     def setEmail(self,email):
         self.email = email
-    def setPassword(self,password):
-        self.password = password

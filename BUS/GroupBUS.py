@@ -60,3 +60,6 @@ class GroupBUS:
             if name.upper() in group.getDisplay().upper():
                 listGroup.append(group)    
         return listGroup
+    
+    def getPermissions(self, groupId):
+        pass
