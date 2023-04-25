@@ -43,7 +43,7 @@ class UserDAO:
     def getAllUser(self):
         result = []
         try:
-            query = "SELECT * FROM user"
+            query = "SELECT * FROM user where group_id = 3 or group_id = 4"
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()

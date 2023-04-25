@@ -54,7 +54,7 @@ class GroupDAO:
     def getAllGroup(self):
         result = []
         try:
-            query = "SELECT * FROM `group`"
+            query = "SELECT * FROM `group` where id = 3 or id = 4"
             self.cursor = self.sqlConnect.getCursor()
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()        

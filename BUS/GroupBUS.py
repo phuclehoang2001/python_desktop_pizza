@@ -2,10 +2,10 @@ import sys
 import datetime
 
 sys.path.insert(0,".")
-from DAO import GroupDAO
+from DAO import GroupDAO, GroupPermissionDAO
 from DTO import *
 
-## xử lý group và group và group permission
+## xử lý group và group permission
 
 class GroupBUS:
     listGroup = []
@@ -61,5 +61,11 @@ class GroupBUS:
                 listGroup.append(group)    
         return listGroup
     
-    def getPermissions(self, groupId):
-        pass
+    def isSet(self, groupId, permission):
+        data = GroupPermissionDAO()
+        return data.isSet(groupId,permission)
+
+    def setPermission(self, groupId, permission, value):
+        data = GroupPermissionDAO()
+        return data._set(groupId, permission, value) 
+            

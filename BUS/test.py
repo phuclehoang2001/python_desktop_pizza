@@ -1,11 +1,74 @@
 import sys
 sys.path.insert(0,".")
-from BUS import OrderBUS
+from BUS import OrderBUS, GroupBUS, UserBUS
 # from DAO import StatusDAO
 from DTO import *
+
+#############
+#TEST GroupBUS
+# groupBUS = GroupBUS()
+### chỉ hiển thị 2 nhóm qtv và nhân viên
+# groupBUS.readListGroup()
+# for item in groupBUS.listGroup:
+#     print(item.getDisplay())
+
+# permission_dict = {
+#     "admin.login": "Đăng nhập trang quản trị",
+#     "admin.group": "Quản lý nhóm tài khoản",
+#     "admin.user": "Quản lý tài khoản",
+#     "admin.category": "Quản lý danh mục bánh",
+#     "admin.topping": "Quản lý nhân bánh",
+#     "admin.size": "Quản lý kích thước bánh",
+#     "admin.base": "Quản lý đế bánh",
+#     "admin.pizza": "Quản lý bánh pizza",
+#     "admin.order": "Quản lý đơn hàng",
+#     "admin.statistic": "Thống kê báo cáo"
+# }
+
+## Chức năng hiển thị quyền
+#chọn 1 nhóm từ danh sách => lấy groupId của nó, giả sử groupId = 4
+# groupId = 4
+# for key, value in permission_dict.items():
+#     print(value)
+#     if groupBUS.isSet(groupId, key):
+#         print("có quyền") #check vào radio box 
+#     else:
+#         print("không có quyền") # bỏ check radio box
+#     print("---------------")
+
+## Chức năng thiết lập quyền khi nhấn chọn các quyền và đồng ý
+# groupId = 3
+# for key, value in permission_dict.items():
+#     value = 0 ## bắt sự kiện nhấn vào radio box, khi nhấn có sẽ là 1, không là 0 
+#     if groupBUS.setPermission(groupId, key,value):
+#         print("Phân quyền thành công") 
+#     else:
+#         print("Phân quyền thất bại") 
+#     print("---------------")
+
+
+
+######################### TEST UserBUS
+userBUS = UserBUS()
+## chỉ hiển thị user thuộc 2 nhóm admin (qtv) và nhân viên
+userBUS.readListUser()
+for item in userBUS.listUser:
+    print(item.getFullname())
+
+
+
+
+
+
+
+
+
+
+
+
 #############
 #TEST OrderBUS
-orderBUS = OrderBUS()
+# orderBUS = OrderBUS()
 
 # Chức năng hiển thị tất cả đơn hàng
 # orders = orderBUS.showAllOrder()
@@ -53,7 +116,7 @@ orderBUS = OrderBUS()
 ################
 #test
 
-print(orderBUS.cancelOrder(9))
+# print(orderBUS.cancelOrder(9))
 
 
 # test = StatusDAO()
