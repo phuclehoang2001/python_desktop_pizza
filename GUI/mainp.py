@@ -34,7 +34,8 @@ class mainwindow(QtWidgets.QMainWindow):
         
         
         
-        
+        ##Phan quyen
+        self.ui.GroupAcc_menu.clicked.connect(self.phanquyen)
         ##Can nhac nut nay##Mở dialog add
         self.ui.pushButton_23.clicked.connect(self.open_add_category_btn)
         self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
@@ -457,6 +458,65 @@ class mainwindow(QtWidgets.QMainWindow):
         msgBox.setWindowTitle("Message box pop up window")
         msgBox.setStandardButtons(QMessageBox.Ok)
         returnValue = msgBox.exec()
+        ##################Phan quyen
+    def phanquyen(self):
+        permission_dict = {
+            "admin.login": "Đăng nhập trang quản trị",
+            "admin.group": "Quản lý nhóm tài khoản",
+            "admin.user": "Quản lý tài khoản",
+            "admin.category": "Quản lý danh mục bánh",
+            "admin.topping": "Quản lý nhân bánh",
+            "admin.size": "Quản lý kích thước bánh",
+            "admin.base": "Quản lý đế bánh",
+            "admin.pizza": "Quản lý bánh pizza",
+            "admin.order": "Quản lý đơn hàng",
+            "admin.statistic": "Thống kê báo cáo"}
+        row=self.ui.tableWidget.currentRow()
+        Group_id=self.ui.tableWidget.item(row,0).text()
+        perMissonBl=GroupBUS()
+        perMissonBl.readListGroup()
+
+
+
+
+        dialog =QtWidgets.QDialog()
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+
+        dialog.setWindowTitle("Phân Quyền")
+        for key,value in permission_dict.items():
+            per1=perMissonBl.isSet(Group_id,key)
+            if per1==True:
+                check=QtWidgets.QCheckBox()
+                check.setText(value)
+                check.setChecked(True)
+                form_layout.addRow(check)
+            else:
+                check=QtWidgets.QCheckBox()
+                check.setText(value)
+                check.setChecked(False)
+                form_layout.addRow(check)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            count=0
+            for key,value in permission_dict.items():
+                checkbox_item = form_layout.itemAt(count, QtWidgets.QFormLayout.FieldRole)
+                checkbox_widget = checkbox_item.widget()
+                if checkbox_widget.isChecked():
+                    vari=1
+                    perMissonBl.setPermission(Group_id,key,vari)
+                else:
+                    vari=0
+                    perMissonBl.setPermission(Group_id,key,vari)
+                count+=1
+
+        
 
 
 
