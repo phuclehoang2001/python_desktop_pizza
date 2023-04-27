@@ -6,35 +6,38 @@ from DTO import *
 
 #############
 #TEST GroupBUS
-# groupBUS = GroupBUS()
+groupBUS = GroupBUS()
 ### chỉ hiển thị 2 nhóm qtv và nhân viên
 # groupBUS.readListGroup()
 # for item in groupBUS.listGroup:
 #     print(item.getDisplay())
 
-# permission_dict = {
-#     "admin.login": "Đăng nhập trang quản trị",
-#     "admin.group": "Quản lý nhóm tài khoản",
-#     "admin.user": "Quản lý tài khoản",
-#     "admin.category": "Quản lý danh mục bánh",
-#     "admin.topping": "Quản lý nhân bánh",
-#     "admin.size": "Quản lý kích thước bánh",
-#     "admin.base": "Quản lý đế bánh",
-#     "admin.pizza": "Quản lý bánh pizza",
-#     "admin.order": "Quản lý đơn hàng",
-#     "admin.statistic": "Thống kê báo cáo"
-# }
+permission_dict = {
+    "admin.login": "Đăng nhập trang quản trị",
+    "admin.group": "Quản lý nhóm tài khoản",
+    "admin.user": "Quản lý tài khoản",
+    "admin.category": "Quản lý danh mục bánh",
+    "admin.topping": "Quản lý nhân bánh",
+    "admin.size": "Quản lý kích thước bánh",
+    "admin.base": "Quản lý đế bánh",
+    "admin.pizza": "Quản lý bánh pizza",
+    "admin.order": "Quản lý đơn hàng",
+    "admin.statistic": "Thống kê báo cáo"
+}
 
 ## Chức năng hiển thị quyền
 #chọn 1 nhóm từ danh sách => lấy groupId của nó, giả sử groupId = 4
-# groupId = 4
-# for key, value in permission_dict.items():
-#     print(value)
-#     if groupBUS.isSet(groupId, key):
-#         print("có quyền") #check vào radio box 
-#     else:
-#         print("không có quyền") # bỏ check radio box
-#     print("---------------")
+groupId = 3
+for key, value in permission_dict.items():
+    print(value)
+    if groupBUS.isSet(groupId, key):
+        if groupBUS.hasPermission(groupId, key):
+            print("Quyền đã mở") #check vào radio box 
+        else:
+            print("Quyền bị khóa")
+    else:
+        print("Chưa phân quyền") # bỏ check radio box
+    print("---------------")
 
 ## Chức năng thiết lập quyền khi nhấn chọn các quyền và đồng ý
 # groupId = 3
@@ -47,13 +50,12 @@ from DTO import *
 #     print("---------------")
 
 
-
 ######################### TEST UserBUS
-userBUS = UserBUS()
+# userBUS = UserBUS()
 ## chỉ hiển thị user thuộc 2 nhóm admin (qtv) và nhân viên
-userBUS.readListUser()
-for item in userBUS.listUser:
-    print(item.getFullname())
+# userBUS.readListUser()
+# for item in userBUS.listUser:
+#     print(item.getFullname())
 
 
 

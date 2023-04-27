@@ -64,8 +64,13 @@ class GroupBUS:
     def isSet(self, groupId, permission):
         data = GroupPermissionDAO()
         return data.isSet(groupId,permission)
+    
+    def hasPermission(self, groupId, permission):
+        data = GroupPermissionDAO()
+        return True if data.has(groupId,permission) == 1 else False
+
 
     def setPermission(self, groupId, permission, value):
         data = GroupPermissionDAO()
-        return data._set(groupId, permission, value) 
+        return  data._set(groupId, permission, value) 
             
