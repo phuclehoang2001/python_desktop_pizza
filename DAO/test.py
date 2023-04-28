@@ -6,8 +6,9 @@ from DTO import *
 from DAO import UserDAO,GroupDAO, UserPermissionDAO, GroupPermissionDAO
 
 
+
 ########################## test GroupPermissionDAO
-data = GroupPermissionDAO()
+# data = GroupPermissionDAO()
 # groupId = 4
 # permission = "admin.login"
 # info =  data.getByGroup(groupId,permission) 

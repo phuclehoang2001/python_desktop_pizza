@@ -74,3 +74,5 @@ class GroupBUS:
         data = GroupPermissionDAO()
         return  data._set(groupId, permission, value) 
             
+
+    

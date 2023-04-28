@@ -74,12 +74,12 @@ class UserDAO:
         try:
             query = "INSERT INTO `user`(username, group_id, password, fullname, birth, address, phone, email)\
                   VALUES ('{username}', '{groupId}', '{password}', '{fullname}', '{birth}', '{address}', '{phone}', '{email}')"\
-            .format(username=username, groupId=groupId, password=hashed_password, fullname=fullname, birth=birth, address=address, phone=phone, email=email)        
+            .format(username=username, groupId=groupId, password=hashed_password, fullname=fullname, birth=birth, address=address, phone=phone, email=email)    
+            print(query)    
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
             # Lấy ID của bản ghi vừa được thêm vào
-            newId = self.cursor.lastrowid
             self.sqlConnect.close()
             return True
         except Error as error:
@@ -96,7 +96,7 @@ class UserDAO:
         email = user.getEmail()
         try:
             query = "UPDATE user\
-                SET group_id = {groupId}, fullname = '{fullname}', birth = '{birth}', address = '{address}', phone = '{phone}', email = '{email}'\
+                SET group_id = '{groupId}', fullname = '{fullname}', birth = '{birth}', address = '{address}', phone = '{phone}', email = '{email}'\
                 WHERE username = '{username}'"\
             .format(username=username, groupId=groupId,fullname=fullname, birth=birth, address=address, phone=phone, email=email)        
             self.cursor = self.con.cursor()
@@ -124,6 +124,20 @@ class UserDAO:
                 print(error)
         return False
 
+    def updatePermissionGroup(self, username, groupId):
+        try:
+            query = "UPDATE user\
+                SET group_id = '{groupId}'\
+                WHERE username = '{username}'"\
+            .format(username=username, groupId=groupId)      
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True
+        except Error as error:
+                print(error)
+        return False
 
     def check(self, username, password):
         try:
@@ -154,5 +168,4 @@ class UserDAO:
                 print(error)
         return False
     
-    #BUS
-    ## hasPermission
+    
