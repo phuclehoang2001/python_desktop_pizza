@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMessageBox
 from load_screen import Ui_LoadScreen
+from login import Login_window
 import sys
 import time
 from main_window import Ui_MainWindow
@@ -17,6 +18,7 @@ from add_size import add_size_dia
 from add_base import add_base_dia
 #Globals
 COUNTER=0
+Role=0
 #MAIN WINDOW
 class mainwindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -73,6 +75,8 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_50.clicked.connect(self.cancel_order)
         self.ui.pushButton_47.clicked.connect(self.check_order)
         self.ui.pushButton_48.clicked.connect(self.handler_order)
+        global Role
+        print(Role)
 
     #Delete##########################
     def deleteCategory(self):
@@ -518,8 +522,20 @@ class mainwindow(QtWidgets.QMainWindow):
 
         
 
-
-
+##LOGin
+class wth(QtWidgets.QMainWindow):
+    def __init__(self):
+        QtWidgets.QMainWindow.__init__(self)
+        self.ui=Login_window()
+        self.ui.setupUi(self)
+        self.ui.pushButton.clicked.connect(self.click)
+    def click(self):
+        global Role
+        self.main=handler()
+        self.main.show()
+        Role=1
+        self.close()
+        
 
         
         
@@ -608,7 +624,7 @@ class handler(QtWidgets.QMainWindow):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
-    Loading = handler()
+    Loading = wth()
     Loading.show()
     sys.exit(app.exec_())
 
