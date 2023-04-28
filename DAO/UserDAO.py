@@ -168,4 +168,16 @@ class UserDAO:
                 print(error)
         return False
     
-    
+    def getGroupId(self, username):
+        groupId = None
+        try:
+            query = "SELECT `group_id` FROM user WHERE username = '{username}'"\
+            .format(username=username)
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone()
+            if self.result is not None:
+                groupId = self.result[0]
+        except Error as error:
+                print(error)
+        return groupId

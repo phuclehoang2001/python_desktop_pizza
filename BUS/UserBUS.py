@@ -21,6 +21,8 @@ class UserBUS:
     def addUser(self, user, password):
         data = UserDAO()
         #Kiểm tra tên có trùng không
+        if data.hasUsername(user.getUsername()):
+            return False
         if self.isExist(user.getUsername()):
             return False     
         # thêm vào CSDL
@@ -109,7 +111,7 @@ class UserBUS:
             return False if groupPermission is None else groupPermission.getValue()
         return False
     
-    def showInfo(self, username):
+    def getInfo(self, username):
         data = GroupDAO()
         self.readListUser()
         for user in self.listUser:
@@ -121,6 +123,7 @@ class UserBUS:
                 user_dict["phone"] = user.getPhone()
                 user_dict["birthday"] = user.getBirth()
                 user_dict["email"] = user.getEmail()
+                user_dict["groupId"] = user.getGroupId()
                 user_dict["groupName"] = data.getById(user.getGroupId()).getDisplay()
                 return user_dict
         return None
@@ -128,3 +131,22 @@ class UserBUS:
     def getGroupName(self, user):
         data = GroupDAO()
         return data.getById(user.getGroupId()).getDisplay()
+    
+    def checkLogin(self, username, password):
+        userDAO = UserDAO()
+        groupPermissionDAO = GroupPermissionDAO()
+        result = "OK"
+        if len(username) !=0 and len(password) !=0:
+            if not userDAO.check(username, password):
+                result = "Sai thông tin đăng nhập"
+            else:
+                check_lock = self.hasPermission(username,"lock")
+                if check_lock:
+                    result = "Tài khoản đã bị khóa!"
+                groupId = userDAO.getGroupId(username)
+                check_login_permission = True if groupPermissionDAO.has(groupId,"admin.login") == 1 else False
+                if not check_login_permission:
+                    result = "Không có quyền đăng nhập trang quản trị"
+        else:
+            result = "Vui lòng nhập đủ thông tin"
+        return result

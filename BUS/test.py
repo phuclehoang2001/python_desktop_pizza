@@ -7,16 +7,16 @@ from DTO import *
 
 #############
 # TEST UserBUS
-userBUS = UserBUS()
-userBUS.readListUser()
-for user in userBUS.listUser:
-    print("Tên tài khoản:" + user.getUsername())
-    print("Nhóm tài khoản:" + userBUS.getGroupName(user))
-    if userBUS.hasPermission(user.getUsername(),"lock"):
-        print("Đã khóa")
-    else:
-        print("Chưa khóa")
-print("--------------------------------")
+# userBUS = UserBUS()
+# userBUS.readListUser()
+# for user in userBUS.listUser:
+#     print("Tên tài khoản:" + user.getUsername())
+#     print("Nhóm tài khoản:" + userBUS.getGroupName(user))
+#     if userBUS.hasPermission(user.getUsername(),"lock"):
+#         print("Đã khóa")
+#     else:
+#         print("Chưa khóa")
+# print("--------------------------------")
 
 #TÌM THEO USERNAME
 # username_find = "adm"
@@ -26,7 +26,7 @@ print("--------------------------------")
 
 #XEM THÔNG TIN TÀI KHOẢN
 # username = "admin"
-# infoUser = userBUS.showInfo(username)
+# infoUser = userBUS.getInfo(username)
 # print("Tên tài khoản: " + infoUser["username"])
 # print("Nhóm tài khoản: " + infoUser["groupName"])
 # print("Họ tên: " + infoUser["fullname"])
@@ -126,6 +126,44 @@ print("--------------------------------")
 
 
 ################################TEST LOGIN
+userBUS = UserBUS()
+username_input = "nhanvien2"
+password_input = "nhanvien"
+result = userBUS.checkLogin(username_input, password_input)
+if result == "OK": ## đăng nhập thành công
+    infoUser = userBUS.getInfo(username_input)
+    groupBUS = GroupBUS()
+    # Đóng form đăng nhập, mở giao diện quản lý và gửi thông tin (infoUser) sang
+    # Hiển thị các chức năng quyền ở menu quyền
+    permission_dict = {
+        "admin.login": "Đăng nhập trang quản trị",
+        "admin.group": "Quản lý nhóm tài khoản",
+        "admin.user": "Quản lý tài khoản",
+        "admin.category": "Quản lý danh mục bánh",
+        "admin.topping": "Quản lý nhân bánh",
+        "admin.size": "Quản lý kích thước bánh",
+        "admin.base": "Quản lý đế bánh",
+        "admin.pizza": "Quản lý bánh pizza",
+        "admin.order": "Quản lý đơn hàng",
+        "admin.statistic": "Thống kê báo cáo"
+    }
+
+    for key, value in permission_dict.items():
+        print(value) 
+        if groupBUS.isSet(infoUser["groupId"], key):
+            if groupBUS.hasPermission(infoUser["groupId"], key):
+                print("Quyền đã mở") 
+                # thêm vào menu quyền
+            else:
+                print("Quyền bị khóa")
+        else:
+            print("Chưa phân quyền") 
+else:
+    print(result)##  đăng nhập thất bại, xuất ra lỗi 
+
+
+## chức năng đăng xuất thì bấm nút đăng xuất => tắt ứng dụng luôn
+
 
 
 
