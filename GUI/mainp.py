@@ -30,6 +30,12 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         global Role
         global FullName
+        global UserName
+        if UserName!="admin":
+            self.ui.pushButton_passchange.setEnabled(False)
+            self.ui.stackedWidget.setCurrentIndex(2)
+            self.ui.Account_btn.setHidden(True)
+            self.ui.GroupAccount_btn.setHidden(True)
         self.ui.pushButton_info.setText(FullName)
         self.ui.pushButton_info.clicked.connect(self.doubleclicklable)
         self.ui.GroupAccount_btn.clicked.connect(self.click_groupAccount_btn)
@@ -42,6 +48,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
         
         ####
+        self.ui.pushButton_passchange.clicked.connect(self.change_pass)
         self.ui.pushButton_18.clicked.connect(self.change_info)
         #####Info
         self.ui.pushButton_20.clicked.connect(self.info_account)
@@ -747,6 +754,43 @@ class mainwindow(QtWidgets.QMainWindow):
             usrbl.updateUser(usr)
         else:
             pass
+    def change_pass(self):
+        row=self.ui.tableWidget_2.currentRow()
+        col=self.ui.tableWidget_2.currentColumn()
+        usr_name=self.ui.tableWidget_2.item(row,col).text()
+        global UserName
+        usrbl=UserBUS()
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Đổi mật khẩu")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        ###
+        label_1=QtWidgets.QLabel("Mật khẩu mới")
+        form_layout.addWidget(label_1)
+        line_edit_1=QtWidgets.QLineEdit()
+        form_layout.addWidget(line_edit_1)
+        label_2=QtWidgets.QLabel("Nhập lại mật khẩu")
+        form_layout.addWidget(label_2)
+        line_edit_2=QtWidgets.QLineEdit()
+        form_layout.addWidget(line_edit_2)
+        ####
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            if UserName=="admin":
+                if usrbl.updatePassword(usr_name,line_edit_1.text()):
+                    print("Sửa thành công")
+        else:
+            pass        
+
+
 
 
         

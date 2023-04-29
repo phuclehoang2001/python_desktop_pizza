@@ -429,6 +429,18 @@ class Ui_MainWindow(object):
         self.pushButton_20.setIcon(icon2)
         self.pushButton_20.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_20.setObjectName("pushButton_20")
+        #####
+        self.pushButton_passchange = QtWidgets.QPushButton(self.Account)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_20.sizePolicy().hasHeightForWidth())
+        self.pushButton_passchange.setSizePolicy(sizePolicy)
+        self.pushButton_passchange.setText("Đổi password")
+        self.pushButton_passchange.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_passchange.setObjectName("pushButton_passchange")
+        self.pushButton_passchange.setGeometry(770,95,100,50)
+        ####
         self.horizontalLayout_4.addWidget(self.pushButton_20)
         self.label_3 = QtWidgets.QLabel(self.Account)
         self.label_3.setGeometry(QtCore.QRect(20, 40, 321, 51))
