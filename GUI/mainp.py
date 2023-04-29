@@ -16,15 +16,28 @@ from add_category import add_category_dialog,QtWidgets
 from add_group import add_group_dia
 from add_size import add_size_dia
 from add_base import add_base_dia
+from add_user2 import add_user_dia
 #Globals
 COUNTER=0
 Role=0
+FullName=""
+UserName=""
 #MAIN WINDOW
 class mainwindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
+        global Role
+        global FullName
+        global UserName
+        if UserName!="admin":
+            self.ui.pushButton_passchange.setEnabled(False)
+            self.ui.stackedWidget.setCurrentIndex(2)
+            self.ui.Account_btn.setHidden(True)
+            self.ui.GroupAccount_btn.setHidden(True)
+        self.ui.pushButton_info.setText(FullName)
+        self.ui.pushButton_info.clicked.connect(self.doubleclicklable)
         self.ui.GroupAccount_btn.clicked.connect(self.click_groupAccount_btn)
         self.ui.Account_btn.clicked.connect(self.click_Account_btn)
         self.ui.Category_btn.clicked.connect(self.click_Category_btn)
@@ -34,8 +47,14 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
         
-        
-        
+        ####
+        self.ui.pushButton_passchange.clicked.connect(self.change_pass)
+        self.ui.pushButton_18.clicked.connect(self.change_info)
+        self.ui.lock.clicked.connect(self.lock_open_user)
+        #####Info
+        self.ui.pushButton_20.clicked.connect(self.info_account)
+        #logout
+        self.ui.Setting_btn.clicked.connect(self.logout)
         ##Phan quyen
         self.ui.GroupAcc_menu.clicked.connect(self.phanquyen)
         ##Can nhac nut nay##Mở dialog add
@@ -43,14 +62,17 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
         self.ui.pushButton_29.clicked.connect(self.open_add_size_dialog)
         self.ui.pushButton_35.clicked.connect(self.open_add_base_dialog)
+        self.ui.pushButton_17.clicked.connect(self.open_add_user)
         #find function//
         self.ui.pushButton_21.clicked.connect(self.find_category_btn)
         self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
         self.ui.pushButton_27.clicked.connect(self.find_size_btn)
         self.ui.pushButton_33.clicked.connect(self.find_base_btn)
         self.ui.pushButton_45.clicked.connect(self.find_order_btn)##Id_only
+        self.ui.pushButton_15.clicked.connect(self.find_account)
         ##Load_Value 
         self.auto_get_value_group()
+        self.auto_get_value_account()
         self.auto_get_value_category()
         self.auto_get_value_Size()
         self.auto_get_value_Base()
@@ -71,12 +93,57 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
         self.ui.pushButton_34.clicked.connect(self.auto_get_value_Base)
         self.ui.pushButton_46.clicked.connect(self.auto_get_order_value)
+        self.ui.pushButton_16.clicked.connect(self.auto_get_value_account)
         ###Function for order
         self.ui.pushButton_50.clicked.connect(self.cancel_order)
         self.ui.pushButton_47.clicked.connect(self.check_order)
         self.ui.pushButton_48.clicked.connect(self.handler_order)
         global Role
         print(Role)
+
+        ####logout
+    def logout(self):
+        self.main=wth()
+        self.main.show()
+        self.close()
+
+    ########################user info
+    ###
+    def doubleclicklable(self):
+        usrbl=UserBUS()
+        global UserName
+        infoUser=usrbl.getInfo(UserName)
+        print("Heelo")
+        print(infoUser["address"])
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thông tin tài khoản")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        label_ttk=QtWidgets.QLabel("Tên tài khoản: "+infoUser["fullname"])
+        label_ntk=QtWidgets.QLabel("Nhóm tài khoản: "+infoUser["groupName"])
+        label_hoten=QtWidgets.QLabel("Họ tên: "+infoUser["fullname"])
+        label_dob=QtWidgets.QLabel("Ngày sinh: "+str(infoUser["birthday"]))
+        label_address=QtWidgets.QLabel("Địa chỉ: "+infoUser["address"])
+        label_number=QtWidgets.QLabel("Số điện thoại: "+infoUser["phone"])
+        label_mail=QtWidgets.QLabel("Email: "+infoUser["email"])
+        form_layout.addRow(label_ttk)
+        form_layout.addRow(label_ntk)
+        form_layout.addRow(label_hoten)
+        form_layout.addRow(label_hoten)
+        form_layout.addRow(label_dob)
+        form_layout.addRow(label_address)
+        form_layout.addRow(label_number)
+        form_layout.addRow(label_mail)
+        
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+        button_box.accepted.connect(dialog.accept)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+
 
     #Delete##########################
     def deleteCategory(self):
@@ -169,7 +236,27 @@ class mainwindow(QtWidgets.QMainWindow):
         bsebl.updateBase(bse)
       
         #AutoGetValue#############################################
-   
+    def auto_get_value_account(self):
+        self.ui.tableWidget_2.clearContents()
+        userbl=UserBUS()
+        userbl.readListUser()
+        self.ui.tableWidget_2.setRowCount(len(userbl.listUser))
+        print("Chieu dai ",len(userbl.listUser))
+        count=0
+        for account in userbl.listUser:
+            username=QtWidgets.QTableWidgetItem(str(account.getUsername()))
+            groupname=QtWidgets.QTableWidgetItem(userbl.getGroupName(account))
+            self.ui.tableWidget_2.setItem(count,0,username)
+            self.ui.tableWidget_2.setItem(count,1,groupname)
+            if userbl.hasPermission(account.getUsername(),"lock"):
+                status=QtWidgets.QTableWidgetItem("Khóa")
+                self.ui.tableWidget_2.setItem(count,2,status)
+            else:
+                status=QtWidgets.QTableWidgetItem("Mở khóa")
+                self.ui.tableWidget_2.setItem(count,2,status)
+            
+            count+=1
+            
 
     def auto_get_value_category(self):
         self.ui.tableWidget_3.clearContents()
@@ -279,6 +366,13 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(7)
         ###Create add_cattegory_dialog
         ########
+    def open_add_user(self):
+        Dialog = QtWidgets.QDialog()
+        ui = add_user_dia()
+        ui.setupUi(Dialog)
+        Dialog.show()
+        Dialog.exec_()
+
     def open_add_category_btn(self):
         Dialog = QtWidgets.QDialog()
         ui = add_category_dialog()
@@ -305,6 +399,26 @@ class mainwindow(QtWidgets.QMainWindow):
         Dialog.exec_()
 
         ###############################
+    def find_account(self):
+        find_str=self.ui.Line_edit_User.text()
+        userbl=UserBUS()
+        userbl.readListUser()
+        list=userbl.findUserByUsername(find_str)
+        self.ui.tableWidget_2.clearContents()
+        count=0
+        for account in list:
+            username=QtWidgets.QTableWidgetItem(str(account.getUsername()))
+            groupname=QtWidgets.QTableWidgetItem(userbl.getGroupName(account))
+            self.ui.tableWidget_2.setItem(count,0,username)
+            self.ui.tableWidget_2.setItem(count,1,groupname)
+            if userbl.hasPermission(account.getUsername(),"lock"):
+                status=QtWidgets.QTableWidgetItem("Khóa")
+                self.ui.tableWidget_2.setItem(count,2,status)
+            else:
+                status=QtWidgets.QTableWidgetItem("Mở khóa")
+                self.ui.tableWidget_2.setItem(count,2,status)
+            
+            count+=1
     def find_category_btn(self):
         find_str=self.ui.LineEdit_find_category.text()
         catebus=CategoryBUS()
@@ -519,6 +633,205 @@ class mainwindow(QtWidgets.QMainWindow):
                     vari=0
                     perMissonBl.setPermission(Group_id,key,vari)
                 count+=1
+    def info_account(self):
+        usrbl=UserBUS()
+        row=self.ui.tableWidget_2.currentRow()
+        col=self.ui.tableWidget_2.currentColumn()
+        user_name=self.ui.tableWidget_2.item(row,col).text()
+        print(user_name)
+        infoUser=usrbl.getInfo(user_name)
+        print(infoUser["address"])
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thông tin tài khoản")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        label_ttk=QtWidgets.QLabel("Tên tài khoản: "+infoUser["fullname"])
+        label_ntk=QtWidgets.QLabel("Nhóm tài khoản: "+infoUser["groupName"])
+        label_hoten=QtWidgets.QLabel("Họ tên: "+infoUser["fullname"])
+        label_dob=QtWidgets.QLabel("Ngày sinh: "+str(infoUser["birthday"]))
+        label_address=QtWidgets.QLabel("Địa chỉ: "+infoUser["address"])
+        label_number=QtWidgets.QLabel("Số điện thoại: "+infoUser["phone"])
+        label_mail=QtWidgets.QLabel("Email: "+infoUser["email"])
+        form_layout.addRow(label_ttk)
+        form_layout.addRow(label_ntk)
+        form_layout.addRow(label_hoten)
+        form_layout.addRow(label_hoten)
+        form_layout.addRow(label_dob)
+        form_layout.addRow(label_address)
+        form_layout.addRow(label_number)
+        form_layout.addRow(label_mail)
+        
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+        button_box.accepted.connect(dialog.accept)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+    def change_info(self):
+        row=self.ui.tableWidget_2.currentRow()
+        col=self.ui.tableWidget_2.currentColumn()
+        user_name=self.ui.tableWidget_2.item(row,col).text()
+        usrbl=UserBUS()
+        usrbl.readListUser()
+        info=usrbl.getInfo(user_name)
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thông tin tài khoản")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+
+        label_1 =QtWidgets.QLabel("Tên tài khoản")
+        Line_Usr=QtWidgets.QLineEdit()
+        Line_Usr.setText(user_name)
+        Line_Usr.setEnabled(False)
+        #
+        label_2=QtWidgets.QLabel("Nhóm")
+        combobox=QtWidgets.QComboBox()
+        grbus=GroupBUS()
+        grbus.readListGroup()
+        for grp in grbus.listGroup:
+            combobox.addItem(grp.getDisplay())
+        combobox.setCurrentText(info["groupName"])
+        #
+        label_3=QtWidgets.QLabel("Họ tên")
+        line_fullname=QtWidgets.QLineEdit()
+        line_fullname.setText(info["fullname"])
+        #
+        label_4=QtWidgets.QLabel("Ngày sinh")
+        datetime=QtWidgets.QDateEdit()
+        datetime.setDate((info["birthday"]))
+        #
+        label_5=QtWidgets.QLabel("Địa chỉ")
+        line_address=QtWidgets.QLineEdit()
+        line_address.setText(info["address"])
+        #
+        label_6=QtWidgets.QLabel("số diện thoại")
+        line_phone=QtWidgets.QLineEdit()
+        line_phone.setText(info["phone"])
+        #
+        label_7=QtWidgets.QLabel("Email")
+        line_mail=QtWidgets.QLineEdit()
+        line_mail.setText(info["email"])
+        form_layout.addWidget(label_1)
+        form_layout.addWidget(Line_Usr)
+        #
+        form_layout.addWidget(label_2)
+        form_layout.addWidget(combobox)
+        #
+        form_layout.addWidget(label_3)
+        form_layout.addWidget(line_fullname)
+        #
+        form_layout.addWidget(label_4)
+        form_layout.addWidget(datetime)
+        #
+        form_layout.addWidget(label_5)
+        form_layout.addWidget(line_address)
+        #
+        form_layout.addWidget(label_6)
+        form_layout.addWidget(line_phone)
+        #
+        form_layout.addWidget(label_7)
+        form_layout.addWidget(line_mail)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            usr=User()
+            usr.setUsername(user_name)
+            usr.setAddress(line_address.text())
+            usr.setBirth(datetime.date().toPyDate())
+            usr.setEmail(line_mail.text())
+            usr.setFullname(line_fullname.text())
+            usr.setPhone(line_phone.text())
+            for item in grbus.findGroupByName(combobox.currentText()):
+                usr.setGroupId(item.getId())
+            usrbl.updateUser(usr)
+        else:
+            pass
+    def change_pass(self):
+        row=self.ui.tableWidget_2.currentRow()
+        col=self.ui.tableWidget_2.currentColumn()
+        usr_name=self.ui.tableWidget_2.item(row,col).text()
+        global UserName
+        usrbl=UserBUS()
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Đổi mật khẩu")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        ###
+        label_1=QtWidgets.QLabel("Mật khẩu mới")
+        form_layout.addWidget(label_1)
+        line_edit_1=QtWidgets.QLineEdit()
+        form_layout.addWidget(line_edit_1)
+        label_2=QtWidgets.QLabel("Nhập lại mật khẩu")
+        form_layout.addWidget(label_2)
+        line_edit_2=QtWidgets.QLineEdit()
+        form_layout.addWidget(line_edit_2)
+        ####
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            if UserName=="admin":
+                if usrbl.updatePassword(usr_name,line_edit_1.text()):
+                    print("Sửa thành công")
+        else:
+            pass        
+    def lock_open_user(self):
+        usrbl=UserBUS()
+        usrbl.readListUser()
+        row=self.ui.tableWidget_2.currentRow()
+        col=self.ui.tableWidget_2.currentColumn()
+        usr_name=self.ui.tableWidget_2.item(row,col).text()
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Mở/Khóa tài khoản")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        
+        flag=0
+        if usr_name=="admin":
+            label=QtWidgets.QLabel("Không thể khóa tài khoản Admin")
+            layout.addWidget(label)
+        else:
+            checklock=usrbl.hasPermission(usr_name,"lock")
+            if checklock:
+                label=QtWidgets.QLabel("Tài khoản đã khóa,xác nhận mở khóa?")
+                layout.addWidget(label)
+                flag=1
+            else:
+                label=QtWidgets.QLabel("Tài khoản chưa khóa,xác nhận khóa?")
+                layout.addWidget(label)
+                flag=2
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            if flag==1:
+                usrbl.unclockUser(usr_name)
+            elif flag==2:
+                usrbl.clockUser(usr_name)
+        else:
+            pass        
+
+
+
 
         
 
@@ -528,13 +841,70 @@ class wth(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self)
         self.ui=Login_window()
         self.ui.setupUi(self)
-        self.ui.pushButton.clicked.connect(self.click)
+        self.ui.pushButton.clicked.connect(self.login)
     def click(self):
-        global Role
         self.main=handler()
         self.main.show()
-        Role=1
         self.close()
+    def login(self):
+        usr=self.ui.LineEdit.text()
+        print(usr)
+        pss=self.ui.LineEdit_2.text()
+        userBUS = UserBUS()
+        res=userBUS.checkLogin(usr,pss)
+        print(res)
+        if res=="OK":
+            if userBUS.hasPermission(usr,"lock"):
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Information)
+                msgBox.setText("Tài khoản đã bị khóa xin vui lòng liên hệ quản trị viên")
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                msgBox.show()
+                msgBox.exec()
+            else:
+                info=userBUS.getInfo(usr)
+                global Role
+                global FullName
+                global UserName
+                FullName=info["fullname"]
+                Role=info["groupId"]
+                UserName=info["username"]
+                print(info)
+                self.click()
+
+        elif res=="Sai thông tin đăng nhập":
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setText("SAI THÔNG TIN ĐĂNG NHẬP")
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.show()
+            msgBox.exec()
+        elif res=="Tài khoản đã bị khóa!":
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setText("Tài khoản đã bị khóa!")
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.show()
+            msgBox.exec()
+        elif res=="Không có quyền đăng nhập trang quản trị":
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setText("Không có quyền đăng nhập trang quản trị")
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.show()
+            msgBox.exec()
+        elif res=="Vui lòng nhập đủ thông tin":
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setText("Vui lòng nhập đủ thông tin")
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.show()
+            msgBox.exec()
+    
+
+
+
+
         
 
         
