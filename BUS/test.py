@@ -1,8 +1,92 @@
 import sys
+import datetime
 sys.path.insert(0,".")
-from BUS import OrderBUS, GroupBUS, UserBUS
+from BUS import OrderBUS, GroupBUS, UserBUS, StatisticBUS
 # from DAO import StatusDAO
 from DTO import *
+
+
+############TEST THỐNG KÊ
+statisticBUS = StatisticBUS
+## doanh thu theo danh mục
+# tk_category = statisticBUS.category()
+# print("Thống kê doanh thu theo danh mục bánh pizza")
+# print("Tổng doanh thu thực tế: "+str(tk_category["TotalActualRevenue"]))
+# print("Tổng doanh thu dự kiến: "+str(tk_category["TotalExpectedRevenue"]))
+# print("Tổng số lượng bán được thực tế: "+str(tk_category["TotalActualSales"]))
+# print("Tổng số lượng bán được dự kiến: "+str(tk_category["TotalExpectedSales"]))
+# print("---------------------------------")
+# print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+# for index, value in enumerate(tk_category["Categories"]):
+#     print(value.getDisplay(),end="\t")
+#     print(tk_category["ActualRevenue"][index],end="\t")
+#     print(tk_category["ExpectedRevenue"][index],end="\t")
+#     print(tk_category["ActualSales"][index],end="\t")
+#     print(tk_category["ExpectedSales"][index],end="")
+#     print()
+
+
+# # tìm kiếm theo khoảng thời gian
+# # yyyy-mm-dd
+# print("---------------------------------------------------------------------------------")
+# startDay = datetime.datetime(2022,9,23)
+# endDay = datetime.datetime(2022,10,16)
+# tk_category = statisticBUS.searchCategory(startDay,endDay)
+# print("Thống kê doanh thu theo danh mục bánh pizza")
+# print(tk_category["searchDate"])
+# print("Tổng doanh thu thực tế: "+str(tk_category["TotalActualRevenue"]))
+# print("Tổng doanh thu dự kiến: "+str(tk_category["TotalExpectedRevenue"]))
+# print("Tổng số lượng bán được thực tế: "+str(tk_category["TotalActualSales"]))
+# print("Tổng số lượng bán được dự kiến: "+str(tk_category["TotalExpectedSales"]))
+# print("---------------------------------")
+# print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+# for index, value in enumerate(tk_category["Categories"]):
+#     print(value.getDisplay(),end="\t") 
+#     print(tk_category["ActualRevenue"][index],end="\t")
+#     print(tk_category["ExpectedRevenue"][index],end="\t")
+#     print(tk_category["ActualSales"][index],end="\t")
+#     print(tk_category["ExpectedSales"][index],end="")
+#     print()
+
+
+## doanh thu theo bánh
+# tk_pizza = statisticBUS.pizza()
+# print("Thống kê doanh thu theo bánh pizza")
+# print("Tổng doanh thu thực tế: "+str(tk_pizza["TotalActualRevenue"]))
+# print("Tổng doanh thu dự kiến: "+str(tk_pizza["TotalExpectedRevenue"]))
+# print("Tổng số lượng bán được thực tế: "+str(tk_pizza["TotalActualSales"]))
+# print("Tổng số lượng bán được dự kiến: "+str(tk_pizza["TotalExpectedSales"]))
+# print("---------------------------------")
+# print("Tên bánh" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+# for index, value in enumerate(tk_pizza["Pizzas"]):
+#     print(value.getDisplay(),end="\t")
+#     print(tk_pizza["ActualRevenue"][index],end="\t")
+#     print(tk_pizza["ExpectedRevenue"][index],end="\t")
+#     print(tk_pizza["ActualSales"][index],end="\t")
+#     print(tk_pizza["ExpectedSales"][index],end="")
+#     print()
+
+# # # tìm kiếm theo khoảng thời gian
+# # # yyyy-mm-dd
+# print("---------------------------------------------------------------------------------")
+# startDay = datetime.datetime(2022,9,26)
+# endDay = datetime.datetime(2022,10,26)
+# tk_pizza = statisticBUS.searchPizza(startDay,endDay)
+# print("Thống kê doanh thu theo bánh pizza")
+# print(tk_pizza["searchDate"])
+# print("Tổng doanh thu thực tế: "+str(tk_pizza["TotalActualRevenue"]))
+# print("Tổng doanh thu dự kiến: "+str(tk_pizza["TotalExpectedRevenue"]))
+# print("Tổng số lượng bán được thực tế: "+str(tk_pizza["TotalActualSales"]))
+# print("Tổng số lượng bán được dự kiến: "+str(tk_pizza["TotalExpectedSales"]))
+# print("---------------------------------")
+# print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+# for index, value in enumerate(tk_pizza["Pizzas"]):
+#     print(value.getDisplay(),end="\t") 
+#     print(tk_pizza["ActualRevenue"][index],end="\t")
+#     print(tk_pizza["ExpectedRevenue"][index],end="\t")
+#     print(tk_pizza["ActualSales"][index],end="\t")
+#     print(tk_pizza["ExpectedSales"][index],end="")
+#     print()
 
 
 #############
@@ -126,40 +210,40 @@ from DTO import *
 
 
 ################################TEST LOGIN
-userBUS = UserBUS()
-username_input = "nhanvien2"
-password_input = "nhanvien"
-result = userBUS.checkLogin(username_input, password_input)
-if result == "OK": ## đăng nhập thành công
-    infoUser = userBUS.getInfo(username_input)
-    groupBUS = GroupBUS()
-    # Đóng form đăng nhập, mở giao diện quản lý và gửi thông tin (infoUser) sang
-    # Hiển thị các chức năng quyền ở menu quyền
-    permission_dict = {
-        "admin.login": "Đăng nhập trang quản trị",
-        "admin.group": "Quản lý nhóm tài khoản",
-        "admin.user": "Quản lý tài khoản",
-        "admin.category": "Quản lý danh mục bánh",
-        "admin.topping": "Quản lý nhân bánh",
-        "admin.size": "Quản lý kích thước bánh",
-        "admin.base": "Quản lý đế bánh",
-        "admin.pizza": "Quản lý bánh pizza",
-        "admin.order": "Quản lý đơn hàng",
-        "admin.statistic": "Thống kê báo cáo"
-    }
+# userBUS = UserBUS()
+# username_input = "nhanvien2"
+# password_input = "nhanvien"
+# result = userBUS.checkLogin(username_input, password_input)
+# if result == "OK": ## đăng nhập thành công
+#     infoUser = userBUS.getInfo(username_input)
+#     groupBUS = GroupBUS()
+#     # Đóng form đăng nhập, mở giao diện quản lý và gửi thông tin (infoUser) sang
+#     # Hiển thị các chức năng quyền ở menu quyền
+#     permission_dict = {
+#         "admin.login": "Đăng nhập trang quản trị",
+#         "admin.group": "Quản lý nhóm tài khoản",
+#         "admin.user": "Quản lý tài khoản",
+#         "admin.category": "Quản lý danh mục bánh",
+#         "admin.topping": "Quản lý nhân bánh",
+#         "admin.size": "Quản lý kích thước bánh",
+#         "admin.base": "Quản lý đế bánh",
+#         "admin.pizza": "Quản lý bánh pizza",
+#         "admin.order": "Quản lý đơn hàng",
+#         "admin.statistic": "Thống kê báo cáo"
+#     }
 
-    for key, value in permission_dict.items():
-        print(value) 
-        if groupBUS.isSet(infoUser["groupId"], key):
-            if groupBUS.hasPermission(infoUser["groupId"], key):
-                print("Quyền đã mở") 
-                # thêm vào menu quyền
-            else:
-                print("Quyền bị khóa")
-        else:
-            print("Chưa phân quyền") 
-else:
-    print(result)##  đăng nhập thất bại, xuất ra lỗi 
+#     for key, value in permission_dict.items():
+#         print(value) 
+#         if groupBUS.isSet(infoUser["groupId"], key):
+#             if groupBUS.hasPermission(infoUser["groupId"], key):
+#                 print("Quyền đã mở") 
+#                 # thêm vào menu quyền
+#             else:
+#                 print("Quyền bị khóa")
+#         else:
+#             print("Chưa phân quyền") 
+# else:
+#     print(result)##  đăng nhập thất bại, xuất ra lỗi 
 
 
 ## chức năng đăng xuất thì bấm nút đăng xuất => tắt ứng dụng luôn

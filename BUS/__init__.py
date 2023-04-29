@@ -5,3 +5,4 @@ from .PizzaBUS import *
 from .GroupBUS import *
 from .UserBUS import *
 from .OrderBUS import *
+from .StatisticBUS import *

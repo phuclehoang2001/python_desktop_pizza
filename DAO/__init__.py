@@ -10,3 +10,4 @@ from .StatusDAO import *
 from .ToppingDAO import *
 from .UserDAO import *
 from .UserPermissionDAO import *
+from .StatisticDAO import *
