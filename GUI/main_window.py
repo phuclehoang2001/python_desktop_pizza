@@ -949,8 +949,18 @@ class Ui_MainWindow(object):
         self.Line_edit_User.setGeometry(500,60,100,20)
         self.Line_edit_User.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
 
+        self.tabWidget=QtWidgets.QTabWidget(self.Statistical)
+        label=QtWidgets.QLabel("zxczxc")
+        label2=QtWidgets.QLabel("zxczxc")
+        self.tabWidget.setGeometry(0,50,1000,500)
+        self.tabWidget.addTab(label,"Thống kê theo danh mục")
+        self.tabWidget.addTab(label2,"2")
+        self.tabWidget.tabBar().setStyleSheet("color:Black")
+        
+
+
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(7)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
