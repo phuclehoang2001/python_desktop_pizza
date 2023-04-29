@@ -50,6 +50,7 @@ class mainwindow(QtWidgets.QMainWindow):
         ####
         self.ui.pushButton_passchange.clicked.connect(self.change_pass)
         self.ui.pushButton_18.clicked.connect(self.change_info)
+        self.ui.lock.clicked.connect(self.lock_open_user)
         #####Info
         self.ui.pushButton_20.clicked.connect(self.info_account)
         #logout
@@ -787,6 +788,45 @@ class mainwindow(QtWidgets.QMainWindow):
             if UserName=="admin":
                 if usrbl.updatePassword(usr_name,line_edit_1.text()):
                     print("Sửa thành công")
+        else:
+            pass        
+    def lock_open_user(self):
+        usrbl=UserBUS()
+        usrbl.readListUser()
+        row=self.ui.tableWidget_2.currentRow()
+        col=self.ui.tableWidget_2.currentColumn()
+        usr_name=self.ui.tableWidget_2.item(row,col).text()
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Mở/Khóa tài khoản")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        
+        flag=0
+        if usr_name=="admin":
+            label=QtWidgets.QLabel("Không thể khóa tài khoản Admin")
+            layout.addWidget(label)
+        else:
+            checklock=usrbl.hasPermission(usr_name,"lock")
+            if checklock:
+                label=QtWidgets.QLabel("Tài khoản đã khóa,xác nhận mở khóa?")
+                layout.addWidget(label)
+                flag=1
+            else:
+                label=QtWidgets.QLabel("Tài khoản chưa khóa,xác nhận khóa?")
+                layout.addWidget(label)
+                flag=2
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            if flag==1:
+                usrbl.unclockUser(usr_name)
+            elif flag==2:
+                usrbl.clockUser(usr_name)
         else:
             pass        
 

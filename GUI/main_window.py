@@ -441,6 +441,18 @@ class Ui_MainWindow(object):
         self.pushButton_passchange.setObjectName("pushButton_passchange")
         self.pushButton_passchange.setGeometry(770,95,100,50)
         ####
+        self.lock = QtWidgets.QPushButton(self.Account)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lock.sizePolicy().hasHeightForWidth())
+        self.lock.setSizePolicy(sizePolicy)
+        self.lock.setText("Mở/Khóa User")
+        self.lock.setIconSize(QtCore.QSize(30, 30))
+        self.lock.setObjectName("Lock_btn")
+        self.lock.setGeometry(650,95,100,50)
+
+        ####
         self.horizontalLayout_4.addWidget(self.pushButton_20)
         self.label_3 = QtWidgets.QLabel(self.Account)
         self.label_3.setGeometry(QtCore.QRect(20, 40, 321, 51))
