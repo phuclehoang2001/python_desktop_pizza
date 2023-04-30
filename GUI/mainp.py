@@ -33,17 +33,15 @@ class mainwindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self)
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
-        global Role
         global FullName
         global UserName
-        if UserName!="admin":
+        global Role
+        print("Role=",Role)
+        if Role!=4:
             self.ui.pushButton_passchange.setEnabled(False)
             self.ui.stackedWidget.setCurrentIndex(2)
             self.ui.Account_btn.setHidden(True)
             self.ui.GroupAccount_btn.setHidden(True)
-        self.ui.pushButton_info.setText(FullName)
-        self.statictical_category(0)
-        self.statstical_pizza(0)
         self.ui.button_chart1.clicked.connect(self.date_time_load_btn)
         self.ui.pushButton_info.clicked.connect(self.doubleclicklable)
         self.ui.GroupAccount_btn.clicked.connect(self.click_groupAccount_btn)
@@ -108,8 +106,6 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_50.clicked.connect(self.cancel_order)
         self.ui.pushButton_47.clicked.connect(self.check_order)
         self.ui.pushButton_48.clicked.connect(self.handler_order)
-        global Role
-        print(Role)
 
         ####logout
     def logout(self):
@@ -382,6 +378,8 @@ class mainwindow(QtWidgets.QMainWindow):
     def click_Stastical_btn(self):
         self.ui.stackedWidget.setCurrentIndex(7)
         self.resize(1400,729)
+        self.statictical_category(0)
+        self.statstical_pizza(0)
         ###Create add_cattegory_dialog
         ########
     def open_add_user(self):
@@ -688,91 +686,179 @@ class mainwindow(QtWidgets.QMainWindow):
         layout.addWidget(button_box)
         response = dialog.exec_()
     def change_info(self):
+        global UserName
         row=self.ui.tableWidget_2.currentRow()
         col=self.ui.tableWidget_2.currentColumn()
         user_name=self.ui.tableWidget_2.item(row,col).text()
-        usrbl=UserBUS()
-        usrbl.readListUser()
-        info=usrbl.getInfo(user_name)
-        dialog =QtWidgets.QDialog()
-        dialog.setMinimumHeight(100)
-        dialog.setMinimumWidth(250)
-        dialog.setWindowTitle("Thông tin tài khoản")
-        layout = QtWidgets.QVBoxLayout()
-        dialog.setLayout(layout)
-        form_layout =QtWidgets.QFormLayout()
-        layout.addLayout(form_layout)
+        if user_name!="admin":
+            usrbl=UserBUS()
+            usrbl.readListUser()
+            info=usrbl.getInfo(user_name)
+            dialog =QtWidgets.QDialog()
+            dialog.setMinimumHeight(100)
+            dialog.setMinimumWidth(250)
+            dialog.setWindowTitle("Thông tin tài khoản")
+            layout = QtWidgets.QVBoxLayout()
+            dialog.setLayout(layout)
+            form_layout =QtWidgets.QFormLayout()
+            layout.addLayout(form_layout)
 
-        label_1 =QtWidgets.QLabel("Tên tài khoản")
-        Line_Usr=QtWidgets.QLineEdit()
-        Line_Usr.setText(user_name)
-        Line_Usr.setEnabled(False)
-        #
-        label_2=QtWidgets.QLabel("Nhóm")
-        combobox=QtWidgets.QComboBox()
-        grbus=GroupBUS()
-        grbus.readListGroup()
-        for grp in grbus.listGroup:
-            combobox.addItem(grp.getDisplay())
-        combobox.setCurrentText(info["groupName"])
-        #
-        label_3=QtWidgets.QLabel("Họ tên")
-        line_fullname=QtWidgets.QLineEdit()
-        line_fullname.setText(info["fullname"])
-        #
-        label_4=QtWidgets.QLabel("Ngày sinh")
-        datetime=QtWidgets.QDateEdit()
-        datetime.setDate((info["birthday"]))
-        #
-        label_5=QtWidgets.QLabel("Địa chỉ")
-        line_address=QtWidgets.QLineEdit()
-        line_address.setText(info["address"])
-        #
-        label_6=QtWidgets.QLabel("số diện thoại")
-        line_phone=QtWidgets.QLineEdit()
-        line_phone.setText(info["phone"])
-        #
-        label_7=QtWidgets.QLabel("Email")
-        line_mail=QtWidgets.QLineEdit()
-        line_mail.setText(info["email"])
-        form_layout.addWidget(label_1)
-        form_layout.addWidget(Line_Usr)
-        #
-        form_layout.addWidget(label_2)
-        form_layout.addWidget(combobox)
-        #
-        form_layout.addWidget(label_3)
-        form_layout.addWidget(line_fullname)
-        #
-        form_layout.addWidget(label_4)
-        form_layout.addWidget(datetime)
-        #
-        form_layout.addWidget(label_5)
-        form_layout.addWidget(line_address)
-        #
-        form_layout.addWidget(label_6)
-        form_layout.addWidget(line_phone)
-        #
-        form_layout.addWidget(label_7)
-        form_layout.addWidget(line_mail)
-        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
-        button_box.accepted.connect(dialog.accept)
-        button_box.rejected.connect(dialog.reject)
-        layout.addWidget(button_box)
-        response = dialog.exec_()
-        if response == QtWidgets.QDialog.Accepted:
-            usr=User()
-            usr.setUsername(user_name)
-            usr.setAddress(line_address.text())
-            usr.setBirth(datetime.date().toPyDate())
-            usr.setEmail(line_mail.text())
-            usr.setFullname(line_fullname.text())
-            usr.setPhone(line_phone.text())
-            for item in grbus.findGroupByName(combobox.currentText()):
-                usr.setGroupId(item.getId())
-            usrbl.updateUser(usr)
-        else:
-            pass
+            label_1 =QtWidgets.QLabel("Tên tài khoản")
+            Line_Usr=QtWidgets.QLineEdit()
+            Line_Usr.setText(user_name)
+            Line_Usr.setEnabled(False)
+            #
+            label_2=QtWidgets.QLabel("Nhóm")
+            combobox=QtWidgets.QComboBox()
+            grbus=GroupBUS()
+            grbus.readListGroup()
+            for grp in grbus.listGroup:
+                combobox.addItem(grp.getDisplay())
+            combobox.setCurrentText(info["groupName"])
+            #
+            label_3=QtWidgets.QLabel("Họ tên")
+            line_fullname=QtWidgets.QLineEdit()
+            line_fullname.setText(info["fullname"])
+            #
+            label_4=QtWidgets.QLabel("Ngày sinh")
+            datetime=QtWidgets.QDateEdit()
+            datetime.setDate((info["birthday"]))
+            #
+            label_5=QtWidgets.QLabel("Địa chỉ")
+            line_address=QtWidgets.QLineEdit()
+            line_address.setText(info["address"])
+            #
+            label_6=QtWidgets.QLabel("số diện thoại")
+            line_phone=QtWidgets.QLineEdit()
+            line_phone.setText(info["phone"])
+            #
+            label_7=QtWidgets.QLabel("Email")
+            line_mail=QtWidgets.QLineEdit()
+            line_mail.setText(info["email"])
+            form_layout.addWidget(label_1)
+            form_layout.addWidget(Line_Usr)
+            #
+            form_layout.addWidget(label_2)
+            form_layout.addWidget(combobox)
+            #
+            form_layout.addWidget(label_3)
+            form_layout.addWidget(line_fullname)
+            #
+            form_layout.addWidget(label_4)
+            form_layout.addWidget(datetime)
+            #
+            form_layout.addWidget(label_5)
+            form_layout.addWidget(line_address)
+            #
+            form_layout.addWidget(label_6)
+            form_layout.addWidget(line_phone)
+            #
+            form_layout.addWidget(label_7)
+            form_layout.addWidget(line_mail)
+            button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+            button_box.accepted.connect(dialog.accept)
+            button_box.rejected.connect(dialog.reject)
+            layout.addWidget(button_box)
+            response = dialog.exec_()
+            if response == QtWidgets.QDialog.Accepted:
+                usr=User()
+                usr.setUsername(user_name)
+                usr.setAddress(line_address.text())
+                usr.setBirth(datetime.date().toPyDate())
+                usr.setEmail(line_mail.text())
+                usr.setFullname(line_fullname.text())
+                usr.setPhone(line_phone.text())
+                for item in grbus.findGroupByName(combobox.currentText()):
+                    usr.setGroupId(item.getId())
+                usrbl.updateUser(usr)
+            else:
+                pass
+        elif user_name=="admin":
+            if UserName=="admin":
+                usrbl=UserBUS()
+                usrbl.readListUser()
+                info=usrbl.getInfo(user_name)
+                dialog =QtWidgets.QDialog()
+                dialog.setMinimumHeight(100)
+                dialog.setMinimumWidth(250)
+                dialog.setWindowTitle("Thông tin tài khoản")
+                layout = QtWidgets.QVBoxLayout()
+                dialog.setLayout(layout)
+                form_layout =QtWidgets.QFormLayout()
+                layout.addLayout(form_layout)
+
+                label_1 =QtWidgets.QLabel("Tên tài khoản")
+                Line_Usr=QtWidgets.QLineEdit()
+                Line_Usr.setText(user_name)
+                Line_Usr.setEnabled(False)
+                #
+                label_2=QtWidgets.QLabel("Nhóm")
+                combobox=QtWidgets.QComboBox()
+                grbus=GroupBUS()
+                grbus.readListGroup()
+                for grp in grbus.listGroup:
+                    combobox.addItem(grp.getDisplay())
+                combobox.setCurrentText(info["groupName"])
+                #
+                label_3=QtWidgets.QLabel("Họ tên")
+                line_fullname=QtWidgets.QLineEdit()
+                line_fullname.setText(info["fullname"])
+                #
+                label_4=QtWidgets.QLabel("Ngày sinh")
+                datetime=QtWidgets.QDateEdit()
+                datetime.setDate((info["birthday"]))
+                #
+                label_5=QtWidgets.QLabel("Địa chỉ")
+                line_address=QtWidgets.QLineEdit()
+                line_address.setText(info["address"])
+                #
+                label_6=QtWidgets.QLabel("số diện thoại")
+                line_phone=QtWidgets.QLineEdit()
+                line_phone.setText(info["phone"])
+                #
+                label_7=QtWidgets.QLabel("Email")
+                line_mail=QtWidgets.QLineEdit()
+                line_mail.setText(info["email"])
+                form_layout.addWidget(label_1)
+                form_layout.addWidget(Line_Usr)
+                #
+                form_layout.addWidget(label_2)
+                form_layout.addWidget(combobox)
+                #
+                form_layout.addWidget(label_3)
+                form_layout.addWidget(line_fullname)
+                #
+                form_layout.addWidget(label_4)
+                form_layout.addWidget(datetime)
+                #
+                form_layout.addWidget(label_5)
+                form_layout.addWidget(line_address)
+                #
+                form_layout.addWidget(label_6)
+                form_layout.addWidget(line_phone)
+                #
+                form_layout.addWidget(label_7)
+                form_layout.addWidget(line_mail)
+                button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+                button_box.accepted.connect(dialog.accept)
+                button_box.rejected.connect(dialog.reject)
+                layout.addWidget(button_box)
+                response = dialog.exec_()
+                if response == QtWidgets.QDialog.Accepted:
+                    usr=User()
+                    usr.setUsername(user_name)
+                    usr.setAddress(line_address.text())
+                    usr.setBirth(datetime.date().toPyDate())
+                    usr.setEmail(line_mail.text())
+                    usr.setFullname(line_fullname.text())
+                    usr.setPhone(line_phone.text())
+                    for item in grbus.findGroupByName(combobox.currentText()):
+                        usr.setGroupId(item.getId())
+                    usrbl.updateUser(usr)
+
+            else:
+                print("Nope")
+
     def change_pass(self):
         row=self.ui.tableWidget_2.currentRow()
         col=self.ui.tableWidget_2.currentColumn()
@@ -803,9 +889,16 @@ class mainwindow(QtWidgets.QMainWindow):
         layout.addWidget(button_box)
         response = dialog.exec_()
         if response == QtWidgets.QDialog.Accepted:
-            if UserName=="admin":
+            if usr_name=="admin":
+                if UserName=="admin":
+                    if usrbl.updatePassword(usr_name,line_edit_1.text()):
+                        print("Sửa thành công")
+                else:
+                    print("Nope")
+            else:
                 if usrbl.updatePassword(usr_name,line_edit_1.text()):
                     print("Sửa thành công")
+
         else:
             pass        
     def lock_open_user(self):
