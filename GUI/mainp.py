@@ -771,6 +771,18 @@ class mainwindow(QtWidgets.QMainWindow):
                 for item in grbus.findGroupByName(combobox.currentText()):
                     usr.setGroupId(item.getId())
                 usrbl.updateUser(usr)
+                dialog =QtWidgets.QDialog()
+                dialog.setMinimumHeight(100)
+                dialog.setMinimumWidth(250)
+                dialog.setWindowTitle("System Message")
+                layout = QtWidgets.QVBoxLayout()
+                dialog.setLayout(layout)
+                label=QtWidgets.QLabel("Sửa thành công")
+                layout.addWidget(label)
+                button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+                button_box.accepted.connect(dialog.accept)
+                layout.addWidget(button_box)
+                response = dialog.exec_()
             else:
                 pass
         elif user_name=="admin":
@@ -855,6 +867,18 @@ class mainwindow(QtWidgets.QMainWindow):
                     for item in grbus.findGroupByName(combobox.currentText()):
                         usr.setGroupId(item.getId())
                     usrbl.updateUser(usr)
+                    dialog =QtWidgets.QDialog()
+                    dialog.setMinimumHeight(100)
+                    dialog.setMinimumWidth(250)
+                    dialog.setWindowTitle("System Message")
+                    layout = QtWidgets.QVBoxLayout()
+                    dialog.setLayout(layout)
+                    label=QtWidgets.QLabel("Sửa thành công")
+                    layout.addWidget(label)
+                    button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+                    button_box.accepted.connect(dialog.accept)
+                    layout.addWidget(button_box)
+                    response = dialog.exec_()
 
             else:
                 dialog =QtWidgets.QDialog()
@@ -867,7 +891,6 @@ class mainwindow(QtWidgets.QMainWindow):
                 layout.addWidget(label)
                 button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
                 button_box.accepted.connect(dialog.accept)
-                button_box.rejected.connect(dialog.reject)
                 layout.addWidget(button_box)
                 response = dialog.exec_()
 
@@ -903,13 +926,36 @@ class mainwindow(QtWidgets.QMainWindow):
             response = dialog.exec_()
             if response == QtWidgets.QDialog.Accepted:
                     if usrbl.updatePassword(usr_name,line_edit_1.text()):
+                        dialog =QtWidgets.QDialog()
+                        dialog.setMinimumHeight(100)
+                        dialog.setMinimumWidth(250)
+                        dialog.setWindowTitle("System Message")
+                        layout = QtWidgets.QVBoxLayout()
+                        dialog.setLayout(layout)
+                        label=QtWidgets.QLabel("Sửa thành công")
+                        layout.addWidget(label)
+                        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+                        button_box.accepted.connect(dialog.accept)
+                        layout.addWidget(button_box)
+                        response = dialog.exec_()
                         print("Sửa thành công")
             else:
                 pass
         else:
             if UserName=="admin":
                 if usrbl.updatePassword(usr_name,line_edit_1.text()):
-                    print("Sửa thành công")
+                    dialog =QtWidgets.QDialog()
+                    dialog.setMinimumHeight(100)
+                    dialog.setMinimumWidth(250)
+                    dialog.setWindowTitle("System Message")
+                    layout = QtWidgets.QVBoxLayout()
+                    dialog.setLayout(layout)
+                    label=QtWidgets.QLabel("Sửa thành công")
+                    layout.addWidget(label)
+                    button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+                    button_box.accepted.connect(dialog.accept)
+                    layout.addWidget(button_box)
+                    response = dialog.exec_()
                 else:
                     print("Nope")
             else:
@@ -923,7 +969,6 @@ class mainwindow(QtWidgets.QMainWindow):
                 layout.addWidget(label)
                 button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
                 button_box.accepted.connect(dialog.accept)
-                button_box.rejected.connect(dialog.reject)
                 layout.addWidget(button_box)
                 response = dialog.exec_()
 

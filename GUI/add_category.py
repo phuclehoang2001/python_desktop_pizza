@@ -46,11 +46,26 @@ class add_category_dialog(object):
         self.pushButton_2.setText(_translate("Dialog", "Cancel"))
         self.label.setText(_translate("Dialog", "Tên danh mục"))
     def click_me(self):
-        cate=Category()
-        catebus=CategoryBUS()
-        cate.setDisplay(self.lineEdit.text())
-        catebus.addCategory(cate)
-        self.pushButton_2.click()
+        if self.lineEdit.text()!="":
+            cate=Category()
+            catebus=CategoryBUS()
+            cate.setDisplay(self.lineEdit.text())
+            catebus.addCategory(cate)
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Thêm thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
+            self.pushButton_2.click()
+        else:
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xin hãy nhập đầy đủ thông tin")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
+
         
         
 

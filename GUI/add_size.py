@@ -45,11 +45,25 @@ class add_size_dia(object):
         self.pushButton_2.setText(_translate("Dialog", "Cancel"))
         self.label.setText(_translate("Dialog", "Kích thước"))
     def click_me(self):
-        SizeBus=SizeBUS()
-        SizeDTo=Size()
-        SizeDTo.setDisplay(self.lineEdit.text())
-        SizeBus.addSize(SizeDTo)
-        self.pushButton_2.click()
+        if self.lineEdit.text()!="":
+            SizeBus=SizeBUS()
+            SizeDTo=Size()
+            SizeDTo.setDisplay(self.lineEdit.text())
+            SizeBus.addSize(SizeDTo)
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Thêm thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
+            self.pushButton_2.click()
+        else:
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xin hãy nhập đầy đủ")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
         
         
 

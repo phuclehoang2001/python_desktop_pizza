@@ -106,7 +106,18 @@ class add_user_dia(object):
             usr.setPhone(self.lineEdit_4.text())
             usr.setEmail(self.lineEdit_5.text())
             if userBUS.addUser(usr,password):
-                print("OK")
+                dialog =QtWidgets.QDialog()
+                dialog.setMinimumHeight(100)
+                dialog.setMinimumWidth(250)
+                dialog.setWindowTitle("System Message")
+                layout = QtWidgets.QVBoxLayout()
+                dialog.setLayout(layout)
+                label=QtWidgets.QLabel("Thêm thành công")
+                layout.addWidget(label)
+                button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+                button_box.accepted.connect(dialog.accept)
+                layout.addWidget(button_box)
+                response = dialog.exec_()
             else:
                 print("Not ok")
 
