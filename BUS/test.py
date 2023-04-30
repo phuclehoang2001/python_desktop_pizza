@@ -9,21 +9,21 @@ from DTO import *
 ############TEST THỐNG KÊ
 statisticBUS = StatisticBUS
 ## doanh thu theo danh mục
-tk_category = statisticBUS.category()
-print("Thống kê doanh thu theo danh mục bánh pizza")
-print("Tổng doanh thu thực tế: "+str(tk_category["TotalActualRevenue"]))
-print("Tổng doanh thu dự kiến: "+str(tk_category["TotalExpectedRevenue"]))
-print("Tổng số lượng bán được thực tế: "+str(tk_category["TotalActualSales"]))
-print("Tổng số lượng bán được dự kiến: "+str(tk_category["TotalExpectedSales"]))
-print("---------------------------------")
-print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
-for index, value in enumerate(tk_category["Categories"]):
-    print(value.getDisplay(),end="\t")
-    print(tk_category["ActualRevenue"][index],end="\t")
-    print(tk_category["ExpectedRevenue"][index],end="\t")
-    print(tk_category["ActualSales"][index],end="\t")
-    print(tk_category["ExpectedSales"][index],end="")
-    print()
+# tk_category = statisticBUS.category()
+# print("Thống kê doanh thu theo danh mục bánh pizza")
+# print("Tổng doanh thu thực tế: "+str(tk_category["TotalActualRevenue"]))
+# print("Tổng doanh thu dự kiến: "+str(tk_category["TotalExpectedRevenue"]))
+# print("Tổng số lượng bán được thực tế: "+str(tk_category["TotalActualSales"]))
+# print("Tổng số lượng bán được dự kiến: "+str(tk_category["TotalExpectedSales"]))
+# print("---------------------------------")
+# print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+# for index, value in enumerate(tk_category["Categories"]):
+#     print(value.getDisplay(),end="\t")
+#     print(tk_category["ActualRevenue"][index],end="\t")
+#     print(tk_category["ExpectedRevenue"][index],end="\t")
+#     print(tk_category["ActualSales"][index],end="\t")
+#     print(tk_category["ExpectedSales"][index],end="")
+#     print()
 
 
 # # tìm kiếm theo khoảng thời gian
@@ -50,21 +50,21 @@ for index, value in enumerate(tk_category["Categories"]):
 
 
 ## doanh thu theo bánh
-# tk_pizza = statisticBUS.pizza()
-# print("Thống kê doanh thu theo bánh pizza")
-# print("Tổng doanh thu thực tế: "+str(tk_pizza["TotalActualRevenue"]))
-# print("Tổng doanh thu dự kiến: "+str(tk_pizza["TotalExpectedRevenue"]))
-# print("Tổng số lượng bán được thực tế: "+str(tk_pizza["TotalActualSales"]))
-# print("Tổng số lượng bán được dự kiến: "+str(tk_pizza["TotalExpectedSales"]))
-# print("---------------------------------")
-# print("Tên bánh" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
-# for index, value in enumerate(tk_pizza["Pizzas"]):
-#     print(value.getDisplay(),end="\t")
-#     print(tk_pizza["ActualRevenue"][index],end="\t")
-#     print(tk_pizza["ExpectedRevenue"][index],end="\t")
-#     print(tk_pizza["ActualSales"][index],end="\t")
-#     print(tk_pizza["ExpectedSales"][index],end="")
-#     print()
+tk_pizza = statisticBUS.pizza()
+print("Thống kê doanh thu theo bánh pizza")
+print("Tổng doanh thu thực tế: "+str(tk_pizza["TotalActualRevenue"]))
+print("Tổng doanh thu dự kiến: "+str(tk_pizza["TotalExpectedRevenue"]))
+print("Tổng số lượng bán được thực tế: "+str(tk_pizza["TotalActualSales"]))
+print("Tổng số lượng bán được dự kiến: "+str(tk_pizza["TotalExpectedSales"]))
+print("---------------------------------")
+print("Tên bánh" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+for index, value in enumerate(tk_pizza["Pizzas"]):
+    print(value.getDisplay(),end="\t")
+    print(tk_pizza["ActualRevenue"][index],end="\t")
+    print(tk_pizza["ExpectedRevenue"][index],end="\t")
+    print(tk_pizza["ActualSales"][index],end="\t")
+    print(tk_pizza["ExpectedSales"][index],end="")
+    print()
 
 # # # tìm kiếm theo khoảng thời gian
 # # # yyyy-mm-dd

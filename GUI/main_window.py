@@ -954,6 +954,7 @@ class Ui_MainWindow(object):
         self.child_widget=QWidget()
         self.child_widget_2=QWidget()
         self.layout=QtWidgets.QVBoxLayout(self.child_widget)
+        self.layout2=QtWidgets.QVBoxLayout(self.child_widget_2)
         self.tabWidget.setGeometry(0,50,1200,500)
         self.tabWidget.addTab(self.child_widget,"Thống kê doanh thu theo danh mục")
         self.tabWidget.addTab(self.child_widget_2,"Thống kê doanh thu theo bánh")
@@ -967,6 +968,15 @@ class Ui_MainWindow(object):
         self.combobox1.addItem("Tổng doanh thu- Dự kiến / Thực tế")
         self.combobox1.addItem("Tổng Bán ra- Dự kiến / Thực tế")
         self.layout.addWidget(self.combobox1)
+
+        self.combobox2=QtWidgets.QComboBox()
+        self.combobox2.setStyleSheet("color:black;border: 1px solid black;font-size: 14px")
+        self.combobox2.addItem("Doanh thu- Dự kiến / Thực tế")
+        self.combobox2.addItem("Bán ra- Dự kiến / Thực tế")
+        self.combobox2.addItem("Tổng doanh thu- Dự kiến / Thực tế")
+        self.combobox2.addItem("Tổng Bán ra- Dự kiến / Thực tế")
+        
+        self.layout2.addWidget(self.combobox2)
         
 
 
