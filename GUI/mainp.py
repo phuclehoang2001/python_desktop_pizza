@@ -161,6 +161,12 @@ class mainwindow(QtWidgets.QMainWindow):
         Catebus=CategoryBUS()
         Catebus.readListCategory()
         if Catebus.deleteCategory(cate):
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xóa thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
             print("ok")
             self.auto_get_value_category()
     def deleteBase(self):
@@ -172,6 +178,12 @@ class mainwindow(QtWidgets.QMainWindow):
         basebl=BaseBUS()
         basebl.readListBase()
         if basebl.deleteBase(base):
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xóa thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
             print("ok")
             self.auto_get_value_Base()
     def deleteSize(self):
@@ -184,6 +196,12 @@ class mainwindow(QtWidgets.QMainWindow):
         sizebl=SizeBUS()
         sizebl.readListSize()
         if sizebl.deleteSize(size):
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xóa thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
             print("ok")
             self.auto_get_value_Size()
     def deleteGroupacc(self):
@@ -196,6 +214,12 @@ class mainwindow(QtWidgets.QMainWindow):
         groupbl=GroupBUS()
         groupbl.readListGroup()
         if groupbl.deleteGroup(group):
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xóa thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
             print("ok")
             self.auto_get_value_group()
 
@@ -210,6 +234,12 @@ class mainwindow(QtWidgets.QMainWindow):
         grp.setDisplay(display)
         grpBus=GroupBUS()
         grpBus.updateGroup(grp)
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setIcon(QtWidgets.QMessageBox.Information)
+        msgBox.setText("Sửa thành công")
+        msgBox.setWindowTitle("Message")
+        msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        returnValue = msgBox.exec()
     def update_category(self):
         row=self.ui.tableWidget_3.currentRow()
         id=self.ui.tableWidget_3.item(row,0).text()
@@ -220,6 +250,12 @@ class mainwindow(QtWidgets.QMainWindow):
         print(cate.getDisplay())
         catebus=CategoryBUS()
         catebus.updateCategory(cate)
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setIcon(QtWidgets.QMessageBox.Information)
+        msgBox.setText("Sửa thành công")
+        msgBox.setWindowTitle("Message")
+        msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        returnValue = msgBox.exec()
     def update_size(self):
         row=self.ui.tableWidget_4.currentRow()
         id=self.ui.tableWidget_4.item(row,0).text()
@@ -231,6 +267,12 @@ class mainwindow(QtWidgets.QMainWindow):
         sz.setPriority(priority)
         szBus=SizeBUS()
         szBus.updateSize(sz)
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setIcon(QtWidgets.QMessageBox.Information)
+        msgBox.setText("Sửa thành công")
+        msgBox.setWindowTitle("Message")
+        msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        returnValue = msgBox.exec()
     def update_Base(self):
         row=self.ui.tableWidget_5.currentRow()
         id=self.ui.tableWidget_5.item(row,0).text()
@@ -240,6 +282,12 @@ class mainwindow(QtWidgets.QMainWindow):
         bse.setDisplay(display)
         bsebl=BaseBUS()
         bsebl.updateBase(bse)
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setIcon(QtWidgets.QMessageBox.Information)
+        msgBox.setText("Sửa thành công")
+        msgBox.setWindowTitle("Message")
+        msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        returnValue = msgBox.exec()
       
         #AutoGetValue#############################################
     def auto_get_value_account(self):
