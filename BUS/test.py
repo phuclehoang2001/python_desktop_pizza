@@ -9,21 +9,21 @@ from DTO import *
 ############TEST THỐNG KÊ
 statisticBUS = StatisticBUS
 ## doanh thu theo danh mục
-# tk_category = statisticBUS.category()
-# print("Thống kê doanh thu theo danh mục bánh pizza")
-# print("Tổng doanh thu thực tế: "+str(tk_category["TotalActualRevenue"]))
-# print("Tổng doanh thu dự kiến: "+str(tk_category["TotalExpectedRevenue"]))
-# print("Tổng số lượng bán được thực tế: "+str(tk_category["TotalActualSales"]))
-# print("Tổng số lượng bán được dự kiến: "+str(tk_category["TotalExpectedSales"]))
-# print("---------------------------------")
-# print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
-# for index, value in enumerate(tk_category["Categories"]):
-#     print(value.getDisplay(),end="\t")
-#     print(tk_category["ActualRevenue"][index],end="\t")
-#     print(tk_category["ExpectedRevenue"][index],end="\t")
-#     print(tk_category["ActualSales"][index],end="\t")
-#     print(tk_category["ExpectedSales"][index],end="")
-#     print()
+tk_category = statisticBUS.category()
+print("Thống kê doanh thu theo danh mục bánh pizza")
+print("Tổng doanh thu thực tế: "+str(tk_category["TotalActualRevenue"]))
+print("Tổng doanh thu dự kiến: "+str(tk_category["TotalExpectedRevenue"]))
+print("Tổng số lượng bán được thực tế: "+str(tk_category["TotalActualSales"]))
+print("Tổng số lượng bán được dự kiến: "+str(tk_category["TotalExpectedSales"]))
+print("---------------------------------")
+print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+for index, value in enumerate(tk_category["Categories"]):
+    print(value.getDisplay(),end="\t")
+    print(tk_category["ActualRevenue"][index],end="\t")
+    print(tk_category["ExpectedRevenue"][index],end="\t")
+    print(tk_category["ActualSales"][index],end="\t")
+    print(tk_category["ExpectedSales"][index],end="")
+    print()
 
 
 # # tìm kiếm theo khoảng thời gian

@@ -17,11 +17,15 @@ from add_group import add_group_dia
 from add_size import add_size_dia
 from add_base import add_base_dia
 from add_user2 import add_user_dia
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
 #Globals
 COUNTER=0
 Role=0
 FullName=""
 UserName=""
+counting=0
 #MAIN WINDOW
 class mainwindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -37,6 +41,7 @@ class mainwindow(QtWidgets.QMainWindow):
             self.ui.Account_btn.setHidden(True)
             self.ui.GroupAccount_btn.setHidden(True)
         self.ui.pushButton_info.setText(FullName)
+        self.statictical_category(0)
         self.ui.pushButton_info.clicked.connect(self.doubleclicklable)
         self.ui.GroupAccount_btn.clicked.connect(self.click_groupAccount_btn)
         self.ui.Account_btn.clicked.connect(self.click_Account_btn)
@@ -51,6 +56,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_passchange.clicked.connect(self.change_pass)
         self.ui.pushButton_18.clicked.connect(self.change_info)
         self.ui.lock.clicked.connect(self.lock_open_user)
+        self.ui.combobox1.currentIndexChanged.connect(self.statictical_category)
         #####Info
         self.ui.pushButton_20.clicked.connect(self.info_account)
         #logout
@@ -350,20 +356,28 @@ class mainwindow(QtWidgets.QMainWindow):
     #####################################################
     def click_groupAccount_btn(self):
         self.ui.stackedWidget.setCurrentIndex(0)
+        self.resize(1050,729)
     def click_Account_btn(self):
         self.ui.stackedWidget.setCurrentIndex(1)
+        self.resize(1050,729)
     def click_Category_btn(self):
         self.ui.stackedWidget.setCurrentIndex(2)
+        self.resize(1050,729)
     def click_Size_btn(self):
         self.ui.stackedWidget.setCurrentIndex(3)
+        self.resize(1050,729)
     def click_PizzaBase_btn(self):
         self.ui.stackedWidget.setCurrentIndex(4)
+        self.resize(1050,729)
     def click_Pizza_btn(self):
         self.ui.stackedWidget.setCurrentIndex(5)
+        self.resize(1050,729)
     def click_Order_btn(self):
         self.ui.stackedWidget.setCurrentIndex(6)
+        self.resize(1050,729)
     def click_Stastical_btn(self):
         self.ui.stackedWidget.setCurrentIndex(7)
+        self.resize(1400,729)
         ###Create add_cattegory_dialog
         ########
     def open_add_user(self):
@@ -828,7 +842,119 @@ class mainwindow(QtWidgets.QMainWindow):
             elif flag==2:
                 usrbl.clockUser(usr_name)
         else:
-            pass        
+            pass
+    def statictical_category(self,index):
+        fig = plt.Figure()
+        canvas = FigureCanvas(fig)
+        canvas.setFixedSize(1300,400)
+        ax = fig.add_subplot(111)
+        global counting
+        if self.ui.combobox1.currentText()=="Doanh thu- Dự kiến / Thực tế":
+            statis_bl=StatisticBUS
+            tk_category=statis_bl.category()
+            lst_of_cate=[]
+            lst_of_dttt=[]
+            lst_of_dtdk=[]
+            
+            for index, value in enumerate(tk_category["Categories"]):
+                lst_of_cate.append(value.getDisplay())
+                lst_of_dttt.append(tk_category["ActualRevenue"][index])
+                lst_of_dtdk.append(tk_category["ExpectedRevenue"][index])
+            ax.bar( lst_of_cate, lst_of_dttt, label='Doanh thu thực tế')
+            ax.bar( lst_of_cate, lst_of_dtdk,bottom=lst_of_dttt, label='Doanh thu dự kiến')
+        
+            ax.set_xlabel('Danh mục')
+            ax.set_ylabel('Số liệu')
+            ax.set_title('Biểu đồ số liệu Doanh thu của danh mục')
+            ax.legend()
+           
+            if counting >=1:
+                self.ui.layout.itemAt(1).widget().deleteLater()
+                print(counting)
+                self.ui.layout.addWidget(canvas)
+                print(self.ui.layout.count())
+                
+            else:
+
+                self.ui.layout.addWidget(canvas)
+                counting+=1 
+        elif self.ui.combobox1.currentText()=="Bán ra- Dự kiến / Thực tế":
+            statis_bl=StatisticBUS
+            tk_category=statis_bl.category()
+            lst_of_cate=[]
+            lst_of_brtt=[]
+            lst_of_brdk=[]
+            fig = plt.Figure()
+            canvas = FigureCanvas(fig)
+            canvas.setFixedSize(1300,400)
+            ax = fig.add_subplot(111)
+            for index, value in enumerate(tk_category["Categories"]):
+                lst_of_cate.append(value.getDisplay())
+                lst_of_brtt.append(tk_category["ActualSales"][index])
+                lst_of_brdk.append(tk_category["ExpectedSales"][index])
+            ax.bar( lst_of_cate, lst_of_brtt, label='Bán ra thực tế')
+            ax.bar( lst_of_cate, lst_of_brdk,bottom=lst_of_brtt, label='Bán ra dự kiến')
+        
+            ax.set_xlabel('Danh mục')
+            ax.set_ylabel('Số liệu')
+            ax.set_title('Biểu đồ số liệu Bán ra của danh mục')
+            ax.legend()
+            if counting >=1:
+                self.ui.layout.itemAt(1).widget().deleteLater()
+                print(counting)
+                
+                self.ui.layout.addWidget(canvas)
+                print(self.ui.layout.count())
+            else:
+                counting+=1
+                self.ui.layout.addWidget(canvas)
+        elif self.ui.combobox1.currentText()=="Tổng doanh thu- Dự kiến / Thực tế":
+            statis_bl=StatisticBUS
+            tk_category=statis_bl.category()
+            tongdtbanra=tk_category["TotalActualRevenue"]
+            tongdtdukien=tk_category["TotalExpectedRevenue"]
+            ax.bar( ["Tổng doanh thu bán ra"], tongdtbanra, label='Tổng Doanh thu thực tế')
+            ax.bar( ["Tổng doanh thu thực tế"], tongdtdukien, label='Tổng Doanh thu dự kiến')
+        
+            ax.set_xlabel('Danh mục')
+            ax.set_ylabel('Số liệu')
+            ax.set_title('Biểu đồ số liệu Tổng doanh thu')
+            ax.legend()
+           
+            if counting >=1:
+                self.ui.layout.itemAt(1).widget().deleteLater()
+                print(counting)
+                self.ui.layout.addWidget(canvas)
+                print(self.ui.layout.count())
+                
+            else:
+
+                self.ui.layout.addWidget(canvas)
+                counting+=1 
+        elif self.ui.combobox1.currentText()=="Tổng Bán ra- Dự kiến / Thực tế":
+            statis_bl=StatisticBUS
+            tk_category=statis_bl.category()
+            tongdtbanra=tk_category["TotalActualSales"]
+            tongdtdukien=tk_category["TotalExpectedSales"]
+            ax.bar( ["Tổng bán ra thực tế"], tongdtbanra, label='Tổng bán ra thực tế')
+            ax.bar( ["Tổng bán ra dự kiến"], tongdtdukien, label='Tổng bán ra dự kiến')
+        
+            ax.set_xlabel('Danh mục')
+            ax.set_ylabel('Số liệu')
+            ax.set_title('Biểu đồ số liệu Tổng bán ra')
+            ax.legend()
+           
+            if counting >=1:
+                self.ui.layout.itemAt(1).widget().deleteLater()
+                print(counting)
+                self.ui.layout.addWidget(canvas)
+                print(self.ui.layout.count())
+                
+            else:
+
+                self.ui.layout.addWidget(canvas)
+                counting+=1 
+
 
 
 

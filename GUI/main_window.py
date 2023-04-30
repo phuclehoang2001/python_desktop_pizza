@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget
 
 
 class Ui_MainWindow(object):
@@ -950,12 +951,22 @@ class Ui_MainWindow(object):
         self.Line_edit_User.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
 
         self.tabWidget=QtWidgets.QTabWidget(self.Statistical)
-        label=QtWidgets.QLabel("zxczxc")
-        label2=QtWidgets.QLabel("zxczxc")
-        self.tabWidget.setGeometry(0,50,1000,500)
-        self.tabWidget.addTab(label,"Thống kê theo danh mục")
-        self.tabWidget.addTab(label2,"2")
-        self.tabWidget.tabBar().setStyleSheet("color:Black")
+        self.child_widget=QWidget()
+        self.child_widget_2=QWidget()
+        self.layout=QtWidgets.QVBoxLayout(self.child_widget)
+        self.tabWidget.setGeometry(0,50,1200,500)
+        self.tabWidget.addTab(self.child_widget,"Thống kê doanh thu theo danh mục")
+        self.tabWidget.addTab(self.child_widget_2,"Thống kê doanh thu theo bánh")
+        self.tabWidget.tabBar().setStyleSheet("color:Black;font-size: 16px")
+
+        
+        self.combobox1=QtWidgets.QComboBox()
+        self.combobox1.setStyleSheet("color:black;border: 1px solid black;font-size: 14px")
+        self.combobox1.addItem("Doanh thu- Dự kiến / Thực tế")
+        self.combobox1.addItem("Bán ra- Dự kiến / Thực tế")
+        self.combobox1.addItem("Tổng doanh thu- Dự kiến / Thực tế")
+        self.combobox1.addItem("Tổng Bán ra- Dự kiến / Thực tế")
+        self.layout.addWidget(self.combobox1)
         
 
 
