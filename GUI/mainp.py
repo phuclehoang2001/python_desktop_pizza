@@ -44,6 +44,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_info.setText(FullName)
         self.statictical_category(0)
         self.statstical_pizza(0)
+        self.ui.button_chart1.clicked.connect(self.date_time_load_btn)
         self.ui.pushButton_info.clicked.connect(self.doubleclicklable)
         self.ui.GroupAccount_btn.clicked.connect(self.click_groupAccount_btn)
         self.ui.Account_btn.clicked.connect(self.click_Account_btn)
@@ -1057,14 +1058,206 @@ class mainwindow(QtWidgets.QMainWindow):
 
                 self.ui.layout2.addWidget(canvas)
                 counting2+=1 
-        
+    def date_time_load_btn(self):
+        statisticBUS=StatisticBUS
+        if self.ui.tabWidget.currentIndex()==0:
+            start=self.ui.calen_start.date().toPyDate()
+            end=self.ui.calen_end.date().toPyDate()
+            tk_category = statisticBUS.searchCategory(start,end)
+            fig = plt.Figure()
+            canvas = FigureCanvas(fig)
+            canvas.setFixedSize(1300,400)
+            ax = fig.add_subplot(111)
+            global counting
+            if self.ui.combobox1.currentIndex()==0:
+                lst_of_cate=[]
+                lst_of_dttt=[]
+                lst_of_dtdk=[]
+                for index, value in enumerate(tk_category["Categories"]):
+                    if int(tk_category["ActualRevenue"][index])!=0 or int(tk_category["ExpectedRevenue"][index])!=0:
+                        lst_of_cate.append(value.getDisplay())
+                        lst_of_dttt.append(tk_category["ActualRevenue"][index])
+                        lst_of_dtdk.append(tk_category["ExpectedRevenue"][index])
+                ax.bar( lst_of_cate, lst_of_dttt, label='Doanh thu thực tế')
+                ax.bar( lst_of_cate, lst_of_dtdk,bottom=lst_of_dttt, label='Doanh thu dự kiến')
+            
+                ax.set_xlabel('Danh mục')
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu doanh thu của danh mục từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting >=1:
+                    self.ui.layout.itemAt(1).widget().deleteLater()
+                    print(counting)
+                    self.ui.layout.addWidget(canvas)
+                    print(self.ui.layout.count())
+                    
+                else:
 
+                    self.ui.layout.addWidget(canvas)
+                    counting+=1
+            elif self.ui.combobox1.currentIndex()==1:
+                lst_of_cate=[]
+                lst_of_brtt=[]
+                lst_of_brdk=[]
+                for index, value in enumerate(tk_category["Categories"]):
+                    if int(tk_category["ActualSales"][index])!=0 or int(tk_category["ExpectedSales"][index])!=0:
+                        lst_of_cate.append(value.getDisplay())
+                        lst_of_brtt.append(tk_category["ActualSales"][index])
+                        lst_of_brdk.append(tk_category["ExpectedSales"][index])
+                ax.bar( lst_of_cate, lst_of_brtt, label='Số lượng bán ra thực tế')
+                ax.bar( lst_of_cate, lst_of_brdk,bottom=lst_of_brtt, label='Số lượng bán ra dự kiến')
+            
+                ax.set_xlabel('Danh mục')
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu số lượng bán ra của danh mục từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting >=1:
+                    self.ui.layout.itemAt(1).widget().deleteLater()
+                    print(counting)
+                    self.ui.layout.addWidget(canvas)
+                    print(self.ui.layout.count())
+                    
+                else:
 
+                    self.ui.layout.addWidget(canvas)
+                    counting+=1
+            elif self.ui.combobox1.currentIndex()==2:
+                tongdtbanra=tk_category["TotalActualRevenue"]
+                tongdtdukien=tk_category["TotalExpectedRevenue"]
+                ax.bar( ["Tổng doanh thu thực tế"], tongdtbanra, label='Tổng Doanh thu thực tế')
+                ax.bar( ["Tổng doanh thu dự kiến"], tongdtdukien, label='Tổng Doanh thu dự kiến')
+            
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu tổng doanh thu của danh mục từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting >=1:
+                    self.ui.layout.itemAt(1).widget().deleteLater()
+                    print(counting)
+                    self.ui.layout.addWidget(canvas)
+                    print(self.ui.layout.count())
+                    
+                else:
 
+                    self.ui.layout.addWidget(canvas)
+                    counting+=1
+            elif self.ui.combobox1.currentIndex()==3:
+                tongdtbanra=tk_category["TotalActualSales"]
+                tongdtdukien=tk_category["TotalExpectedSales"]
+                ax.bar( ["Tổng Số lượng  bán ra thực tế"], tongdtbanra, label='Tổng Số lượng bán ra thực tế')
+                ax.bar( ["Tổng Số lượng bán ra dự kiến"], tongdtdukien, label='Tổng số lượng bán ra dự kiến')
+            
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu số lượng bán ra của danh mục từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting >=1:
+                    self.ui.layout.itemAt(1).widget().deleteLater()
+                    print(counting)
+                    self.ui.layout.addWidget(canvas)
+                    print(self.ui.layout.count())
+                    
+                else:
 
+                    self.ui.layout.addWidget(canvas)
+                    counting+=1
+        elif self.ui.tabWidget.currentIndex()==1:
+            start=self.ui.calen_start.date().toPyDate()
+            end=self.ui.calen_end.date().toPyDate()
+            tk_category = statisticBUS.searchPizza(start,end)
+            fig = plt.Figure()
+            canvas = FigureCanvas(fig)
+            canvas.setFixedSize(1300,400)
+            ax = fig.add_subplot(111)
+            global counting2
+            if self.ui.combobox2.currentIndex()==0:
+                lst_of_cate=[]
+                lst_of_dttt=[]
+                lst_of_dtdk=[]
+                for index, value in enumerate(tk_category["Pizzas"]):
+                    if int(tk_category["ActualRevenue"][index])!=0 or int(tk_category["ExpectedRevenue"][index])!=0:
+                        lst_of_cate.append(value.getDisplay())
+                        lst_of_dttt.append(tk_category["ActualRevenue"][index])
+                        lst_of_dtdk.append(tk_category["ExpectedRevenue"][index])
+                ax.bar( lst_of_cate, lst_of_dttt, label='Doanh thu thực tế')
+                ax.bar( lst_of_cate, lst_of_dtdk,bottom=lst_of_dttt, label='Doanh thu dự kiến')
+            
+                ax.set_xlabel('Pizza')
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu doanh thu của Pizza từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting2 >=1:
+                    self.ui.layout2.itemAt(1).widget().deleteLater()
+                    self.ui.layout2.addWidget(canvas)
+                    
+                else:
 
+                    self.ui.layout2.addWidget(canvas)
+                    counting2+=1
+            elif self.ui.combobox2.currentIndex()==1:
+                lst_of_cate=[]
+                lst_of_brtt=[]
+                lst_of_brdk=[]
+                for index, value in enumerate(tk_category["Pizzas"]):
+                    if int(tk_category["ActualSales"][index])!=0 or int(tk_category["ExpectedSales"][index])!=0:
+                        lst_of_cate.append(value.getDisplay())
+                        lst_of_brtt.append(tk_category["ActualSales"][index])
+                        lst_of_brdk.append(tk_category["ExpectedSales"][index])
+                ax.bar( lst_of_cate, lst_of_brtt, label='Số lượng bán ra thực tế')
+                ax.bar( lst_of_cate, lst_of_brdk,bottom=lst_of_brtt, label='Số lượng bán ra dự kiến')
+            
+                ax.set_xlabel('Pizza')
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu số lượng bán ra của Pizza từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting2 >=1:
+                    self.ui.layout2.itemAt(1).widget().deleteLater()
+                    self.ui.layout2.addWidget(canvas)
+                    
+                else:
 
-        
+                    self.ui.layout2.addWidget(canvas)
+                    counting2+=1
+            elif self.ui.combobox2.currentIndex()==2:
+                tongdtbanra=tk_category["TotalActualRevenue"]
+                tongdtdukien=tk_category["TotalExpectedRevenue"]
+                ax.bar( ["Tổng doanh thu thực tế"], tongdtbanra, label='Tổng Doanh thu thực tế')
+                ax.bar( ["Tổng doanh thu dự kiến"], tongdtdukien, label='Tổng Doanh thu dự kiến')
+            
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu tổng doanh thu của Pizza từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting2 >=1:
+                    self.ui.layout2.itemAt(1).widget().deleteLater()
+                    self.ui.layout2.addWidget(canvas)
+                    
+                else:
+
+                    self.ui.layout2.addWidget(canvas)
+                    counting2+=1
+            elif self.ui.combobox2.currentIndex()==3:
+                tongdtbanra=tk_category["TotalActualSales"]
+                tongdtdukien=tk_category["TotalExpectedSales"]
+                ax.bar( ["Tổng Số lượng  bán ra thực tế"], tongdtbanra, label='Tổng Số lượng bán ra thực tế')
+                ax.bar( ["Tổng Số lượng bán ra dự kiến"], tongdtdukien, label='Tổng số lượng bán ra dự kiến')
+            
+                ax.set_ylabel('Số liệu')
+                ax.set_title('Biểu đồ số liệu số lượng bán ra của Pizza từ '+str(start)+" cho tới " +str(end))
+                ax.legend()
+            
+                if counting2 >=1:
+                    self.ui.layout2.itemAt(1).widget().deleteLater()
+                    self.ui.layout2.addWidget(canvas)
+                    
+                else:
+
+                    self.ui.layout2.addWidget(canvas)
+                    counting2+=1 
 
 ##LOGin
 class wth(QtWidgets.QMainWindow):

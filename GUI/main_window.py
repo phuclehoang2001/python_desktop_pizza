@@ -968,6 +968,28 @@ class Ui_MainWindow(object):
         self.combobox1.addItem("Tổng doanh thu- Dự kiến / Thực tế")
         self.combobox1.addItem("Tổng Bán ra- Dự kiến / Thực tế")
         self.layout.addWidget(self.combobox1)
+        
+        self.lable_for_calen_start=QtWidgets.QLabel(self.Statistical)
+        self.lable_for_calen_start.setStyleSheet("color:Black;font-size: 14px")
+        self.lable_for_calen_start.setText("Start date ")
+        self.lable_for_calen_start.setGeometry(580,40,100,30)
+
+        self.lable_for_calen_end=QtWidgets.QLabel(self.Statistical)
+        self.lable_for_calen_end.setStyleSheet("color:Black;font-size: 14px")
+        self.lable_for_calen_end.setText("- End date ")
+        self.lable_for_calen_end.setGeometry(760,40,100,30)
+
+        self.calen_start=QtWidgets.QDateEdit(self.Statistical)
+        self.calen_start.setStyleSheet("color:Black;font-size: 16px;border: 1px solid black")
+        self.calen_start.setGeometry(650,40,100,30)
+
+        self.calen_end=QtWidgets.QDateEdit(self.Statistical)
+        self.calen_end.setStyleSheet("color:Black;font-size: 16px;border: 1px solid black")
+        self.calen_end.setGeometry(830,40,100,30)
+
+        self.button_chart1=QtWidgets.QPushButton(self.Statistical)
+        self.button_chart1.setText("Load")
+        self.button_chart1.setGeometry(940,40,50,30)
 
         self.combobox2=QtWidgets.QComboBox()
         self.combobox2.setStyleSheet("color:black;border: 1px solid black;font-size: 14px")
