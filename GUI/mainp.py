@@ -27,6 +27,7 @@ FullName=""
 UserName=""
 counting=0
 counting2=0
+address="C:/Users/Admin/Desktop/python_desktop_pizza/GUI/images/"
 #MAIN WINDOW
 class mainwindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -88,6 +89,7 @@ class mainwindow(QtWidgets.QMainWindow):
         
         
         ####
+        self.ui.pushButton_43.clicked.connect(self.info_pizza)
         self.ui.pushButton_passchange.clicked.connect(self.change_pass)
         self.ui.pushButton_18.clicked.connect(self.change_info)
         self.ui.lock.clicked.connect(self.lock_open_user)
@@ -153,6 +155,65 @@ class mainwindow(QtWidgets.QMainWindow):
 
     ########################user info
     ###
+    def info_pizza(self):
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+       
+        row=self.ui.tableWidget_6.currentRow()
+        col=self.ui.tableWidget_6.currentColumn()
+        id=self.ui.tableWidget_6.item(row,col).text()
+        info=pizzabl.getInfoPizza(id)
+
+        dialog =QtWidgets.QDialog()
+        dialog.setStyleSheet("font-size: 16px")
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thông tin Pizza")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        ##
+        lay_out_n=QtWidgets.QHBoxLayout()
+        ##
+        global address
+        pixmap =QtGui.QPixmap(address+info["Image"])
+        scale_pixmap=pixmap.scaled(200, 200, aspectRatioMode=True)
+        print("/images/"+info["Image"])
+        label_img=QtWidgets.QLabel()
+        label_img.setPixmap(scale_pixmap)
+        form_layout.addWidget(label_img)
+        label_tenbanh=QtWidgets.QLabel("Tên Bánh: "+info["PizzaName"])
+        label_loai=QtWidgets.QLabel("Loại Bánh: "+info["CategoryName"])
+        label_mota=QtWidgets.QLabel("Mô tả: "+info["Description"])
+        form_layout.addRow(label_tenbanh)
+        form_layout.addRow(label_loai)
+        form_layout.addRow(label_mota)
+        ##
+        if len(info["ListTopping"])!=0:
+            Label_for_topping=QtWidgets.QLabel("- Topping:")
+            form_layout.addRow(Label_for_topping)
+            strong="+ "
+            for topping in info["ListTopping"]:
+                strong+=topping.getDisplay()+","
+            lbbel=QtWidgets.QLabel(strong)
+            form_layout.addRow(lbbel)
+            
+        for sizeinfo in info["ListSize"]:
+            Label_for_size=QtWidgets.QLabel("- "+sizeinfo["SizeName"]+" bao gồm:")
+            form_layout.addRow(Label_for_size)
+            strong_for_base=""
+            for Baseinfo in sizeinfo["ListBase"]:
+                strong_for_base+="Tên đế "+Baseinfo["BaseName"]+" giá "+str(Baseinfo["Price"])+" SL "+str(Baseinfo["Quantity"])+"\n"
+            label_for_base=QtWidgets.QLabel(strong_for_base)
+            form_layout.addRow(label_for_base)
+
+        ##
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+        button_box.accepted.connect(dialog.accept)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+
     def doubleclicklable(self):
         usrbl=UserBUS()
         global UserName
