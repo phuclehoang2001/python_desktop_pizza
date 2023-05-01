@@ -40,8 +40,41 @@ class mainwindow(QtWidgets.QMainWindow):
         if Role!=4:
             self.ui.pushButton_passchange.setEnabled(False)
             self.ui.stackedWidget.setCurrentIndex(2)
-            self.ui.Account_btn.setHidden(True)
-            self.ui.GroupAccount_btn.setHidden(True)
+            permission_dict = {
+                "admin.login": "Đăng nhập trang quản trị",
+                "admin.group": "Quản lý nhóm tài khoản",
+                "admin.user": "Quản lý tài khoản",
+                "admin.category": "Quản lý danh mục bánh",
+                "admin.topping": "Quản lý nhân bánh",
+                "admin.size": "Quản lý kích thước bánh",
+                "admin.base": "Quản lý đế bánh",
+                "admin.pizza": "Quản lý bánh pizza",
+                "admin.order": "Quản lý đơn hàng",
+                "admin.statistic": "Thống kê báo cáo"}
+            perMissonBl=GroupBUS()
+            perMissonBl.readListGroup()
+            
+            group_id=3
+            for key, value in permission_dict.items():
+                if not perMissonBl.hasPermission(group_id, key):
+                    if key=="admin.group":
+                        self.ui.GroupAccount_btn.setHidden(True)
+                    if key=="admin.user":
+                        self.ui.Account_btn.setHidden(True)
+                    if key=="admin.category":
+                        self.ui.Category_btn.setHidden(True)
+                    if key=="admin.size":
+                        self.ui.Size_btn.setHidden(True)
+                    if key=="admin.base":
+                        self.ui.Base_btn.setHidden(True)
+                    if key=="admin.order":
+                        self.ui.Order_btn.setHidden(True)
+                    if key=="admin.statistic":
+                        self.ui.Stastical_btn.setHidden(True)
+                    if key=="admin.pizza":
+                        self.ui.pizza_btn.setHidden(True)
+            
+            
         self.ui.button_chart1.clicked.connect(self.date_time_load_btn)
         self.ui.pushButton_info.clicked.connect(self.doubleclicklable)
         self.ui.GroupAccount_btn.clicked.connect(self.click_groupAccount_btn)
