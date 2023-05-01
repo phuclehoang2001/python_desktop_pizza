@@ -669,8 +669,8 @@ class mainwindow(QtWidgets.QMainWindow):
 
         dialog.setWindowTitle("Phân Quyền")
         for key,value in permission_dict.items():
-            per1=perMissonBl.isSet(Group_id,key)
-            if per1==True:
+            per1=perMissonBl.hasPermission(Group_id,key)
+            if per1==1:
                 check=QtWidgets.QCheckBox()
                 check.setText(value)
                 check.setChecked(True)
