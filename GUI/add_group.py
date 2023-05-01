@@ -46,7 +46,7 @@ class add_group_dia(object):
         self.pushButton_2.setText(_translate("Dialog", "Cancel"))
         self.label.setText(_translate("Dialog", "Tên danh mục"))
     def click_me(self):
-        if self.lineEdit.text()=="":
+        if self.lineEdit.text()!="":
             groupBus=GroupBUS()
             group=Group()
             group.setDisplay(self.lineEdit.text())
