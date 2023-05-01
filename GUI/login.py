@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from images import res_login
 class Login_window(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")

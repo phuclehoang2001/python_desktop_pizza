@@ -6,8 +6,8 @@ from BUS import OrderBUS, GroupBUS, UserBUS, StatisticBUS
 from DTO import *
 
 
-############TEST THỐNG KÊ
-statisticBUS = StatisticBUS
+# ############TEST THỐNG KÊ
+# statisticBUS = StatisticBUS
 ## doanh thu theo danh mục
 # tk_category = statisticBUS.category()
 # print("Thống kê doanh thu theo danh mục bánh pizza")
@@ -69,24 +69,24 @@ statisticBUS = StatisticBUS
 # # # tìm kiếm theo khoảng thời gian
 # # # yyyy-mm-dd
 # print("---------------------------------------------------------------------------------")
-startDay = datetime.datetime(2022,9,26)
-endDay = datetime.datetime(2022,10,26)
-tk_pizza = statisticBUS.searchPizza(startDay,endDay)
-print("Thống kê doanh thu theo bánh pizza")
-print(tk_pizza["searchDate"])
-print("Tổng doanh thu thực tế: "+str(tk_pizza["TotalActualRevenue"]))
-print("Tổng doanh thu dự kiến: "+str(tk_pizza["TotalExpectedRevenue"]))
-print("Tổng số lượng bán được thực tế: "+str(tk_pizza["TotalActualSales"]))
-print("Tổng số lượng bán được dự kiến: "+str(tk_pizza["TotalExpectedSales"]))
-print("---------------------------------")
-print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
-for index, value in enumerate(tk_pizza["Pizzas"]):
-    print(value.getDisplay(),end="\t") 
-    print(tk_pizza["ActualRevenue"][index],end="\t")
-    print(tk_pizza["ExpectedRevenue"][index],end="\t")
-    print(tk_pizza["ActualSales"][index],end="\t")
-    print(tk_pizza["ExpectedSales"][index],end="")
-    print()
+# startDay = datetime.datetime(2022,9,26)
+# endDay = datetime.datetime(2022,10,26)
+# tk_pizza = statisticBUS.searchPizza(startDay,endDay)
+# print("Thống kê doanh thu theo bánh pizza")
+# print(tk_pizza["searchDate"])
+# print("Tổng doanh thu thực tế: "+str(tk_pizza["TotalActualRevenue"]))
+# print("Tổng doanh thu dự kiến: "+str(tk_pizza["TotalExpectedRevenue"]))
+# print("Tổng số lượng bán được thực tế: "+str(tk_pizza["TotalActualSales"]))
+# print("Tổng số lượng bán được dự kiến: "+str(tk_pizza["TotalExpectedSales"]))
+# print("---------------------------------")
+# print("Tên danh mục" + "\t" + "Doanh thu thực tế"+ "\t" + "Doanh thu dự kiến" + "\t" + "Số lượng bán được thực tế"+ "\t" +"Số lượng bán được dự kiến ")
+# for index, value in enumerate(tk_pizza["Pizzas"]):
+#     print(value.getDisplay(),end="\t") 
+#     print(tk_pizza["ActualRevenue"][index],end="\t")
+#     print(tk_pizza["ExpectedRevenue"][index],end="\t")
+#     print(tk_pizza["ActualSales"][index],end="\t")
+#     print(tk_pizza["ExpectedSales"][index],end="")
+#     print()
 
 
 #############
