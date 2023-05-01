@@ -203,28 +203,84 @@ class PizzaDAO:
                 print(error)
         return False
 
+    def checkSize(self, idPizza, idSize):
+        result = False
+        try:
+            query = "SELECT * FROM pizza_detail WHERE pizza_id = {idPizza} AND size_id = {idSize}"\
+            .format(idPizza=idPizza,idSize=idSize)
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchall()
+            result = self.cursor.rowcount > 0
+            self.sqlConnect.close()
+            return result
+        except Error as error:
+                print(error)
+        return False
    
+    def checkBase(self, idPizza, idSize, idBase):
+        result = False
+        try:
+            query = "SELECT * FROM pizza_detail WHERE pizza_id = {idPizza} AND size_id = {idSize} AND base_id = {idBase}"\
+            .format(idPizza=idPizza,idSize=idSize, idBase=idBase)
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchall()
+            result = self.cursor.rowcount > 0
+            self.sqlConnect.close()
+            return result
+        except Error as error:
+                print(error)
+        return False
+    
+    def getPriceAndQuantity(self, idPizza, idSize, idBase):
+        data = {}
+        try:
+            query = "SELECT price,quantity FROM pizza_detail WHERE pizza_id = {idPizza} AND size_id = {idSize} AND base_id = {idBase}"\
+            .format(idPizza=idPizza,idSize=idSize, idBase=idBase)
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone()
+            data["Price"] = self.result[0]
+            data["Quantity"] = self.result[1]
+            self.sqlConnect.close()
+            return data
+        except Error as error:
+                print(error)
+        return data
 
     def deletePizzaDetail(self, pizzaId):
         try:
-            listPizzaDetail = self.getListPizzaDetail(pizzaId)
-            for detail in listPizzaDetail:
-                query = "DELETE FROM `pizza_detail` WHERE id = {id}"\
-                .format(id=detail.getId())        
-                self.cursor = self.con.cursor()
-                self.cursor.execute(query)
-                self.con.commit()
-                self.sqlConnect.close()
-                return True
+            query = "DELETE FROM `pizza_detail` WHERE pizza_id = {pizzaId}"\
+            .format(pizzaId=pizzaId)        
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True            
         except Error as error:
                 print(error)
-        return False    
-    
-    def delete(self, pizza):
+        return False  
+
+    def deleteToppingDetail(self, pizzaId):
         try:
-            self.deletePizzaDetail(pizza.getId())
-            query = "DELETE FROM `pizza` WHERE id = {id}"\
-            .format(id=pizza.getId())        
+            query = "DELETE FROM `topping_detail` WHERE pizza_id = {pizzaId}"\
+            .format(pizzaId=pizzaId)        
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True            
+        except Error as error:
+                print(error)
+        return False  
+    
+    def delete(self, pizzaId):
+        try:
+            if not self.deletePizzaDetail(pizzaId) or not self.deleteToppingDetail(pizzaId):
+                 return False
+            query = "DELETE FROM `pizza` WHERE id = {pizzaId}"\
+            .format(pizzaId=pizzaId)        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()
@@ -244,3 +300,18 @@ class PizzaDAO:
                     newlist.append(pizza)
            return newlist
         return listPizza
+    
+    def hasOrder(self, pizzaId):
+        result = False
+        try:
+            query = "SELECT * FROM order_detail, pizza_detail WHERE pizza_detail_id = pizza_detail.id AND pizza_id = {pizzaId}"\
+            .format(pizzaId=pizzaId)
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchall()
+            result = self.cursor.rowcount > 0
+            self.sqlConnect.close()
+            return result
+        except Error as error:
+                print(error)
+        return False
