@@ -6,8 +6,74 @@ from BUS import OrderBUS, GroupBUS, UserBUS, StatisticBUS, PizzaBUS
 from DTO import *
 
 ##TEST QUẢN LÝ BÁNH PIZZA
-# trang chính chỉ hiện 3 thông tin: id bánh, tên bánh, tên danh mục bánh
 pizzaBUS = PizzaBUS()
+##Thêm pizza
+## Bước 1: xử lý file ảnh
+## + kiếm tra kiểm tra kích thước file ảnh thấp hơn 2mb
+## + kiểm tra định dạng tệp tin đã tải lên: allowed_types = ["jpg", "png"]
+## + kiếm tra ảnh đã chọn có trùng với ảnh trong /GUI/images không? nếu có thì báo "Đã tồn tại file trong hệ thống, không thể ghi đè file!"
+## + nếu các điều kiện trên hợp lệ: thực hiện di chuyển file ảnh đã được tải lên vào /GUI/images (có thể sử dụng module shutil của python)
+
+## Bước 2: thực hiện thêm dữ liệu vào CSDL
+## sau khi chọn các nhân bánh, kích thước, đế ta có 1 ví dụ cấu trúc dictionary như sau:
+info = {}
+info["PizzaName"] = "Pizza mới"
+info["CategoryId"]= 1
+info["Description"] =" test tạo bánh mới "
+info["Image"] ="newpizza.png" ## lấy filename đã chọn
+## đây là mảng của các topping_id sau khi chọn nhân bánh
+info["ListTopping"] = [2,3,4,5] 
+## object dạng mảng chứa SizeId, BaseId, Price, Quantity
+info["ListSize"] = [
+    {
+        "SizeId": 1,
+        "ListBase":[
+            {
+                "BaseId":1,
+                "Price": 1000000,
+                "Quantity": 10
+            },
+            {
+                "BaseId":2,
+                "Price": 2000000,
+                "Quantity": 20
+            },
+        ]
+    },
+    {
+        "SizeId": 2,
+        "ListBase":[
+            {
+                "BaseId":1,
+                "Price": 1000000,
+                "Quantity": 10
+            },
+        ]
+    },
+]  
+print(info)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# trang chính chỉ hiện 3 thông tin: id bánh, tên bánh, tên danh mục bánh
 # pizzaBUS.readListPizza()
 # for pizza in pizzaBUS.listPizza:
 #     print(pizza["IdPizza"])
@@ -53,8 +119,6 @@ pizzaBUS = PizzaBUS()
 # pizzaId = 12
 # result = pizzaBUS.delete(pizzaId)
 # print(result)
-
-
 
 
 ############TEST THỐNG KÊ

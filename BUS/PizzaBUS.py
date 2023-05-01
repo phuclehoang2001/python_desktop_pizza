@@ -84,10 +84,10 @@ class PizzaBUS:
                 result = "Xóa thất bại"
         return result
     
-    def addPizza(self, pizza):
+    def addPizza(self, pizza_dict):
         pass
 
-   
+    
     
 
     
