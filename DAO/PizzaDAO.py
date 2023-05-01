@@ -196,9 +196,24 @@ class PizzaDAO:
             else:
                 currentDetail.setPrice(pizzaDetail.getPrice())
                 currentDetail.setQuantity(pizzaDetail.getQuantity())
-                self.UpdatePizzaDetail(currentDetail)
+                self.updatePizzaDetail(currentDetail)
             self.sqlConnect.close()
             return True
+        except Error as error:
+                print(error)
+        return False
+
+    def add(self, categoryId, display, description, image):
+        try:
+            query = """INSERT INTO pizza(category_id, display, description, image) VALUES
+                    ('{categoryId}', '{display}', '{description}', '{image}')"""\
+            .format(categoryId=categoryId,display=display,description=description,image=image)    
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            pizzaId = self.cursor.lastrowid
+            self.con.commit()
+            self.sqlConnect.close()
+            return pizzaId
         except Error as error:
                 print(error)
         return False
@@ -266,6 +281,20 @@ class PizzaDAO:
         try:
             query = "DELETE FROM `topping_detail` WHERE pizza_id = {pizzaId}"\
             .format(pizzaId=pizzaId)        
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True            
+        except Error as error:
+                print(error)
+        return False  
+    
+    def addToppingDetail(self, pizzaId, toppingId):
+        try:
+            query = """INSERT INTO topping_detail(pizza_id, topping_id) VALUES
+                            ('{pizzaId}', '{toppingId}')"""\
+            .format(pizzaId=pizzaId, toppingId=toppingId)        
             self.cursor = self.con.cursor()
             self.cursor.execute(query)
             self.con.commit()

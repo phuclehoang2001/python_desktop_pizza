@@ -53,7 +53,8 @@ info["ListSize"] = [
 ]  
 print(info)
 
-
+result = pizzaBUS.addPizza(info)
+print(result)
 
 
 
