@@ -57,11 +57,7 @@ pizzaBUS = PizzaBUS()
 
 
 
-<<<<<<< HEAD
 # ############TEST THỐNG KÊ
-=======
-############TEST THỐNG KÊ
->>>>>>> 76b154de7e557a4846074d28b89376c6e0c3c1a5
 # statisticBUS = StatisticBUS
 ## doanh thu theo danh mục
 # tk_category = statisticBUS.category()
