@@ -107,7 +107,31 @@ class PizzaBUS:
         else:
             return "Thêm thất bại"
         
-
+    def editPizza(self, pizza_dict):
+        data = PizzaDAO()  
+        pizzaId = pizza_dict["PizzaId"]
+        if pizzaId is not None:
+            data.update(pizzaId,pizza_dict["CategoryId"],pizza_dict["PizzaName"],pizza_dict["Description"],pizza_dict["Image"])
+            data.deleteToppingDetail(pizzaId)
+            data.deletePizzaDetail(pizzaId)
+            for toppingId in pizza_dict["ListTopping"]:
+                data.addToppingDetail(pizzaId,toppingId)                  
+            for size in pizza_dict["ListSize"]:
+                sizeId = size["SizeId"]              
+                for base in size["ListBase"]:
+                    baseId = base["BaseId"]
+                    price = base["Price"]
+                    quantity = base["Quantity"]
+                    pizzaDetail = PizzaDetail()
+                    pizzaDetail.setPizzaId(pizzaId)
+                    pizzaDetail.setBaseId(baseId)
+                    pizzaDetail.setPrice(price)
+                    pizzaDetail.setQuantity(quantity)
+                    pizzaDetail.setSizeId(sizeId)
+                    data.addOrUpdatePizzaDetail(pizzaDetail)         
+            return "Sửa thành công"            
+        else:
+            return "Sửa thất bại"
     
     
 

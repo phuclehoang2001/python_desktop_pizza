@@ -16,45 +16,95 @@ pizzaBUS = PizzaBUS()
 
 ## Bước 2: thực hiện thêm dữ liệu vào CSDL
 ## sau khi chọn các nhân bánh, kích thước, đế ta có 1 ví dụ cấu trúc dictionary như sau:
-info = {}
-info["PizzaName"] = "Pizza mới"
-info["CategoryId"]= 1
-info["Description"] =" test tạo bánh mới "
-info["Image"] ="newpizza.png" ## lấy filename đã chọn
-## đây là mảng của các topping_id sau khi chọn nhân bánh
-info["ListTopping"] = [2,3,4,5] 
-## object dạng mảng chứa SizeId, BaseId, Price, Quantity
-info["ListSize"] = [
-    {
-        "SizeId": 1,
-        "ListBase":[
-            {
-                "BaseId":1,
-                "Price": 1000000,
-                "Quantity": 10
-            },
-            {
-                "BaseId":2,
-                "Price": 2000000,
-                "Quantity": 20
-            },
-        ]
-    },
-    {
-        "SizeId": 2,
-        "ListBase":[
-            {
-                "BaseId":1,
-                "Price": 1000000,
-                "Quantity": 10
-            },
-        ]
-    },
-]  
-print(info)
+# info = {}
+# info["PizzaName"] = "Pizza mới"
+# info["CategoryId"]= 1
+# info["Description"] =" test tạo bánh mới "
+# info["Image"] ="newpizza.png" ## lấy filename đã chọn
+# ## đây là mảng của các topping_id sau khi chọn nhân bánh
+# info["ListTopping"] = [2,3,4,5] 
+# ## object dạng mảng chứa SizeId, BaseId, Price, Quantity
+# info["ListSize"] = [
+#     {
+#         "SizeId": 1,
+#         "ListBase":[
+#             {
+#                 "BaseId":1,
+#                 "Price": 1000000,
+#                 "Quantity": 10
+#             },
+#             {
+#                 "BaseId":2,
+#                 "Price": 2000000,
+#                 "Quantity": 20
+#             },
+#         ]
+#     },
+#     {
+#         "SizeId": 2,
+#         "ListBase":[
+#             {
+#                 "BaseId":1,
+#                 "Price": 1000000,
+#                 "Quantity": 10
+#             },
+#         ]
+#     },
+# ]  
+# print(info)
 
-result = pizzaBUS.addPizza(info)
-print(result)
+# result = pizzaBUS.addPizza(info)
+# print(result)
+
+
+
+##Sửa pizza
+## Bước 1: xử lý file ảnh tương tự như thêm
+## + kiếm tra kiểm tra kích thước file ảnh thấp hơn 2mb
+## + kiểm tra định dạng tệp tin đã tải lên: allowed_types = ["jpg", "png"]
+## + kiếm tra ảnh đã chọn có trùng với ảnh trong /GUI/images không? nếu có thì báo "Đã tồn tại file trong hệ thống, không thể ghi đè file!"
+## + nếu các điều kiện trên hợp lệ: thực hiện di chuyển file ảnh đã được tải lên vào /GUI/images (có thể sử dụng module shutil của python)
+
+## Bước 2: thực hiện sửa dữ liệu 
+## sau khi chọn các nhân bánh, kích thước, đế ta có 1 ví dụ cấu trúc dictionary như sau:
+# info = {}
+# info["PizzaId"] = 15 ## lấy từ dòng được chọn
+# info["PizzaName"] = "Pizza mới"
+# info["CategoryId"]= 2
+# info["Description"] =" test tạo bánh mới "
+# info["Image"] ="newpizza.png" ## lấy filename đã chọn
+# ## đây là mảng của các topping_id sau khi chọn nhân bánh
+# info["ListTopping"] = [6,7,8] 
+# ## object dạng mảng chứa SizeId, BaseId, Price, Quantity
+# info["ListSize"] = [
+#     {
+#         "SizeId": 1,
+#         "ListBase":[
+#             {
+#                 "BaseId":1,
+#                 "Price": 1000000,
+#                 "Quantity": 80
+#             },
+#             {
+#                 "BaseId":2,
+#                 "Price": 2000000,
+#                 "Quantity": 20
+#             },
+#         ]
+#     },
+#     {
+#         "SizeId": 2,
+#         "ListBase":[
+#             {
+#                 "BaseId":1,
+#                 "Price": 1000000,
+#                 "Quantity": 10
+#             },
+#         ]
+#     },
+# ]  
+# result = pizzaBUS.editPizza(info)
+# print(result)
 
 
 

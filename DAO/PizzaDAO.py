@@ -217,6 +217,20 @@ class PizzaDAO:
         except Error as error:
                 print(error)
         return False
+    
+    def update(self, pizzaId, categoryId, display, description, image):
+        try:
+            query = """UPDATE `pizza` SET category_id = '{categoryId}', display = '{display}', description = '{description}',\
+            image = '{image}' WHERE id = {pizzaId}"""\
+            .format(categoryId=categoryId,display=display,description=description,image=image, pizzaId=pizzaId)    
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query)
+            self.con.commit()
+            self.sqlConnect.close()
+            return True
+        except Error as error:
+                print(error)
+        return False
 
     def checkSize(self, idPizza, idSize):
         result = False
