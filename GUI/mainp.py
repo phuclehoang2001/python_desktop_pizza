@@ -27,6 +27,7 @@ FullName=""
 UserName=""
 counting=0
 counting2=0
+address="C:/Users/Admin/Desktop/python_desktop_pizza/GUI/images/"
 #MAIN WINDOW
 class mainwindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -86,7 +87,9 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.Order_btn.clicked.connect(self.click_Order_btn)
         self.ui.Stastical_btn.clicked.connect(self.click_Stastical_btn)
         
+        
         ####
+        self.ui.pushButton_43.clicked.connect(self.info_pizza)
         self.ui.pushButton_passchange.clicked.connect(self.change_pass)
         self.ui.pushButton_18.clicked.connect(self.change_info)
         self.ui.lock.clicked.connect(self.lock_open_user)
@@ -105,6 +108,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_35.clicked.connect(self.open_add_base_dialog)
         self.ui.pushButton_17.clicked.connect(self.open_add_user)
         #find function//
+        self.ui.pushButton_39.clicked.connect(self.find_pizza)
         self.ui.pushButton_21.clicked.connect(self.find_category_btn)
         self.ui.GroupAcc_search.clicked.connect(self.find_group_btn)
         self.ui.pushButton_27.clicked.connect(self.find_size_btn)
@@ -118,7 +122,9 @@ class mainwindow(QtWidgets.QMainWindow):
         self.auto_get_value_Size()
         self.auto_get_value_Base()
         self.auto_get_order_value()
+        self.auto_get_value_pizza()
         ##Deletecategory
+        self.ui.pushButton_44.clicked.connect(self.delete_pizza)
         self.ui.pushButton_26.clicked.connect(self.deleteCategory)
         self.ui.pushButton_38.clicked.connect(self.deleteBase)
         self.ui.pushButton_32.clicked.connect(self.deleteSize)
@@ -129,6 +135,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_30.clicked.connect(self.update_size)
         self.ui.pushButton_36.clicked.connect(self.update_Base)
         ##reload Function
+        self.ui.pushButton_40.clicked.connect(self.auto_get_value_pizza)
         self.ui.pushButton_22.clicked.connect(self.auto_get_value_category)
         self.ui.GroupAcc_info.clicked.connect(self.auto_get_value_group)
         self.ui.pushButton_28.clicked.connect(self.auto_get_value_Size)
@@ -148,12 +155,69 @@ class mainwindow(QtWidgets.QMainWindow):
 
     ########################user info
     ###
+    def info_pizza(self):
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+       
+        row=self.ui.tableWidget_6.currentRow()
+        col=self.ui.tableWidget_6.currentColumn()
+        id=self.ui.tableWidget_6.item(row,col).text()
+        info=pizzabl.getInfoPizza(id)
+
+        dialog =QtWidgets.QDialog()
+        dialog.setStyleSheet("font-size: 16px")
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thông tin Pizza")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        ##
+        lay_out_n=QtWidgets.QHBoxLayout()
+        ##
+        global address
+        pixmap =QtGui.QPixmap(address+info["Image"])
+        scale_pixmap=pixmap.scaled(200, 200, aspectRatioMode=True)
+        print("/images/"+info["Image"])
+        label_img=QtWidgets.QLabel()
+        label_img.setPixmap(scale_pixmap)
+        form_layout.addWidget(label_img)
+        label_tenbanh=QtWidgets.QLabel("Tên Bánh: "+info["PizzaName"])
+        label_loai=QtWidgets.QLabel("Loại Bánh: "+info["CategoryName"])
+        label_mota=QtWidgets.QLabel("Mô tả: "+info["Description"])
+        form_layout.addRow(label_tenbanh)
+        form_layout.addRow(label_loai)
+        form_layout.addRow(label_mota)
+        ##
+        if len(info["ListTopping"])!=0:
+            Label_for_topping=QtWidgets.QLabel("- Topping:")
+            form_layout.addRow(Label_for_topping)
+            strong="+ "
+            for topping in info["ListTopping"]:
+                strong+=topping.getDisplay()+","
+            lbbel=QtWidgets.QLabel(strong)
+            form_layout.addRow(lbbel)
+            
+        for sizeinfo in info["ListSize"]:
+            Label_for_size=QtWidgets.QLabel("- "+sizeinfo["SizeName"]+" bao gồm:")
+            form_layout.addRow(Label_for_size)
+            strong_for_base=""
+            for Baseinfo in sizeinfo["ListBase"]:
+                strong_for_base+="Tên đế "+Baseinfo["BaseName"]+" giá "+str(Baseinfo["Price"])+" SL "+str(Baseinfo["Quantity"])+"\n"
+            label_for_base=QtWidgets.QLabel(strong_for_base)
+            form_layout.addRow(label_for_base)
+
+        ##
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+        button_box.accepted.connect(dialog.accept)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+
     def doubleclicklable(self):
         usrbl=UserBUS()
         global UserName
         infoUser=usrbl.getInfo(UserName)
-        print("Heelo")
-        print(infoUser["address"])
         dialog =QtWidgets.QDialog()
         dialog.setMinimumHeight(100)
         dialog.setMinimumWidth(250)
@@ -255,6 +319,23 @@ class mainwindow(QtWidgets.QMainWindow):
             returnValue = msgBox.exec()
             print("ok")
             self.auto_get_value_group()
+    def delete_pizza(self):
+        row=self.ui.tableWidget_6.currentRow()
+        col=self.ui.tableWidget_6.currentColumn()
+        id=self.ui.tableWidget_6.item(row,col).text()
+        pzzbus=PizzaBUS()
+        pzzbus.readListPizza()
+        res=pzzbus.delete(id)
+        if res=="Xóa thành công":
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Information)
+            msgBox.setText("Xóa thành công")
+            msgBox.setWindowTitle("Message")
+            msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            returnValue = msgBox.exec()
+            self.auto_get_value_pizza()
+
+
 
     #############################################  
     #Update
@@ -323,6 +404,22 @@ class mainwindow(QtWidgets.QMainWindow):
         returnValue = msgBox.exec()
       
         #AutoGetValue#############################################
+    def auto_get_value_pizza(self):
+        self.ui.tableWidget_6.clearContents()
+        pizzaBUS = PizzaBUS()
+        pizzaBUS.readListPizza()
+        self.ui.tableWidget_6.setRowCount(len(pizzaBUS.listPizza))
+        print(len(pizzaBUS.listPizza))
+        count=0
+        for pizza in pizzaBUS.listPizza:
+            idITEM=QtWidgets.QTableWidgetItem(str(pizza["IdPizza"]))
+            nameItem=QtWidgets.QTableWidgetItem(pizza["PizzaName"])
+            catename=QtWidgets.QTableWidgetItem(pizza["CategoryName"])
+            self.ui.tableWidget_6.setItem(count,0,idITEM)
+            self.ui.tableWidget_6.setItem(count,1,nameItem)
+            self.ui.tableWidget_6.setItem(count,2,catename)
+            count+=1
+
     def auto_get_value_account(self):
         self.ui.tableWidget_2.clearContents()
         userbl=UserBUS()
@@ -496,6 +593,22 @@ class mainwindow(QtWidgets.QMainWindow):
         Dialog.exec_()
 
         ###############################
+    def find_pizza(self):
+        find_str=self.ui.Line_edit_pizza.text()
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+        list=pizzabl.findPizzaByName(find_str)
+        self.ui.tableWidget_6.clearContents()
+        count=0
+        for pizza in list:
+            idITEM=QtWidgets.QTableWidgetItem(str(pizza["IdPizza"]))
+            nameItem=QtWidgets.QTableWidgetItem(pizza["PizzaName"])
+            catename=QtWidgets.QTableWidgetItem(pizza["CategoryName"])
+            self.ui.tableWidget_6.setItem(count,0,idITEM)
+            self.ui.tableWidget_6.setItem(count,1,nameItem)
+            self.ui.tableWidget_6.setItem(count,2,catename)
+            count+=1
+
     def find_account(self):
         find_str=self.ui.Line_edit_User.text()
         userbl=UserBUS()

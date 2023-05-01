@@ -14,8 +14,7 @@ class PizzaBUS:
         categoryDAO = CategoryDAO()
         if self.listPizza is None:
             self.listPizza = []
-        if len(self.listPizza) != 0:
-            return
+        ##Nam xóa dòng này để cập nhật lại Table
         for pizza in pizzaDAO.getAllPizza():
             pizza_overview = {}
             pizza_overview["IdPizza"] = pizza.getId()
@@ -78,6 +77,7 @@ class PizzaBUS:
             result = "Không thể xóa bánh vì đã có đơn hàng!"
         else:
             ## thuc hien xoa
+            
             if data.delete(pizzaId):
                 result = "Xóa thành công"
             else:

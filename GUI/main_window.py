@@ -826,6 +826,15 @@ class Ui_MainWindow(object):
         self.tableWidget_6.setObjectName("tableWidget_6")
         self.tableWidget_6.setColumnCount(0)
         self.tableWidget_6.setRowCount(0)
+        ##
+        self.tableWidget_6.setRowCount(0)
+        self.tableWidget_6.setColumnCount(3)
+        self.tableWidget_6.setStyleSheet("color:rgb(0, 0, 0);")
+        self.tableWidget_6.setHorizontalHeaderLabels(["ID","Tên bánh","Danh mục"])
+        self.tableWidget_6.verticalHeader().setVisible(False)
+        self.tableWidget_6.setMaximumHeight(200)
+        self.tableWidget_6.horizontalHeader().setStretchLastSection(True)
+        ##
         self.stackedWidget.addWidget(self.Pizza)
         self.Order = QtWidgets.QWidget()
         self.Order.setObjectName("Order")
@@ -950,6 +959,11 @@ class Ui_MainWindow(object):
         self.Line_edit_User.setGeometry(500,60,100,20)
         self.Line_edit_User.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
 
+         ##Line edit of find User
+        self.Line_edit_pizza=QtWidgets.QLineEdit(self.Pizza)
+        self.Line_edit_pizza.setGeometry(500,60,100,20)
+        self.Line_edit_pizza.setStyleSheet("color:rgb(0, 0, 0);border: 1px solid")
+
         self.tabWidget=QtWidgets.QTabWidget(self.Statistical)
         self.child_widget=QWidget()
         self.child_widget_2=QWidget()
@@ -1003,7 +1017,7 @@ class Ui_MainWindow(object):
 
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
