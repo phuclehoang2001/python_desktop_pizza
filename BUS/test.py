@@ -1,12 +1,67 @@
 import sys
 import datetime
 sys.path.insert(0,".")
-from BUS import OrderBUS, GroupBUS, UserBUS, StatisticBUS
+from BUS import OrderBUS, GroupBUS, UserBUS, StatisticBUS, PizzaBUS
 # from DAO import StatusDAO
 from DTO import *
 
+##TEST QUẢN LÝ BÁNH PIZZA
+# trang chính chỉ hiện 3 thông tin: id bánh, tên bánh, tên danh mục bánh
+pizzaBUS = PizzaBUS()
+# pizzaBUS.readListPizza()
+# for pizza in pizzaBUS.listPizza:
+#     print(pizza["IdPizza"])
+#     print(pizza["PizzaName"])
+#     print(pizza["CategoryName"])
+#     print("-----------")
 
+
+## XEM THÔNG TIN
+# print("*********************************")
+# print("THÔNG TIN CHI TIẾT CỦA BÁNH")
+# ## xem chi tiết 1 bánh dựa theo id bánh
+# info = pizzaBUS.getInfoPizza(5)
+# print("Tên bánh: " + info["PizzaName"])
+# print("Ảnh: " + info["Image"]) ## Chỗ này xử lý để hiện ảnh lên giao diện với output là đuôi file (ví dụ: haisan.png)
+# print("Loại bánh: " + info["CategoryName"])
+# print("Mô tả: " + info["Description"])
+# print("Nhân bánh: ", end="")
+# if len(info["ListTopping"]) != 0:
+#     for topping in info["ListTopping"]:
+#         print(topping.getDisplay()+", ", end="")
+# print()
+# for sizeInfo in info["ListSize"]:
+#     print("Kích cỡ bánh: "+ sizeInfo["SizeName"] +" gồm có:")
+#     for baseInfo in sizeInfo["ListBase"]:
+#         print("\t" +"Đế bánh: " + baseInfo["BaseName"])
+#         print("\t" +"Giá: " + str(baseInfo["Price"]))
+#         print("\t" +"Số Lượng: " + str(baseInfo["Quantity"]))
+#         print("\t"+"-----")
+
+
+### TÌM KIẾM THEO TÊN
+# name_pizza = "Hải sản"
+# pizzaBUS.readListPizza()
+# data = pizzaBUS.findPizzaByName(name_pizza)
+# for pizza in data:
+#     print(pizza["IdPizza"])
+#     print(pizza["PizzaName"])
+#     print(pizza["CategoryName"])
+#     print("-----------")
+
+### XÓA PIZZA theo id
+# pizzaId = 12
+# result = pizzaBUS.delete(pizzaId)
+# print(result)
+
+
+
+
+<<<<<<< HEAD
 # ############TEST THỐNG KÊ
+=======
+############TEST THỐNG KÊ
+>>>>>>> 76b154de7e557a4846074d28b89376c6e0c3c1a5
 # statisticBUS = StatisticBUS
 ## doanh thu theo danh mục
 # tk_category = statisticBUS.category()

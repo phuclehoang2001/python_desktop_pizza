@@ -32,6 +32,7 @@ class SizeDAO:
                 print(error)
         return size
     
+    
     # trả về một list theo tên
     def getByDisplay(self, display):
         result = []
