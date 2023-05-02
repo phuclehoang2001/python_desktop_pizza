@@ -6,6 +6,7 @@ from load_screen import Ui_LoadScreen
 from login import Login_window
 import sys
 import time
+import os
 import shutil
 from main_window import Ui_MainWindow
 import sys
@@ -23,6 +24,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 #Globals
 GodList=[]
+demiGod=[]
 ToppingList=[]
 FileAddress=""
 COUNTER=0
@@ -166,8 +168,11 @@ class mainwindow(QtWidgets.QMainWindow):
         pizzabl.readListPizza()
         pizzabl.readListTopping()
         info=pizzabl.getInfoPizza(id)
+        info["PizzaId"]=id
         ###
         global GodList
+        global demiGod
+        demiGod=info["ListSize"]
         global ToppingList
         pizzabl=PizzaBUS()
         pizzabl.readListPizza()
@@ -238,12 +243,15 @@ class mainwindow(QtWidgets.QMainWindow):
             
             button=QtWidgets.QPushButton("Chọn đế")
             button.setEnabled(False)
-            button.clicked.connect(lambda checked,str_arg=item.getDisplay(), arg=count:self.get_zzz(arg,str_arg))
+            button.clicked.connect(lambda checked,str_arg=item.getDisplay(), arg=count:self.get_ddd(arg,str_arg))
             checkBox_size.stateChanged.connect(lambda state,btn=button:btn.setEnabled(state==2))
             print(count)
             layout_h_5.addWidget(checkBox_size)
             layout_h_5.addWidget(button)
             count+=1
+            for item in info["ListSize"]:
+                if item["SizeName"]==checkBox_size.text():
+                    checkBox_size.setChecked(True)
         #####
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
         button_box.accepted.connect(dialog.accept)
@@ -254,10 +262,27 @@ class mainwindow(QtWidgets.QMainWindow):
         Line_edit_for_pizza_Describ.setText(info["Description"])
         ComboBox_for_category.setCurrentText(info["CategoryName"])
         ToppingList=info["ListTopping"]
-        print("ASASDASD",len(ToppingList))
         ###
         response = dialog.exec_()
-        # if response == QtWidgets.QDialog.Accepted:
+        if response == QtWidgets.QDialog.Accepted: 
+            info["ListTopping"]=ToppingList
+            info["PizzaName"]=Line_edit_for_pizza_name.text()
+            info["Description"]=Line_edit_for_pizza_Describ.text()
+            res=CategoryBll.findCategoriesByName(ComboBox_for_category.currentText())
+            info["CategoryId"]=res[0].getId()
+            info["ListSize"]=GodList
+            global FileAddress
+            global address
+            if info["Image"]!=FileAddress.split("/")[-1]:
+                new_directory = FileAddress
+                shutil.move(FileAddress, address)
+                info["Image"]=FileAddress.split("/")[-1]
+            current_dir = os.path.abspath(os.path.dirname(__file__))
+            
+            print(current_dir)
+            print(address)
+            #res=pizzabl.editPizza(info)
+            print(res)
             ###
 
     ########################user info
@@ -436,6 +461,7 @@ class mainwindow(QtWidgets.QMainWindow):
             lay_tem=form_layout.findChildren(QtWidgets.QHBoxLayout,"layout_in_form")
             vari1=sizebll.findSizesByName(str_arg)
             value=vari1[0].getId()
+            print(GodList)
             for item in GodList:
                 if value==item["SizeId"]:
                     for size in sizebll.listSize:
@@ -478,6 +504,94 @@ class mainwindow(QtWidgets.QMainWindow):
 
 
 
+    def get_ddd(self,num,str_arg):
+        global demiGod
+
+        ListBase=[]
+        temp={}
+        sizebll=SizeBUS()
+        sizebll.readListSize()
+        sizezz=sizebll.findSizesByName(str_arg)
+        size_id=sizezz[0]
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thêm Đế cho Size "+str_arg)
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        SizeName=str_arg
+        Basebll=BaseBUS()
+        Basebll.readListBase()
+        for item in Basebll.listBase:
+            layout_h=QtWidgets.QHBoxLayout()
+            layout_h.setObjectName("layout_in_form")
+            form_layout.addRow(layout_h)
+            check=QtWidgets.QCheckBox()
+            check.setText(item.getDisplay())
+            
+            layout_h.addWidget(check)
+            label_gia=QtWidgets.QLabel("Giá")
+            layout_h.addWidget(label_gia)
+            Line_edit=QtWidgets.QLineEdit()
+            Line_edit.setEnabled(False)
+            layout_h.addWidget(Line_edit)
+            label_sl=QtWidgets.QLabel("Số lượng ")
+            layout_h.addWidget(label_sl)
+            Line_edit_sl=QtWidgets.QLineEdit()
+            Line_edit_sl.setEnabled(False)
+            layout_h.addWidget(Line_edit_sl)
+            check.stateChanged.connect(lambda state,le=Line_edit,le2=Line_edit_sl:( le.setEnabled(state == 2),le2.setEnabled(state==2)))
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        if len(demiGod)!=0:
+            count2=0
+            lay_tem=form_layout.findChildren(QtWidgets.QHBoxLayout,"layout_in_form")
+            vari1=sizebll.findSizesByName(str_arg)
+            value=vari1[0].getId()
+            print(demiGod)
+            for item in demiGod:
+                if str_arg==item["SizeName"]:
+                    print(item["SizeName"])
+                    for base in item["ListBase"]:
+                        for i in range(0,len(lay_tem)):
+                            lay=lay_tem[i]
+                            wid=lay.itemAt(0).widget()
+                            print(wid.text(),base["BaseName"])
+                            if wid.text()==base["BaseName"]:
+                                print("in here")
+                                wid.setChecked(True)
+                                wid2=lay.itemAt(2).widget()
+                                wid2.setText(str(base["Price"]))
+                                wid3=lay.itemAt(4).widget()
+                                wid3.setText(str(base["Quantity"]))
+                
+                
+            
+                       
+
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            layout_for_h=form_layout.findChildren(QtWidgets.QHBoxLayout,"layout_in_form")
+            
+            for item in layout_for_h:
+                wid=item.itemAt(0).widget()
+                if wid.isChecked()==True:
+                    baseinfo={}
+                    var=Basebll.findBasesByName(wid.text())
+                    baseinfo["BaseId"]=var[0].getId()
+                    wid2=item.itemAt(2).widget()
+                    baseinfo["Price"]=wid2.text()
+                    wid3=item.itemAt(4).widget()
+                    baseinfo["Quantity"]=wid3.text()
+                    ListBase.append(baseinfo)
+            temp["SizeId"]=size_id.getId()
+            temp["ListBase"]=ListBase
+            print(temp)
+            GodList.append(temp)
 
     def dialog_2_show(self):
         global ToppingList
@@ -530,12 +644,11 @@ class mainwindow(QtWidgets.QMainWindow):
     def info_pizza(self):
         pizzabl=PizzaBUS()
         pizzabl.readListPizza()
-        pizzabl.readListTopping()
         row=self.ui.tableWidget_6.currentRow()
         col=self.ui.tableWidget_6.currentColumn()
         id=self.ui.tableWidget_6.item(row,col).text()
         info=pizzabl.getInfoPizza(id)
-
+        print("Chieu dai =",len(info["ListTopping"]))
         dialog =QtWidgets.QDialog()
         dialog.setStyleSheet("font-size: 16px")
         dialog.setMinimumHeight(100)
