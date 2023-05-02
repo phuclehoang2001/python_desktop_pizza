@@ -6,6 +6,7 @@ from load_screen import Ui_LoadScreen
 from login import Login_window
 import sys
 import time
+import shutil
 from main_window import Ui_MainWindow
 import sys
 sys.path.insert(0,".")
@@ -21,13 +22,14 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 #Globals
+FileAddress=""
 COUNTER=0
 Role=0
 FullName=""
 UserName=""
 counting=0
 counting2=0
-address="C:/Users/Admin/Desktop/python_desktop_pizza/GUI/images/"
+address="C:/Users/Admin/Desktop/python_desktop_pizza/GUI/images"
 #MAIN WINDOW
 class mainwindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -102,6 +104,7 @@ class mainwindow(QtWidgets.QMainWindow):
         ##Phan quyen
         self.ui.GroupAcc_menu.clicked.connect(self.phanquyen)
         ##Can nhac nut nay##Mở dialog add
+        self.ui.pushButton_41.clicked.connect(self.add_pizza)
         self.ui.pushButton_23.clicked.connect(self.open_add_category_btn)
         self.ui.GroupAcc_add.clicked.connect(self.open_add_group_btn)
         self.ui.pushButton_29.clicked.connect(self.open_add_size_dialog)
@@ -154,7 +157,110 @@ class mainwindow(QtWidgets.QMainWindow):
         self.close()
 
     ########################user info
+    def add_pizza(self):
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+        lst_of_checked_topping=[]
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thêm pizza")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        ####
+        layout_h = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h)
+        label_for_PizzaName=QtWidgets.QLabel("Tên Pizza ")
+        Line_edit_for_pizza_name=QtWidgets.QLineEdit()
+        layout_h.addWidget(label_for_PizzaName)
+        layout_h.addWidget(Line_edit_for_pizza_name)
+        #####
+        label_for_category=QtWidgets.QLabel("Danh mục ")
+        ComboBox_for_category=QtWidgets.QComboBox()
+        CategoryBll=CategoryBUS()
+        CategoryBll.readListCategory()
+        for item in CategoryBll.listCategory:
+            ComboBox_for_category.addItem(item.getDisplay())
+        layout_h_2 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_2)
+        layout_h_2.addWidget(label_for_category)
+        layout_h_2.addWidget(ComboBox_for_category)
+        ####
+        layout_h_3 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_3)
+        label_for_Describ=QtWidgets.QLabel("Mô tả ")
+        Line_edit_for_pizza_Describ=QtWidgets.QLineEdit()
+        layout_h_3.addWidget(label_for_Describ)
+        layout_h_3.addWidget(Line_edit_for_pizza_Describ)
+        ###
+        layout_h_4 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_4)
+        label_for_Describ=QtWidgets.QLabel("Hình ảnh")
+        Button_for_image=QtWidgets.QPushButton()
+        Button_for_image.setText("Chọn ảnh")
+        Button_for_image.clicked.connect(self.get_image)
+        layout_h_4.addWidget(label_for_Describ)
+        layout_h_4.addWidget(Button_for_image)
+        #####
+        layout_h_5 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_5)
+        label_for_Topping=QtWidgets.QLabel("Topping ")
+        layout_h_4.addWidget(label_for_Topping)
+        pizzabl.readListTopping()
+        dialog2 =QtWidgets.QDialog()
+        dialog2.setMinimumHeight(100)
+        dialog2.setMinimumWidth(250)
+        dialog2.setWindowTitle("Add Topping")
+        layout_topping=QtWidgets.QVBoxLayout()
+        dialog2.setLayout(layout_topping)
+        
+        
+        
+
+
+        #####
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            global FileAddress
+            global address
+            new_directory = FileAddress
+            shutil.move(FileAddress, address)
+        ####
+
+
+        #####
+        
+        # info={}
+        # info["PizzaId"]
+        # info["PizzaName"]
+        # info["CategoryId"]
+        # info["Desciption"]
+        # info["Image"]
+        # info["ListTopping"]
+        # info["ListSize"]
+        # SizeInfo={}
+        # SizeInfo["SizeName"]
+        # SizeInfo["ListBase"]=[]
+        # baseinfo={}
+        # baseinfo["BaseName"]
+        # baseinfo["Price"]
+        # baseinfo["Quantity"]
     ###
+    def get_image(self):
+        file={}
+        filename, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Chọn tệp ảnh', '', 'Image files (*.jpg *.png)')
+        if filename:
+            global FileAddress
+            FileAddress=filename
+            return 1
+        else:
+            return None
     def info_pizza(self):
         pizzabl=PizzaBUS()
         pizzabl.readListPizza()
@@ -177,7 +283,7 @@ class mainwindow(QtWidgets.QMainWindow):
         lay_out_n=QtWidgets.QHBoxLayout()
         ##
         global address
-        pixmap =QtGui.QPixmap(address+info["Image"])
+        pixmap =QtGui.QPixmap(address+"/"+info["Image"])
         scale_pixmap=pixmap.scaled(200, 200, aspectRatioMode=True)
         print("/images/"+info["Image"])
         label_img=QtWidgets.QLabel()
