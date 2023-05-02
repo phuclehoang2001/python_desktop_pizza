@@ -21,6 +21,7 @@ from add_base import add_base_dia
 from add_user2 import add_user_dia
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from loginn import login_dep
 
 #Globals
 GodList=[]
@@ -2123,7 +2124,7 @@ class mainwindow(QtWidgets.QMainWindow):
 class wth(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        self.ui=Login_window()
+        self.ui=login_dep()
         self.ui.setupUi(self)
         self.ui.pushButton.clicked.connect(self.login)
     def click(self):
@@ -2131,9 +2132,9 @@ class wth(QtWidgets.QMainWindow):
         self.main.show()
         self.close()
     def login(self):
-        usr=self.ui.LineEdit.text()
+        usr=self.ui.lineEdit.text()
         print(usr)
-        pss=self.ui.LineEdit_2.text()
+        pss=self.ui.lineEdit_2.text()
         userBUS = UserBUS()
         res=userBUS.checkLogin(usr,pss)
         print(res)
