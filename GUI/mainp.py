@@ -1767,7 +1767,7 @@ class mainwindow(QtWidgets.QMainWindow):
             ax.bar( lst_of_cate, lst_of_dtdk,bottom=lst_of_dttt, label='Doanh thu dự kiến')
         
             ax.set_xlabel('Danh mục')
-            ax.set_ylabel('Số liệu')
+            ax.set_ylabel('Tiền')
             ax.set_title('Biểu đồ số liệu Doanh thu của danh mục')
             ax.legend()
            
@@ -1820,7 +1820,7 @@ class mainwindow(QtWidgets.QMainWindow):
             ax.bar( ["Tổng doanh thu thực tế"], tongdtbanra, label='Tổng Doanh thu thực tế')
             ax.bar( ["Tổng doanh thu dự kiến"], tongdtdukien, label='Tổng Doanh thu dự kiến')
         
-            ax.set_ylabel('Số liệu')
+            ax.set_ylabel('Tiền')
             ax.set_title('Biểu đồ số liệu Tổng doanh thu')
             ax.legend()
            
@@ -1924,7 +1924,7 @@ class mainwindow(QtWidgets.QMainWindow):
             ax.bar( ["Tổng doanh thu thực tế"], tongdtbanra, label='Tổng Doanh thu thực tế')
             ax.bar( ["Tổng doanh thu Dự kiến"], tongdtdukien, label='Tổng Doanh thu dự kiến')
         
-            ax.set_ylabel('Số liệu')
+            ax.set_ylabel('Tiền')
             ax.set_title('Biểu đồ số liệu Tổng doanh thu')
             ax.legend()
            
@@ -2027,7 +2027,7 @@ class mainwindow(QtWidgets.QMainWindow):
                 ax.bar( ["Tổng doanh thu thực tế"], tongdtbanra, label='Tổng Doanh thu thực tế')
                 ax.bar( ["Tổng doanh thu dự kiến"], tongdtdukien, label='Tổng Doanh thu dự kiến')
             
-                ax.set_ylabel('Số liệu')
+                ax.set_ylabel('Tiền')
                 ax.set_title('Biểu đồ số liệu tổng doanh thu của danh mục từ '+str(start)+" cho tới " +str(end))
                 ax.legend()
             
@@ -2126,7 +2126,7 @@ class mainwindow(QtWidgets.QMainWindow):
                 ax.bar( ["Tổng doanh thu thực tế"], tongdtbanra, label='Tổng Doanh thu thực tế')
                 ax.bar( ["Tổng doanh thu dự kiến"], tongdtdukien, label='Tổng Doanh thu dự kiến')
             
-                ax.set_ylabel('Số liệu')
+                ax.set_ylabel('Tiền')
                 ax.set_title('Biểu đồ số liệu tổng doanh thu của Pizza từ '+str(start)+" cho tới " +str(end))
                 ax.legend()
             
