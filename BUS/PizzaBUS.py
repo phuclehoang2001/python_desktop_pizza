@@ -10,6 +10,8 @@ class PizzaBUS:
     listTopping = []
    
     def readListPizza(self):
+        ##Nam sửa chổ này
+        self.listPizza=[]
         pizzaDAO = PizzaDAO()
         categoryDAO = CategoryDAO()
         if self.listPizza is None:
