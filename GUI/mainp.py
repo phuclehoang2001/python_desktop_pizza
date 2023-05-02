@@ -22,6 +22,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 #Globals
+GodList=[]
+ToppingList=[]
 FileAddress=""
 COUNTER=0
 Role=0
@@ -158,8 +160,10 @@ class mainwindow(QtWidgets.QMainWindow):
 
     ########################user info
     def add_pizza(self):
+        global GodList
         pizzabl=PizzaBUS()
         pizzabl.readListPizza()
+        pizzabl.readListTopping()
         lst_of_checked_topping=[]
         dialog =QtWidgets.QDialog()
         dialog.setMinimumHeight(100)
@@ -207,14 +211,34 @@ class mainwindow(QtWidgets.QMainWindow):
         layout_h_5 = QtWidgets.QHBoxLayout()
         form_layout.addRow(layout_h_5)
         label_for_Topping=QtWidgets.QLabel("Topping ")
-        layout_h_4.addWidget(label_for_Topping)
-        pizzabl.readListTopping()
-        dialog2 =QtWidgets.QDialog()
-        dialog2.setMinimumHeight(100)
-        dialog2.setMinimumWidth(250)
-        dialog2.setWindowTitle("Add Topping")
-        layout_topping=QtWidgets.QVBoxLayout()
-        dialog2.setLayout(layout_topping)
+        layout_h_5.addWidget(label_for_Topping)
+        Button_topping=QtWidgets.QPushButton()
+        Button_topping.setText("Add Topping")
+        Button_topping.clicked.connect(self.dialog_2_show)
+        layout_h_5.addWidget(Button_topping)
+        ####
+        label_for_Size=QtWidgets.QLabel("Kích thước ")
+        form_layout.addWidget(label_for_Size)
+        Sizebll=SizeBUS()
+        Sizebll.readListSize()
+        count=0
+        for item in Sizebll.listSize:
+            layout_h_5 = QtWidgets.QHBoxLayout()
+            form_layout.addRow(layout_h_5)
+            checkBox_size=QtWidgets.QCheckBox()
+            checkBox_size.setText(item.getDisplay())
+            
+            button=QtWidgets.QPushButton("Chọn đế")
+            button.setEnabled(False)
+            button.clicked.connect(lambda checked,str_arg=item.getDisplay(), arg=count:self.get_zzz(arg,str_arg))
+            checkBox_size.stateChanged.connect(lambda state,btn=button:btn.setEnabled(state==2))
+            print(count)
+            layout_h_5.addWidget(checkBox_size)
+            layout_h_5.addWidget(button)
+            count+=1
+
+        
+       
         
         
         
@@ -227,16 +251,42 @@ class mainwindow(QtWidgets.QMainWindow):
         layout.addWidget(button_box)
         response = dialog.exec_()
         if response == QtWidgets.QDialog.Accepted:
+            info={}
+            info["PizzaId"]=""
+            info["PizzaName"]=Line_edit_for_pizza_name.text()
+            res=CategoryBll.findCategoriesByName(ComboBox_for_category.currentText())
+            info["CategoryId"]=res[0].getId()
+            info["Description"]=Line_edit_for_pizza_Describ.text()
+            
+            global ToppingList
             global FileAddress
             global address
             new_directory = FileAddress
             shutil.move(FileAddress, address)
+            lst_of_checked_topping=ToppingList
+            info["Image"]=FileAddress.split("/")[-1]
+            info["ListTopping"]=[]
+            for item in lst_of_checked_topping:
+                print(item)
+                result_id=pizzabl.findToppingByName(item)
+                print(len(result_id))
+                info["ListTopping"].append(result_id[0].getId())
+            # for item in GodList:
+            #     print("Size ID",item["SizeId"])
+            #     for base in item["ListBase"]:
+            #         print("BaseID",base["BaseId"])
+            #######
+            info["ListSize"]=GodList
+            res=pizzabl.addPizza(info)
+            print(res)
+            GodList=[]
+            ####
         ####
 
 
         #####
         
-        # info={}
+        # 
         # info["PizzaId"]
         # info["PizzaName"]
         # info["CategoryId"]
@@ -252,6 +302,104 @@ class mainwindow(QtWidgets.QMainWindow):
         # baseinfo["Price"]
         # baseinfo["Quantity"]
     ###
+    def get_zzz(self,num,str_arg):
+        global GodList
+        ListBase=[]
+        temp={}
+        sizebll=SizeBUS()
+        sizebll.readListSize()
+        sizezz=sizebll.findSizesByName(str_arg)
+        size_id=sizezz[0]
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thêm Đế cho Size "+str_arg)
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        SizeName=str_arg
+        Basebll=BaseBUS()
+        Basebll.readListBase()
+        for item in Basebll.listBase:
+            layout_h=QtWidgets.QHBoxLayout()
+            layout_h.setObjectName("layout_in_form")
+            form_layout.addRow(layout_h)
+            check=QtWidgets.QCheckBox()
+            check.setText(item.getDisplay())
+            
+            layout_h.addWidget(check)
+            label_gia=QtWidgets.QLabel("Giá")
+            layout_h.addWidget(label_gia)
+            Line_edit=QtWidgets.QLineEdit()
+            Line_edit.setEnabled(False)
+            layout_h.addWidget(Line_edit)
+            label_sl=QtWidgets.QLabel("Số lượng ")
+            layout_h.addWidget(label_sl)
+            Line_edit_sl=QtWidgets.QLineEdit()
+            Line_edit_sl.setEnabled(False)
+            layout_h.addWidget(Line_edit_sl)
+            check.stateChanged.connect(lambda state,le=Line_edit,le2=Line_edit_sl:( le.setEnabled(state == 2),le2.setEnabled(state==2)))
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        response = dialog.exec_()
+        if response == QtWidgets.QDialog.Accepted:
+            layout_for_h=form_layout.findChildren(QtWidgets.QHBoxLayout,"layout_in_form")
+            
+            for item in layout_for_h:
+                wid=item.itemAt(0).widget()
+                if wid.isChecked()==True:
+                    baseinfo={}
+                    var=Basebll.findBasesByName(wid.text())
+                    baseinfo["BaseId"]=var[0].getId()
+                    wid2=item.itemAt(2).widget()
+                    baseinfo["Price"]=wid2.text()
+                    wid3=item.itemAt(4).widget()
+                    baseinfo["Quantity"]=wid3.text()
+                    ListBase.append(baseinfo)
+            print("asda",len(ListBase))
+            temp["SizeId"]=size_id.getId()
+            temp["ListBase"]=ListBase
+            GodList.append(temp)
+
+
+
+
+
+    def dialog_2_show(self):
+        global ToppingList
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+        pizzabl.readListTopping()
+        dialog2 =QtWidgets.QDialog()
+        dialog2.setMinimumHeight(100)
+        dialog2.setMinimumWidth(250)
+        dialog2.setWindowTitle("Add Topping")
+        layout_topping=QtWidgets.QVBoxLayout()
+        dialog2.setLayout(layout_topping)
+        form_layout =QtWidgets.QFormLayout()
+        layout_topping.addLayout(form_layout)
+        for item in pizzabl.listTopping:
+            check=QtWidgets.QCheckBox()
+            print("Len "+str(len(pizzabl.listTopping)))
+            check.setText(item.getDisplay())
+            form_layout.addRow(check)
+        button_box2 = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+        button_box2.accepted.connect(dialog2.accept)
+        layout_topping.addWidget(button_box2)
+        response2=dialog2.exec_()
+        if response2 == QtWidgets.QDialog.Accepted:
+            count=0
+            for i in range (0,len(pizzabl.listTopping)):
+                checkbox_item = form_layout.itemAt(i, QtWidgets.QFormLayout.FieldRole)
+                checkbox_widget = checkbox_item.widget()
+                if checkbox_widget.isChecked():
+                    ToppingList.append(pizzabl.listTopping[count].getDisplay())
+                count+=1
+            return True
+
     def get_image(self):
         file={}
         filename, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Chọn tệp ảnh', '', 'Image files (*.jpg *.png)')
