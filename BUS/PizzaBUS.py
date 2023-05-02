@@ -7,7 +7,7 @@ from DTO import *
 
 class PizzaBUS:
     listPizza = []
-
+    listTopping = []
    
     def readListPizza(self):
         pizzaDAO = PizzaDAO()
@@ -133,9 +133,18 @@ class PizzaBUS:
         else:
             return "Sửa thất bại"
     
-    
+    def findToppingByName(self, name):
+        listTopping = []
+        for topping in self.listTopping:
+            if name.upper() in topping.getDisplay().upper():
+                listTopping.append(topping)    
+        return listTopping
 
-    
+    def readListTopping(self):
+        data = ToppingDAO()
+        if(self.listTopping is None):
+            self.listTopping = []
+        self.listTopping = data.getAllTopping()
     
     
  

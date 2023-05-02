@@ -5,8 +5,18 @@ from BUS import OrderBUS, GroupBUS, UserBUS, StatisticBUS, PizzaBUS
 # from DAO import StatusDAO
 from DTO import *
 
-##TEST QUẢN LÝ BÁNH PIZZA
+##TEST TOPPING
 pizzaBUS = PizzaBUS()
+pizzaBUS.readListTopping()
+name = "Thịt"
+find_topping = pizzaBUS.findToppingByName(name)
+for item in find_topping:
+    print(item.getId())
+    print(item.getDisplay())
+
+
+##TEST QUẢN LÝ BÁNH PIZZA
+# pizzaBUS = PizzaBUS()
 ##Thêm pizza
 ## Bước 1: xử lý file ảnh
 ## + kiếm tra kiểm tra kích thước file ảnh thấp hơn 2mb

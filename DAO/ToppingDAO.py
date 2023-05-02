@@ -33,3 +33,20 @@ class ToppingDAO:
         except Error as error:
                 print(error)
         return result
+    
+    #lấy tất cả 
+    def getAllTopping(self):
+        result = []
+        try:
+            query = "SELECT * FROM `topping`"
+            self.cursor = self.sqlConnect.getCursor()
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchall()        
+            for topping in self.result:         
+                toppingDTO = Topping()
+                toppingDTO.setId(topping[0])
+                toppingDTO.setDisplay(topping[1])
+                result.append(toppingDTO)   
+        except Error as error:
+                print(error)
+        return result
