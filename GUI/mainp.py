@@ -304,6 +304,7 @@ class mainwindow(QtWidgets.QMainWindow):
     ###
     def get_zzz(self,num,str_arg):
         global GodList
+
         ListBase=[]
         temp={}
         sizebll=SizeBUS()
@@ -344,6 +345,31 @@ class mainwindow(QtWidgets.QMainWindow):
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
+        if len(GodList)!=0:
+            count2=0
+            lay_tem=form_layout.findChildren(QtWidgets.QHBoxLayout,"layout_in_form")
+            vari1=sizebll.findSizesByName(str_arg)
+            value=vari1[0].getId()
+            for item in GodList:
+                if value==item["SizeId"]:
+                    for size in sizebll.listSize:
+                        if size.getId()==item["SizeId"]:
+                            for base in item["ListBase"]:
+                                for base_name in Basebll.listBase:
+                                    if base["BaseId"]==base_name.getId():
+                                        lay=lay_tem[count2]
+                                        wid=lay.itemAt(0).widget()
+                                        wid.setChecked(True)
+                                        wid2=lay.itemAt(2).widget()
+                                        wid2.setText(base["Price"])
+                                        wid3=lay.itemAt(4).widget()
+                                        wid3.setText(base["Quantity"])
+                                    else:
+                                        count2+=1
+                
+            
+                       
+
         response = dialog.exec_()
         if response == QtWidgets.QDialog.Accepted:
             layout_for_h=form_layout.findChildren(QtWidgets.QHBoxLayout,"layout_in_form")
