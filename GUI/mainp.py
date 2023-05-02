@@ -273,15 +273,16 @@ class mainwindow(QtWidgets.QMainWindow):
             info["ListSize"]=GodList
             global FileAddress
             global address
-            if info["Image"]!=FileAddress.split("/")[-1]:
-                new_directory = FileAddress
-                shutil.move(FileAddress, address)
-                info["Image"]=FileAddress.split("/")[-1]
-            current_dir = os.path.abspath(os.path.dirname(__file__))
-            
-            print(current_dir)
+            if FileAddress!="":
+                abc=FileAddress.split("/")[-2]
+                bcd=address.split("/")[-1]
+                if abc==bcd:
+                    info["Image"]=FileAddress.split("/")[-1]
+                else:
+                    shutil.move(FileAddress, address)
+                    info["Image"]=FileAddress.split("/")[-1]
             print(address)
-            #res=pizzabl.editPizza(info)
+            res=pizzabl.editPizza(info)
             print(res)
             ###
 
