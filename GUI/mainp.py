@@ -253,6 +253,7 @@ class mainwindow(QtWidgets.QMainWindow):
         if response == QtWidgets.QDialog.Accepted:
             info={}
             info["PizzaId"]=""
+            info["Image"]=""
             info["PizzaName"]=Line_edit_for_pizza_name.text()
             res=CategoryBll.findCategoriesByName(ComboBox_for_category.currentText())
             info["CategoryId"]=res[0].getId()
@@ -261,10 +262,11 @@ class mainwindow(QtWidgets.QMainWindow):
             global ToppingList
             global FileAddress
             global address
-            new_directory = FileAddress
-            shutil.move(FileAddress, address)
-            lst_of_checked_topping=ToppingList
-            info["Image"]=FileAddress.split("/")[-1]
+            if FileAddress!="":
+                new_directory = FileAddress
+                shutil.move(FileAddress, address)
+                lst_of_checked_topping=ToppingList
+                info["Image"]=FileAddress.split("/")[-1]
             info["ListTopping"]=[]
             for item in lst_of_checked_topping:
                 print(item)
@@ -277,30 +279,19 @@ class mainwindow(QtWidgets.QMainWindow):
             #         print("BaseID",base["BaseId"])
             #######
             info["ListSize"]=GodList
+            if info["PizzaName"]=="":
+                info["PizzaName"]="No Name"
+            if info["Image"]=="":
+                info["Image"]="noimage.png"
             res=pizzabl.addPizza(info)
             print(res)
             GodList=[]
+            FileAddress=[]
+            ToppingList=[]
             ####
         ####
 
 
-        #####
-        
-        # 
-        # info["PizzaId"]
-        # info["PizzaName"]
-        # info["CategoryId"]
-        # info["Desciption"]
-        # info["Image"]
-        # info["ListTopping"]
-        # info["ListSize"]
-        # SizeInfo={}
-        # SizeInfo["SizeName"]
-        # SizeInfo["ListBase"]=[]
-        # baseinfo={}
-        # baseinfo["BaseName"]
-        # baseinfo["Price"]
-        # baseinfo["Quantity"]
     ###
     def get_zzz(self,num,str_arg):
         global GodList
@@ -385,7 +376,6 @@ class mainwindow(QtWidgets.QMainWindow):
                     wid3=item.itemAt(4).widget()
                     baseinfo["Quantity"]=wid3.text()
                     ListBase.append(baseinfo)
-            print("asda",len(ListBase))
             temp["SizeId"]=size_id.getId()
             temp["ListBase"]=ListBase
             GodList.append(temp)
