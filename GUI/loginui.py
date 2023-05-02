@@ -114,7 +114,7 @@ class Ui_Form(object):
         self.lineEdit.setPlaceholderText(_translate("Form", "  User Name"))
         self.lineEdit_2.setPlaceholderText(_translate("Form", "  Password"))
         self.pushButton.setText(_translate("Form", "L o g  I n"))
-
+from images import res_login
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

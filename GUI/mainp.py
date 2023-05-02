@@ -291,7 +291,7 @@ class mainwindow(QtWidgets.QMainWindow):
             res=pizzabl.editPizza(info)
             GodList=[]
             demiGod=[]
-            FileAddress=[]
+            FileAddress=""
             ToppingList=[]
             print(info)
             ###
