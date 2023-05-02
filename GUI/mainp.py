@@ -135,6 +135,7 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_32.clicked.connect(self.deleteSize)
         self.ui.Groupacc_delete.clicked.connect(self.deleteGroupacc)
         ##Fix
+        self.ui.pushButton_42.clicked.connect(self.fix_pizza)
         self.ui.pushButton_24.clicked.connect(self.update_category)
         self.ui.GroupAcc_fix.clicked.connect(self.update_group)
         self.ui.pushButton_30.clicked.connect(self.update_size)
@@ -157,6 +158,107 @@ class mainwindow(QtWidgets.QMainWindow):
         self.main=wth()
         self.main.show()
         self.close()
+    ####
+    def fix_pizza(self):
+        row=self.ui.tableWidget_6.currentRow()
+        id=self.ui.tableWidget_6.item(row,0).text()
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+        pizzabl.readListTopping()
+        info=pizzabl.getInfoPizza(id)
+        ###
+        global GodList
+        global ToppingList
+        pizzabl=PizzaBUS()
+        pizzabl.readListPizza()
+        pizzabl.readListTopping()
+        lst_of_checked_topping=[]
+        dialog =QtWidgets.QDialog()
+        dialog.setMinimumHeight(100)
+        dialog.setMinimumWidth(250)
+        dialog.setWindowTitle("Thêm pizza")
+        layout = QtWidgets.QVBoxLayout()
+        dialog.setLayout(layout)
+        form_layout =QtWidgets.QFormLayout()
+        layout.addLayout(form_layout)
+        ####
+        layout_h = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h)
+        label_for_PizzaName=QtWidgets.QLabel("Tên Pizza ")
+        Line_edit_for_pizza_name=QtWidgets.QLineEdit()
+        layout_h.addWidget(label_for_PizzaName)
+        layout_h.addWidget(Line_edit_for_pizza_name)
+        #####
+        label_for_category=QtWidgets.QLabel("Danh mục ")
+        ComboBox_for_category=QtWidgets.QComboBox()
+        CategoryBll=CategoryBUS()
+        CategoryBll.readListCategory()
+        for item in CategoryBll.listCategory:
+            ComboBox_for_category.addItem(item.getDisplay())
+        layout_h_2 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_2)
+        layout_h_2.addWidget(label_for_category)
+        layout_h_2.addWidget(ComboBox_for_category)
+        ####
+        layout_h_3 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_3)
+        label_for_Describ=QtWidgets.QLabel("Mô tả ")
+        Line_edit_for_pizza_Describ=QtWidgets.QLineEdit()
+        layout_h_3.addWidget(label_for_Describ)
+        layout_h_3.addWidget(Line_edit_for_pizza_Describ)
+        ###
+        layout_h_4 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_4)
+        label_for_Describ=QtWidgets.QLabel("Hình ảnh")
+        Button_for_image=QtWidgets.QPushButton()
+        Button_for_image.setText("Chọn ảnh")
+        Button_for_image.clicked.connect(self.get_image)
+        layout_h_4.addWidget(label_for_Describ)
+        layout_h_4.addWidget(Button_for_image)
+        #####
+        layout_h_5 = QtWidgets.QHBoxLayout()
+        form_layout.addRow(layout_h_5)
+        label_for_Topping=QtWidgets.QLabel("Topping ")
+        layout_h_5.addWidget(label_for_Topping)
+        Button_topping=QtWidgets.QPushButton()
+        Button_topping.setText("Add Topping")
+        Button_topping.clicked.connect(self.dialog_2_show)
+        layout_h_5.addWidget(Button_topping)
+        ####
+        label_for_Size=QtWidgets.QLabel("Kích thước ")
+        form_layout.addWidget(label_for_Size)
+        Sizebll=SizeBUS()
+        Sizebll.readListSize()
+        count=0
+        for item in Sizebll.listSize:
+            layout_h_5 = QtWidgets.QHBoxLayout()
+            form_layout.addRow(layout_h_5)
+            checkBox_size=QtWidgets.QCheckBox()
+            checkBox_size.setText(item.getDisplay())
+            
+            button=QtWidgets.QPushButton("Chọn đế")
+            button.setEnabled(False)
+            button.clicked.connect(lambda checked,str_arg=item.getDisplay(), arg=count:self.get_zzz(arg,str_arg))
+            checkBox_size.stateChanged.connect(lambda state,btn=button:btn.setEnabled(state==2))
+            print(count)
+            layout_h_5.addWidget(checkBox_size)
+            layout_h_5.addWidget(button)
+            count+=1
+        #####
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        ###
+        Line_edit_for_pizza_name.setText(info["PizzaName"])
+        Line_edit_for_pizza_Describ.setText(info["Description"])
+        ComboBox_for_category.setCurrentText(info["CategoryName"])
+        ToppingList=info["ListTopping"]
+        print("ASASDASD",len(ToppingList))
+        ###
+        response = dialog.exec_()
+        # if response == QtWidgets.QDialog.Accepted:
+            ###
 
     ########################user info
     def add_pizza(self):
@@ -236,14 +338,6 @@ class mainwindow(QtWidgets.QMainWindow):
             layout_h_5.addWidget(checkBox_size)
             layout_h_5.addWidget(button)
             count+=1
-
-        
-       
-        
-        
-        
-
-
         #####
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
         button_box.accepted.connect(dialog.accept)
@@ -265,14 +359,15 @@ class mainwindow(QtWidgets.QMainWindow):
             if FileAddress!="":
                 new_directory = FileAddress
                 shutil.move(FileAddress, address)
-                lst_of_checked_topping=ToppingList
                 info["Image"]=FileAddress.split("/")[-1]
             info["ListTopping"]=[]
+            lst_of_checked_topping=ToppingList
             for item in lst_of_checked_topping:
-                print(item)
                 result_id=pizzabl.findToppingByName(item)
-                print(len(result_id))
                 info["ListTopping"].append(result_id[0].getId())
+            print("TOPPING LEN",len(info["ListTopping"]))
+            for itemm in info["ListTopping"]:
+                print("IDD",itemm)
             # for item in GodList:
             #     print("Size ID",item["SizeId"])
             #     for base in item["ListBase"]:
@@ -399,21 +494,28 @@ class mainwindow(QtWidgets.QMainWindow):
         layout_topping.addLayout(form_layout)
         for item in pizzabl.listTopping:
             check=QtWidgets.QCheckBox()
-            print("Len "+str(len(pizzabl.listTopping)))
             check.setText(item.getDisplay())
             form_layout.addRow(check)
         button_box2 = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
         button_box2.accepted.connect(dialog2.accept)
         layout_topping.addWidget(button_box2)
+        if len(ToppingList)!=0:
+            for item in ToppingList:
+                print("item,",item)
+                for i in range (0,len(pizzabl.listTopping)):
+                    checkbox_item = form_layout.itemAt(i, QtWidgets.QFormLayout.FieldRole)
+                    checkbox_widget = checkbox_item.widget()
+                    print(checkbox_widget.text())
+                    if item.getDisplay()==checkbox_widget.text():
+                        checkbox_widget.setChecked(True)
         response2=dialog2.exec_()
         if response2 == QtWidgets.QDialog.Accepted:
-            count=0
             for i in range (0,len(pizzabl.listTopping)):
                 checkbox_item = form_layout.itemAt(i, QtWidgets.QFormLayout.FieldRole)
                 checkbox_widget = checkbox_item.widget()
                 if checkbox_widget.isChecked():
-                    ToppingList.append(pizzabl.listTopping[count].getDisplay())
-                count+=1
+                    ToppingList.append(pizzabl.listTopping[i].getDisplay())
+                    print(pizzabl.listTopping[i].getDisplay())
             return True
 
     def get_image(self):
@@ -428,7 +530,7 @@ class mainwindow(QtWidgets.QMainWindow):
     def info_pizza(self):
         pizzabl=PizzaBUS()
         pizzabl.readListPizza()
-       
+        pizzabl.readListTopping()
         row=self.ui.tableWidget_6.currentRow()
         col=self.ui.tableWidget_6.currentColumn()
         id=self.ui.tableWidget_6.item(row,col).text()
