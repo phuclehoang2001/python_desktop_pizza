@@ -262,10 +262,17 @@ class mainwindow(QtWidgets.QMainWindow):
         Line_edit_for_pizza_Describ.setText(info["Description"])
         ComboBox_for_category.setCurrentText(info["CategoryName"])
         ToppingList=info["ListTopping"]
+        tempTop=[]
+        for top in ToppingList:
+            tempTop.append(top.getDisplay())
+        ToppingList=tempTop
         ###
         response = dialog.exec_()
         if response == QtWidgets.QDialog.Accepted: 
-            info["ListTopping"]=ToppingList
+            info["ListTopping"]=[]
+            for top in ToppingList:
+                var=pizzabl.findToppingByName(top)
+                info["ListTopping"].append(var[0].getId())
             info["PizzaName"]=Line_edit_for_pizza_name.text()
             info["Description"]=Line_edit_for_pizza_Describ.text()
             res=CategoryBll.findCategoriesByName(ComboBox_for_category.currentText())
@@ -282,6 +289,10 @@ class mainwindow(QtWidgets.QMainWindow):
                     shutil.move(FileAddress, address)
                     info["Image"]=FileAddress.split("/")[-1]
             res=pizzabl.editPizza(info)
+            GodList=[]
+            demiGod=[]
+            FileAddress=[]
+            ToppingList=[]
             print(info)
             ###
 
@@ -624,7 +635,7 @@ class mainwindow(QtWidgets.QMainWindow):
                     checkbox_item = form_layout.itemAt(i, QtWidgets.QFormLayout.FieldRole)
                     checkbox_widget = checkbox_item.widget()
                     print(checkbox_widget.text())
-                    if item.getDisplay()==checkbox_widget.text():
+                    if item==checkbox_widget.text():
                         checkbox_widget.setChecked(True)
         response2=dialog2.exec_()
         if response2 == QtWidgets.QDialog.Accepted:
@@ -633,8 +644,10 @@ class mainwindow(QtWidgets.QMainWindow):
                 checkbox_widget = checkbox_item.widget()
                 if checkbox_widget.isChecked():
                     ToppingList.append(pizzabl.listTopping[i].getDisplay())
-                    print(pizzabl.listTopping[i].getDisplay())
-            return True
+        
+        temptop=list(set(ToppingList))
+        ToppingList=temptop
+        return True
 
     def get_image(self):
         file={}
