@@ -155,7 +155,44 @@ class mainwindow(QtWidgets.QMainWindow):
         self.ui.pushButton_50.clicked.connect(self.cancel_order)
         self.ui.pushButton_47.clicked.connect(self.check_order)
         self.ui.pushButton_48.clicked.connect(self.handler_order)
+        self.ui.button_order.clicked.connect(self.find_order_date)
+        ###
+    def find_order_date(self):
+        Orderbl=OrderBUS()
+        Orderbl.readListOrder()
+        start=self.ui.calen_order_start.dateTime()
+        end=self.ui.calen_order_end.dateTime()
+        list=Orderbl.findOrderByDate(start,end)
+        print(list)
+        count=0
+        self.ui.tableWidget_7.clearContents()
+        for items in list:
+            orderId=QtWidgets.QTableWidgetItem(str(items.getId()))
+            status_display=QtWidgets.QTableWidgetItem()
+            if Orderbl.getLastStatusDetail(items.getId()).getStatusId()>6:
+                status_display.setBackground(QColor(255, 0, 0))
+            elif Orderbl.getLastStatusDetail(items.getId()).getStatusId()<6:
+                status_display.setBackground(QColor(255, 255, 127))
+            else:
+                status_display.setBackground(QColor(5, 255, 109))
+            status_display.setText(Orderbl.getLastStatus(items.getId()).getDisplay())
+            time_order=QtWidgets.QTableWidgetItem(str(Orderbl.getFirstStatusDetail(items.getId()).getTimeCreated()))
+            last_process=QtWidgets.QTableWidgetItem(str(Orderbl.getLastStatusDetail(items.getId()).getTimeCreated()))
+            customer=QtWidgets.QTableWidgetItem(items.getCustomer())
+            employee=QtWidgets.QTableWidgetItem(items.getHandler())
+            totalprice=QtWidgets.QTableWidgetItem(str(items.getTotalPrice()))
+            amount=QtWidgets.QTableWidgetItem(str(items.getQuantity()))
 
+
+            self.ui.tableWidget_7.setItem(count,0,orderId)
+            self.ui.tableWidget_7.setItem(count,1,status_display)
+            self.ui.tableWidget_7.setItem(count,2,time_order)
+            self.ui.tableWidget_7.setItem(count,3,last_process)
+            self.ui.tableWidget_7.setItem(count,4,customer)
+            self.ui.tableWidget_7.setItem(count,5,employee)
+            self.ui.tableWidget_7.setItem(count,6,totalprice)
+            self.ui.tableWidget_7.setItem(count,7,amount)
+            count+=1
         ####logout
     def logout(self):
         self.main=wth()

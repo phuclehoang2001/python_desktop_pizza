@@ -1013,11 +1013,34 @@ class Ui_MainWindow(object):
         self.combobox2.addItem("Tổng Bán ra- Dự kiến / Thực tế")
         
         self.layout2.addWidget(self.combobox2)
-        
+        ###
+        self.lable_for_order_calen_start=QtWidgets.QLabel(self.Order)
+        self.lable_for_order_calen_start.setStyleSheet("color:Black;font-size: 14px")
+        self.lable_for_order_calen_start.setText("Start date ")
+        self.lable_for_order_calen_start.setGeometry(200,400,100,30)
+
+        self.lable_for_order_calen_end=QtWidgets.QLabel(self.Order)
+        self.lable_for_order_calen_end.setStyleSheet("color:Black;font-size: 14px")
+        self.lable_for_order_calen_end.setText("- End date ")
+        self.lable_for_order_calen_end.setGeometry(420,400,100,30)
+
+        self.calen_order_start=QtWidgets.QDateEdit(self.Order)
+        self.calen_order_start.setStyleSheet("color:Black;font-size: 16px;border: 1px solid black")
+        self.calen_order_start.setGeometry(300,400,100,30)
+
+        self.calen_order_end=QtWidgets.QDateEdit(self.Order)
+        self.calen_order_end.setStyleSheet("color:Black;font-size: 16px;border: 1px solid black")
+        self.calen_order_end.setGeometry(500,400,100,30)
+
+        self.button_order=QtWidgets.QPushButton(self.Order)
+        self.button_order.setText("Load")
+        self.button_order.setGeometry(630,400,50,30)
+
+        ###
 
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(6)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
