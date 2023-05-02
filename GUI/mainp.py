@@ -281,9 +281,8 @@ class mainwindow(QtWidgets.QMainWindow):
                 else:
                     shutil.move(FileAddress, address)
                     info["Image"]=FileAddress.split("/")[-1]
-            print(address)
             res=pizzabl.editPizza(info)
-            print(res)
+            print(info)
             ###
 
     ########################user info
@@ -383,9 +382,13 @@ class mainwindow(QtWidgets.QMainWindow):
             global FileAddress
             global address
             if FileAddress!="":
-                new_directory = FileAddress
-                shutil.move(FileAddress, address)
-                info["Image"]=FileAddress.split("/")[-1]
+                abc=FileAddress.split("/")[-2]
+                bcd=address.split("/")[-1]
+                if abc==bcd:
+                    info["Image"]=FileAddress.split("/")[-1]
+                else:
+                    shutil.move(FileAddress, address)
+                    info["Image"]=FileAddress.split("/")[-1]
             info["ListTopping"]=[]
             lst_of_checked_topping=ToppingList
             for item in lst_of_checked_topping:
